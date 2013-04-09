@@ -1,15 +1,15 @@
 Archivportal Deutschland
 ========================
 
-ADP is a beta-web interface for Archiveportal Deutschland.
+APD is a beta-web interface for Archiveportal Deutschland.
 
-[Git](https://github.com/Deutsche-Digitale-Bibliothek/adp) | [Jira](https://jira.deutsche-digitale-bibliothek.de/browse/ADP) | Demo Coming Soon
+[Git](https://github.com/Deutsche-Digitale-Bibliothek/apd) | [Jira](https://jira.deutsche-digitale-bibliothek.de/browse/APD) | Demo Coming Soon
 
 -----
 
 # Information for developers 
 
-The ADPt is a Web Application build on Grails.
+The APD is a Web Application build on Grails.
 
 
 ## Download 
