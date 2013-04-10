@@ -42,30 +42,15 @@ public enum SupportedLocales {
     }
 
     public static List<Locale> getSupportedLocales() {
-        SupportedLocales[] supported = SupportedLocales.values();
-        ArrayList<Locale> out = new ArrayList<Locale>();
-        for (SupportedLocales support : supported) {
-            out.add(support.locale);
-        }
-        return out;
+        return SupportedLocales.values().collect {  it.locale }
     }
 
     public static List<String> getSupportedLanguagesISO2() {
-        SupportedLocales[] supported = SupportedLocales.values();
-        ArrayList<String> out = new ArrayList<String>();
-        for (SupportedLocales support : supported) {
-            out.add(support.locale.getLanguage());
-        }
-        return out;
+        return SupportedLocales.values().collect { it.locale.getLanguage() }
     }
 
     public static List<String> getSupportedLanguagesISO3() {
-        SupportedLocales[] supported = SupportedLocales.values();
-        ArrayList<String> out = new ArrayList<String>();
-        for (SupportedLocales support : supported) {
-            out.add(support.locale.getISO3Language());
-        }
-        return out;
+        return SupportedLocales.values().collect { it.locale.getISO3Language() }
     }
 
     public static boolean supports(Locale locale) {
