@@ -1,3 +1,4 @@
+<g:set var="isStart" value="${isStartValue?1:0}"></g:set>
 <!DOCTYPE html>
 <html>
   <head>
@@ -15,7 +16,7 @@
     <r:layoutResources />
   </head>
   <body>
-    <g:render template="/general/header" />
+    <g:render template="/general/header" isStart="${isStart}"/>
     <div id="main-container" class="container" role="main">
       <g:layoutBody/>
     </div>

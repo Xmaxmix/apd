@@ -4,7 +4,6 @@
     
     <meta name="page" content="index" />
     <meta name="layout" content="main" />
-    
     <%-- 
     <r:require module="startpage"/>
     --%>
