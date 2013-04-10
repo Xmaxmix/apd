@@ -58,8 +58,8 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         // runtime 'mysql:mysql-connector-java:5.1.22'
-        runtime "org.springframework:spring-test:3.1.2.RELEASE" //Needed as dependency for rendering-plugin when used in WAR
-
+        // runtime "org.springframework:spring-test:3.1.2.RELEASE" //Needed as dependency for rendering-plugin when used in WAR
+        runtime 'org.codehaus.groovy.modules.http-builder:http-builder:0.5.2'
     }
 
     plugins {
