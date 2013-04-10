@@ -1,4 +1,4 @@
-package apd
+package de.apd
 
 class IndexController {
 
