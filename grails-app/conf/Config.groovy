@@ -138,7 +138,7 @@ log4j = {
     // The root logger defines the basic log level and to which appenders the logging is going
     environments {
         development {
-            root {  info "console", "apd-info", "apd-warn", "apd-error", "stacktrace"  }
+            root {  debug "console", "apd-info", "apd-warn", "apd-error", "stacktrace"  }
         }
         production {
             root { info "apd-info", "apd-warn", "apd-error", "stacktrace" }
