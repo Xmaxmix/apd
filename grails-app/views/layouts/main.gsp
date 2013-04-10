@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title><g:layoutTitle default="APD" /></title>
+    <title><g:layoutTitle default="ArchivportalD" /></title>
 
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <%-- 
@@ -21,9 +21,7 @@
     </div>
     <g:render template="/general/footer" />
     <g:render template="/general/jsVariables" />
-    <%-- 
     <jawr:script src="/i18n/messages.js"/>
-    --%>
     <r:layoutResources />
   </body>
 </html>

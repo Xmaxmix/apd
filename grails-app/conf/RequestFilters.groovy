@@ -13,11 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.apd
 
-class ListviewController {
+/**
+ * This class acts as the default Grails request filter class. 
+ * Any filter can be defined by adding a new entry in the filters section.
+ * See http://grails.org/doc/2.2.1/guide/single.html#filters for detailed documentation.
+ * 
+ * @author hla
+ */
+class RequestFilters {
+    def filters = {
 
-    def index() {
-        render(view: "listview", model: [:])
+        /**
+         * Adds a new entry to the response header of all requested pages for IE compatibility. 
+         */
+        ieHeaderFilter(controller:'*', action:'*') {
+            after = {
+                response.addHeader("X-UA-Compatible", "IE=7,9,10")
+            }
+        }
     }
 }

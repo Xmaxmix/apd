@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title><%-- <g:message code="ddbnext.Homepage"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/>--%> APD</title>
+    <title><%-- <g:message code="ddbnext.Homepage"/> - --%><g:message code="apd.ArchivportalD"/></title>
     
     <meta name="page" content="structureview" />
     <meta name="layout" content="main" />
