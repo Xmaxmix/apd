@@ -1,5 +1,1 @@
-modules = {
-    application {
-        resource url:'js/application.js'
-    }
-}
+modules = { apd { } }

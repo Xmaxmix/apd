@@ -2,5 +2,7 @@ package de.apd
 
 class IndexController {
 
-    def index() { }
+    def index() {
+        render(view: "index", model: [:])
+    }
 }

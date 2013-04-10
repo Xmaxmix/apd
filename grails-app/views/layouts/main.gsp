@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"><!--<![endif]-->
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title><g:layoutTitle default="APD"/></title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
-		<g:layoutHead/>
-		<r:layoutResources />
-	</head>
-	<body>
-		<div id="ADP" role="banner"></div>
-		<g:layoutBody/>
-		<div class="footer" role="contentinfo"></div>
-		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-		<g:javascript library="application"/>
-		<r:layoutResources />
-	</body>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    
+    <title><g:layoutTitle default="APD" /></title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <%-- 
+    <meta name="description" content="Deutsche Digitale Bibliothek" />
+    <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
+    --%>
+    <r:require module="apd" />
+    <g:layoutHead />
+    <r:layoutResources />
+  </head>
+  <body>
+    <g:render template="/general/header" />
+    <div id="main-container" class="container" role="main">
+      <g:layoutBody/>
+    </div>
+    <g:render template="/general/footer" />
+    <g:render template="/general/jsVariables" />
+    <%-- 
+    <jawr:script src="/i18n/messages.js"/>
+    --%>
+    <r:layoutResources />
+  </body>
 </html>
