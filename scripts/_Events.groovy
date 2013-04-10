@@ -18,6 +18,10 @@ import org.apache.log4j.Logger;
 import groovy.util.logging.Log4j;
 import groovy.xml.StreamingMarkupBuilder
 
+/**
+ * This callback will be triggered when the dynamically generated web.xml file is finished. We can modify it programmatically to 
+ * add further functionality like listeners or mime-types.
+ */
 eventWebXmlEnd = {String tmpfile ->
     def log = Logger.getLogger(this.getClass());
     log.info "Dynamically adjusting web.xml in /scripts/_Events.groovy"
@@ -25,7 +29,6 @@ eventWebXmlEnd = {String tmpfile ->
     def root = new XmlSlurper().parse(webXmlFile)
     
     log.info "Adding session listener (de.apd.ApdSessionListener) to web.xml"
-    
     root.appendNode {
         'listener' {
             'listener-class' (
@@ -35,7 +38,6 @@ eventWebXmlEnd = {String tmpfile ->
     }
     
 //    log.info "Adding mime-mapping (woff -> application/x-font-woff) to web.xml"
-//    
 //    root.appendNode {
 //        'mime-mapping' {
 //            'extension' (
