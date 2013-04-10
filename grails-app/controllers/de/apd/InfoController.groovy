@@ -9,7 +9,7 @@ class InfoController {
 
         try{
 
-            def page="neues"
+            def page = "neues"
             if(params.page){
                 page = params.page
             }
@@ -23,7 +23,7 @@ class InfoController {
                 throw new ItemNotFoundException()
             }
 
-            def map= retrieveArguments(response)
+            def map = retrieveArguments(response)
             render(view: "info", model: map)
 
         } catch(ItemNotFoundException infe){
@@ -50,7 +50,7 @@ class InfoController {
         def keywords = fetchKeywords(content)
         def robot = fetchRobots(content)
         def body = fetchBody(content)
-        return [title:title, author:author, keywords:keywords,robot:robot,content:body]
+        return [title:title, author:author, keywords:keywords, robot:robot, content:body]
 
     }
 
