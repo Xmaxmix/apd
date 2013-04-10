@@ -10,5 +10,6 @@ modules = {
     
     javascript {
         resource url:'/js/vendor/bootstrap.js'
+        resource url:'/js/vendor/jquery-1.9.1.js'
     }
 }
