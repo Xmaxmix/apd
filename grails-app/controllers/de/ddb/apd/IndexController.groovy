@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.apd
+package de.ddb.apd
 
-class ListviewController {
+class IndexController {
 
     def index() {
-        render(view: "listview", model: [:])
+        render(view: "index", model: [:])
     }
 }

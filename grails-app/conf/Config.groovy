@@ -67,7 +67,7 @@ grails.resources.adhoc.patterns = [
 
 // Diables bundling, caching, zipping of resources.
 // TODO remove again after the basic website features are up and running.
-grails.resources.processing.enabled = false
+//grails.resources.processing.enabled = false
 grails.resources.bundle.excludes = ['**/*.*']
 grails.resources.mappers.hashandcache.excludes = ['**/*.*']
 grails.resources.mappers.bundle.excludes = ['**/*.*']

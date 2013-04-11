@@ -17,12 +17,19 @@
 modules = {
     apd {
         defaultBundle 'apd'
-        dependsOn "cssscreen, javascript"
+        dependsOn "images, cssscreen, cssprint, javascript"
     }
+
+    images {  resource url:'/images/favicon.ico' }
 
     cssscreen {
         resource url:'/css/vendor/bootstrap.css', bundle: 'screen'
+        resource url:'/css/binaries-viewer.css', bundle: 'screen'
         resource url:'/css/detailview.css', bundle: 'screen'
+    }
+
+    cssprint {
+        //resource url:'/css/apd.css', attrs:[media:'print'], bundle: 'print'
     }
 
     javascript {

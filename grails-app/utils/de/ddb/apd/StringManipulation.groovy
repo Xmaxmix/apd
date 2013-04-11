@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.apd
+package de.ddb.apd
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;

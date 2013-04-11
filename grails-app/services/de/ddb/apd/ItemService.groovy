@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.apd
+package de.ddb.apd
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+
+import de.ddb.apd.ApiConsumer;
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*

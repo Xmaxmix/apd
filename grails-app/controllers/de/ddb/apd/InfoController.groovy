@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.apd
+package de.ddb.apd
 
-import de.apd.exception.ItemNotFoundException;
+import de.ddb.apd.ApiConsumer;
+import de.ddb.apd.SupportedLocales;
+import de.ddb.apd.exception.ItemNotFoundException;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 class InfoController {

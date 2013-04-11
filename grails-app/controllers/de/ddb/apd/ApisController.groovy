@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package de.apd
+package de.ddb.apd
 
-import de.apd.exception.ItemNotFoundException;
+import de.ddb.apd.ApiConsumer;
+import de.ddb.apd.exception.ItemNotFoundException;
 
 class ApisController {
 

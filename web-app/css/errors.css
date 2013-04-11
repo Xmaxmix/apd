@@ -1,3 +1,4 @@
+/*
 h1, h2 {
 	margin: 10px 25px 5px;
 }
@@ -30,7 +31,6 @@ h2 {
 	        box-shadow: 0 0 2px rgba(0,0,0,0.2);
 }
 
-/* error details */
 .error-details {
 	border-top: 1px solid #FFAAAA;
 	   -mox-box-shadow: 0 0 2px rgba(0,0,0,0.2);
@@ -62,14 +62,12 @@ h2 {
 	display: block;
 }
 
-/* stack trace */
 .stack {
 	padding: 5px;
 	overflow: auto;
 	height: 150px;
 }
 
-/* code snippet */
 .snippet {
 	background-color: #fff;
 	font-family: monospace;
@@ -107,3 +105,5 @@ h2 {
 .snippet .line:last-child .lineNumber {
 	padding-bottom: 5px;
 }
+
+*/

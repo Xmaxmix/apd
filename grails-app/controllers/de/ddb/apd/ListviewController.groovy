@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.apd
+package de.ddb.apd
 
-class AdvancedsearchController {
+class ListviewController {
 
     def index() {
-        render(view: "advancedsearch", model: [:])
+        render(view: "listview", model: [:])
     }
 }

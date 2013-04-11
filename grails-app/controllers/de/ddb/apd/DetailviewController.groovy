@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.apd
+package de.ddb.apd
 
-import de.apd.exception.ItemNotFoundException;
+import de.ddb.apd.StringManipulation;
+import de.ddb.apd.exception.ItemNotFoundException;
+import de.ddb.apd.hierarchy.Item;
 
 class DetailviewController {
 
@@ -29,12 +31,13 @@ class DetailviewController {
 
             def item = itemService.findItemById(id)
 
-
             if("404".equals(item)){
                 throw new ItemNotFoundException()
             }
 
             def friendlyTitle = StringManipulation.getFriendlyUrlString(item.title)
+
+            def hierarchyRootItem = buildItemHierarchy(id)
 
             def binaryList = itemService.findBinariesById(id)
             def binariesCounter = itemService.binariesCounter(binaryList)
@@ -108,4 +111,17 @@ class DetailviewController {
         }
     }
 
+    def buildItemHierarchy(String itemId) {
+
+        // Build the hierarchy from the item to the root element. The root element is kept.
+        def parentList = itemService.getParent(itemId)
+
+        def rootItem = Item.buildHierarchy(parentList)
+
+        // Get the mainItem
+        Item mainItem = rootItem.getItemFromHierarchy(itemId)
+        mainItem.setMainItem(true);
+
+        return rootItem
+    }
 }
