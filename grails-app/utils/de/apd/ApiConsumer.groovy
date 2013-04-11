@@ -278,7 +278,7 @@ class ApiConsumer {
 
     static def checkContext(String baseUrl, String path) {
         def grailsApplication = Holders.getGrailsApplication()
-        if (grailsApplication.config.ddb.apis.url == baseUrl) {
+        if (grailsApplication.config.apd.apis.url == baseUrl) {
             if (path == null) {
                 path = ""
             }

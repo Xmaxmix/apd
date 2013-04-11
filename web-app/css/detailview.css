@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-modules = {
-    apd {
-        defaultBundle 'apd'
-        dependsOn "cssscreen, javascript"
-    }
-
-    cssscreen {
-        resource url:'/css/vendor/bootstrap.css', bundle: 'screen'
-        resource url:'/css/detailview.css', bundle: 'screen'
-    }
-
-    javascript {
-        resource url:'/js/vendor/jquery-1.9.1.js'
-        resource url:'/js/vendor/bootstrap.js'
-        resource url:'/js/vendor/jwplayer/jwplayer.js'
-        resource url:'/js/jwplayer-key.js'
-        resource url:'/js/global-variables.js'
-        resource url:'/js/binaries-viewer.js'
-    }
+.detailview {
+  background-color: #DDDDDD; 
+  border: 1px solid red;
 }
 
+.detailview .hierarchy {
+  background-color: #AAAAFF;
+}
+
+.detailview .navigation {
+  background-color: #FFAAFF;
+}
+
+.detailview .logo {
+  background-color: #FFFFAA;
+}
+
+.detailview .fields {
+  background-color: #AAFFFF;
+}
+
+.detailview .binaries {
+  background-color: #ABCDEF;
+}

@@ -14,24 +14,4 @@
  * limitations under the License.
  */
 
-modules = {
-    apd {
-        defaultBundle 'apd'
-        dependsOn "cssscreen, javascript"
-    }
-
-    cssscreen {
-        resource url:'/css/vendor/bootstrap.css', bundle: 'screen'
-        resource url:'/css/detailview.css', bundle: 'screen'
-    }
-
-    javascript {
-        resource url:'/js/vendor/jquery-1.9.1.js'
-        resource url:'/js/vendor/bootstrap.js'
-        resource url:'/js/vendor/jwplayer/jwplayer.js'
-        resource url:'/js/jwplayer-key.js'
-        resource url:'/js/global-variables.js'
-        resource url:'/js/binaries-viewer.js'
-    }
-}
-
+jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="
