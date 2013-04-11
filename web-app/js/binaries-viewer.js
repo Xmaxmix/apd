@@ -115,18 +115,19 @@ $(document).ready(function() {
       h = 200;
     }
     jwplayer("jwplayer-container").setup({
+          flashplayer: jsContextPath+"/js/vendor/jwplayer/jwplayer.flash.swf",
           file: content,
           controlbar: "bottom",
           stretching: "uniform",
           width: w,
           height: h,
           image: poster,
-          skin: "../jwplayer/skins/five.xml", 
+          skin: jsContextPath+"/js/vendor/jwplayer/skins/five.xml", 
           modes: [{
               type: "html5"
           }, {
               type: "flash",
-              src: "../jwplayer/jwplayer.flash.swf"
+              src: jsContextPath+"/js/vendor/jwplayer/jwplayer.flash.swf"
           }, {
               type: "download"
           }],

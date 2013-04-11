@@ -37,7 +37,7 @@ class DetailviewController {
 
             def friendlyTitle = StringManipulation.getFriendlyUrlString(item.title)
 
-            def hierarchyRootItem = buildItemHierarchy(item)
+            def hierarchyRootItem = buildItemHierarchy(id, item.title)
 
             def binaryList = itemService.findBinariesById(id)
             def binariesCounter = itemService.binariesCounter(binaryList)
@@ -114,21 +114,23 @@ class DetailviewController {
         }
     }
 
-    def buildItemHierarchy(Map item) {
+    def buildItemHierarchy(id, label) {
 
-        //        // Build the hierarchy from the item to the root element. The root element is kept.
-        //        def parentList = itemService.getParent(item.id)
-        //
-        //        def rootItem = Item.buildHierarchy(item, parentList)
-        //
-        //        // Get the mainItem
-        //        Item mainItem = rootItem.getItemFromHierarchy(item.id)
-        //        mainItem.setMainItem(true);
-        //
-        //        Item emptyStartItem = new Item()
-        //        emptyStartItem.children.add(rootItem)
-        //
-        //        return emptyStartItem
+        // Build the hierarchy from the item to the root element. The root element is kept.
+        def parentList = itemService.getParent(id)
+
+        def startItem = new Item(['id': id, 'label': label])
+
+        def rootItem = Item.buildHierarchy(startItem, parentList)
+
+        // Get the mainItem
+        Item mainItem = rootItem.getItemFromHierarchy(id)
+        mainItem.setMainItem(true);
+
+        Item emptyStartItem = new Item()
+        emptyStartItem.children.add(rootItem)
+
+        return emptyStartItem
     }
 
     def getDDBUrlOfItem(itemId){

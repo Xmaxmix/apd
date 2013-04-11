@@ -120,14 +120,14 @@ class Item {
         return false;
     }
 
-    static Item buildHierarchy(Map mainItemJson, List allItemsJson){
+    static Item buildHierarchy(Item mainItem, List allItemsJson){
         List<Item> allItemList = []
         allItemsJson.each {
             allItemList.add(new Item(it))
         }
 
         if(allItemList.size()==0){
-            return new Item(mainItemJson)
+            return mainItem
         }
 
         Item root = getRootItem(allItemList)
