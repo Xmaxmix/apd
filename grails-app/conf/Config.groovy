@@ -65,6 +65,14 @@ grails.resources.adhoc.patterns = [
     '/plugins/*'
 ]
 
+// Diables bundling, caching, zipping of resources.
+// TODO remove again after the basic website features are up and running.
+grails.resources.processing.enabled = false
+grails.resources.bundle.excludes = ['**/*.*']
+grails.resources.mappers.hashandcache.excludes = ['**/*.*']
+grails.resources.mappers.bundle.excludes = ['**/*.*']
+grails.resources.mappers.zip.excludes = ['**/*.*']
+
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"
