@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.apd
+package de.ddb.apd
 
 import java.util.regex.Pattern
 
@@ -278,7 +278,7 @@ class ApiConsumer {
 
     static def checkContext(String baseUrl, String path) {
         def grailsApplication = Holders.getGrailsApplication()
-        if (grailsApplication.config.ddb.apis.url == baseUrl) {
+        if (grailsApplication.config.apd.apis.url == baseUrl) {
             if (path == null) {
                 path = ""
             }

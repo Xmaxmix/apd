@@ -13,11 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.apd
 
-class StructureviewController {
-
-    def index() {
-        render(view: "structureview", model: [:])
-    }
-}
+jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="

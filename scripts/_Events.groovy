@@ -28,11 +28,11 @@ eventWebXmlEnd = {String tmpfile ->
     
     def root = new XmlSlurper().parse(webXmlFile)
     
-    log.info "Adding session listener (de.apd.ApdSessionListener) to web.xml"
+    log.info "Adding session listener (de.ddb.apd.ApdSessionListener) to web.xml"
     root.appendNode {
         'listener' {
             'listener-class' (
-            'de.apd.ApdSessionListener'
+            'de.ddb.apd.ApdSessionListener'
             )
         }
     }
