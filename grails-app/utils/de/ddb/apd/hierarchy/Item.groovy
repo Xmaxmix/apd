@@ -57,6 +57,13 @@ class Item {
         return children;
     }
 
+    public Item getFirstChild(){
+        if(children.size()>0){
+            return children.get(0)
+        }else{
+            return null
+        }
+    }
 
     public void addItemsToHierarchy(List itemListJson) {
         List<Item> allItemList = []
@@ -113,10 +120,14 @@ class Item {
         return false;
     }
 
-    static Item buildHierarchy(List allItemsJson){
+    static Item buildHierarchy(Map mainItemJson, List allItemsJson){
         List<Item> allItemList = []
         allItemsJson.each {
             allItemList.add(new Item(it))
+        }
+
+        if(allItemList.size()==0){
+            return new Item(mainItemJson)
         }
 
         Item root = getRootItem(allItemList)
