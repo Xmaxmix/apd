@@ -65,6 +65,14 @@ grails.resources.adhoc.patterns = [
     '/plugins/*'
 ]
 
+// Diables bundling, caching, zipping of resources.
+// TODO remove again after the basic website features are up and running.
+grails.resources.processing.enabled = false
+grails.resources.bundle.excludes = ['**/*.*']
+grails.resources.mappers.hashandcache.excludes = ['**/*.*']
+grails.resources.mappers.bundle.excludes = ['**/*.*']
+grails.resources.mappers.zip.excludes = ['**/*.*']
+
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"
@@ -111,7 +119,8 @@ environments {
 //APD SPECIFIC Configuration variables
 //The variables can be overwritten by defining local configurations, see below environments
 //apd.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
-apd.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
+//apd.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
+apd.static.url="http://dev.escidoc.org"  //temporary workaround for development until we have existing pages on the real backend server
 //apd.apis.url="http://localhost:8080"
 apd.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
 //apd.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
