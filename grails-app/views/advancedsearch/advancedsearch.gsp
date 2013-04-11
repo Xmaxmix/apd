@@ -9,23 +9,21 @@
   <body>
     <!-- TODO: localize string -->
     <div id="advanced-search" class="row">
-      <form action="" class="form-inline">
+      <form class="form-inline">
         <fieldset>
           <label><g:message code="apd.fieldSearch" />: </label>
           <select>
-            <option value="Title">Signatur</option>
-            <option value="Title">Titel</option>
-            <option value="Title">Enthaelt</option>
-            <option value="Title">Vorprovenienz</option>
-            <option value="Title">Altsignatur</option>
-            <option value="Title">Laufzeit</option>
-            <option value="Title">Archivalienart</option>
+            <option><g:message code="apd.signature" /></option>
+            <option><g:message code="apd.title" /></option>
+            <option><g:message code="apd.contain" /></option>
+            <!-- TODO: translate vorprovenienz in message properties -->
+            <option><g:message code="apd.vorprovenienz" /></option>
+            <option><g:message code="apd.oldSignature" /></option>
+            <option><g:message code="apd.runtime" /></option>
+            <option><g:message code="apd.archievesType" /></option>
           </select>
-          <input type="search" placeholder="Suchbegriff eingeben">
-          <i class="icon-search contextual-help" data-content="Geben Sie Ihre 
-          Suchbegriffe in die Suchfelder ein. Sie können mehrere Suchfelder 
-          und Suchgruppen kombinieren. &lt;a href=&quot;/content/help/search
-          -advanced&quot;&gt; Hilfe zur erweiterten Suche &lt;/a&gt;">
+          <input type="search" placeholder="<g:message code="apd.searchPlaceholder" />">
+          <i class="icon-search contextual-help" data-content="<g:message code="apd.archievesType" />">
             contextual help
           </i>
         </fieldset>
