@@ -30,7 +30,7 @@ class InfoController {
             }
             def url = getStaticUrl()
             def lang = getShortLocale()
-            def path = "/static/"+lang+"/"+page+".html"
+            def path = "/static-apd/"+lang+"/"+page+".html"
             def query = [ client: "APD" ]
             //Submit a request via GET
             def response = ApiConsumer.getText(url, path, query)
