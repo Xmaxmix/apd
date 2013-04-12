@@ -22,3 +22,11 @@
   border-style: solid;
   border-width: 1px;
 }
+
+.fuelux .icon-folder-open {
+  background-position: -430px -96px;
+}
+
+.fuelux .tree .tree-item {
+  height: 60px;
+}

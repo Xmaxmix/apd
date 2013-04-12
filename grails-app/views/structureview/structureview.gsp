@@ -14,21 +14,50 @@
       <div class="span4">
         <div class="row">
           <div class="span4">
-            <div class="selector border"><g:message code="apd.Struktur"/></div>
-            <div class="selector border"><g:message code="apd.Objecte"/></div>
+            <a href="struktur">
+              <div class="selector border"><g:message code="apd.Struktur"/></div>
+            </a>
+            <a href="liste">
+              <div class="selector border"><g:message code="apd.Objecte"/></div>
+            </a>
           </div>
         </div>
         <div class="row">
-          <div class="span4 tree-container border">
-            <ol id="institution-list">
+          <div class="span4 tree-container fuelux">
+
+            <div id="institution-tree" class="tree">
               <g:each in="${ all }">
-                <li class="institution-listitem" data-sector="${ it?.sector }" data-institution-id="${ it?.id }">
-                  <i class="icon-institution"></i>
-                  <g:render template="listItem" model="['item': it]"/>
-                  <g:render template="children" model="['children': it?.children]"/>
-                </li>
+                <g:if test="${ it?.size() > 0 }">
+                  <div class="tree-folder" style="display: block;">
+                    <div class="tree-folder-header">
+                      <i class="icon-folder-open"></i>
+                      <div class="tree-folder-name">
+                        <a href="${it.uri}"> 
+                          ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="tree-folder-content">
+                      <g:render template="listItem" model="['children': it?.children]" />
+                    </div>
+                    <div class="tree-loader" style="display: none">
+                      <div>Loading...</div>
+                    </div>
+                  </div>
+                </g:if>
+                <g:else>
+                  <div class="tree-item" data-sector="${ it?.sector }" data-institution-id="${ it.id }" style="display: block;">
+                    <i class="tree-dot"></i>
+                    <div class="tree-item-name">
+                      <a href="${it.uri}">
+                        ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
+                      </a>
+                    </div>
+                  </div>
+                </g:else>
               </g:each>
-            </ol>
+            </div>
+
           </div>
         </div>
       </div>

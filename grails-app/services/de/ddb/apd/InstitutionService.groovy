@@ -60,7 +60,7 @@ class InstitutionService {
                     it.isFirst = true
                 }
 
-                it.sectorLabelKey = 'ddbnext.' + it.sector
+                it.sectorLabelKey = 'apd.' + it.sector
                 buildChildren(it, totalInstitution)
                 institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
             }
@@ -120,7 +120,7 @@ class InstitutionService {
         if(institution.children?.size() > 0 ) {
             institution.children.each { child ->
                 child.uri = buildUri(child.id)
-                child.sectorLabelKey = 'ddbnext.' + child.sector
+                child.sectorLabelKey = 'apd.' + child.sector
                 child.parentId = institution.id
                 child.firstChar = child?.name[0]?.toUpperCase()
                 buildChildren(child, counter)
