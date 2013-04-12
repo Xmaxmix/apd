@@ -126,10 +126,12 @@ apd.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
 //apd.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
 apd.logging.folder="target/logs"
 //apd.tracking.piwikfile="${userHome}/.grails/tracking.txt"
-//apd.advancedSearch.searchGroupCount=3
-//apd.advancedSearch.searchFieldCount=10
-//apd.advancedSearch.defaultOffset=0
-//apd.advancedSearch.defaultRows=20
+apd.advancedSearch.searchGroupCount=3
+apd.advancedSearch.searchFieldCount=10
+apd.advancedSearch.defaultOffset=0
+apd.advancedSearch.defaultRows=20
+// TODO: ask @mih for the value
+apd.backend.facets.filter=0
 
 
 // log4j configuration

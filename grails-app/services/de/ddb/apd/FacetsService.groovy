@@ -28,7 +28,6 @@ public class FacetsService {
     //Backend URL
     String url
 
-
     /**
      * Get values for a facet.
      *

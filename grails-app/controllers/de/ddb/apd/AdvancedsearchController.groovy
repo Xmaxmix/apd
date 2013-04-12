@@ -17,9 +17,9 @@ package de.ddb.apd
 
 class AdvancedsearchController {
 
-
     private static final String enumSearchType = "ENUM"
     private static final String textSearchType = "TEXT"
+    // TODO: copy the message properties from DDB NEXT.
     private static final String languageTagPrefix = "apd.facet_"
     private static final String facetNameSuffix = "_fct"
     private static final String labelSortType = "ALPHA_LABEL"
@@ -28,21 +28,15 @@ class AdvancedsearchController {
 
     def messageSource
 
-    /*
     def index() {
-        render(view: "advancedsearch", model: [:])
-    }
-    */
+        int searchGroupCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchGroupCount)
+        int searchFieldCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchFieldCount)
 
-    def index() {
-        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
-        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
-        String url = grailsApplication.config.ddb.backend.url
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
         render(view: "/search/advancedsearch",
-          model: [
+        model: [
             searchGroupCount: searchGroupCount,
             searchFieldCount: searchFieldCount,
             facetSearchfields: facetSearchfields,
@@ -52,7 +46,7 @@ class AdvancedsearchController {
             facetNameSuffix : facetNameSuffix,
             labelSortType : labelSortType,
             enumSearchType : enumSearchType
-         ])
+        ])
     }
 
     /**
@@ -61,11 +55,12 @@ class AdvancedsearchController {
      * @throws IOException
      */
     def executeSearch() throws IOException {
-        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
-        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
-        int offset = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultOffset)
-        int rows = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultRows)
-        def url = grailsApplication.config.ddb.backend.url
+        // TODO: research how to reduce the code duplication.
+        int searchGroupCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchGroupCount)
+        int searchFieldCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchFieldCount)
+        int offset = Integer.parseInt(grailsApplication.config.apd.advancedSearch.defaultOffset)
+        int rows = Integer.parseInt(grailsApplication.config.apd.advancedSearch.defaultRows)
+        def url = grailsApplication.config.apd.backend.url
         def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 
         AdvancedSearchFormToQueryConverter converter =
@@ -81,8 +76,10 @@ class AdvancedsearchController {
      */
     private Map getFacetValues(facetSearchfields) {
         def facetValuesMap = [:]
-        def url = grailsApplication.config.ddb.backend.url
-        def allFacetFilters = grailsApplication.config.ddb.backend.facets.filter
+        def url = grailsApplication.config.apd.backend.url
+
+        // TODO: ask @mih for the value
+        def allFacetFilters = grailsApplication.config.apd.backend.facets.filter
         def facetsRequester = new FacetsService(url:url)
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {
