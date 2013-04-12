@@ -15,6 +15,12 @@
  */
 package de.ddb.apd.hierarchy
 
+/**
+ * Utility class representing an item from the backend. 
+ * It offers utility methods to create a hierarchy tree structure of Item object.
+ * 
+ * @author hla
+ */
 class Item {
 
     String id
