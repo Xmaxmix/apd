@@ -32,7 +32,7 @@ class UrlMappings {
 
         "/struktur" {
             controller="structureview"
-            action="index"
+            action="show"
         }
 
         "/liste" {
@@ -48,6 +48,11 @@ class UrlMappings {
         "/info/$page" {
             controller="info"
             action="index"
+        }
+
+        "/binary/$filename**" {
+            controller="apis"
+            action="binary"
         }
 
         "500"(controller: "error", action: "serverError")
