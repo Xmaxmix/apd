@@ -32,7 +32,7 @@ class UrlMappings {
 
         "/struktur" {
             controller="structureview"
-            action="index"
+            action="show"
         }
 
         "/liste" {
