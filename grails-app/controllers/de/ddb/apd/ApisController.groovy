@@ -36,7 +36,7 @@ class ApisController {
             throw new ItemNotFoundException();
         }
 
-        def apiResponse = ApiConsumer.getBinary(getBinaryServerUrl(), params.filename)
+        def apiResponse = ApiConsumer.getBinary(configurationService.getBinaryBackendUrl(), params.filename)
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
             throw apiResponse.getException()
@@ -48,11 +48,5 @@ class ApisController {
         response.setContentLength(responseObject.get("Content-Length").toInteger())
         response.setHeader("Content-Disposition", "inline; filename=" + params.filename.tokenize('/')[-1])
         response.outputStream << bytes
-    }
-
-    private def getBinaryServerUrl(){
-        def url = configurationService.getBinaryBackendUrl()
-        assert url instanceof String, "This is not a string"
-        return url;
     }
 }
