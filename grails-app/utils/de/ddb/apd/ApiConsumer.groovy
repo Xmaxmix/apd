@@ -17,242 +17,213 @@ package de.ddb.apd
 
 import java.util.regex.Pattern
 
-import static groovyx.net.http.ContentType.*
 import grails.util.Holders
 import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 
-import java.util.regex.Pattern
-
 import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.web.context.ServletContextHolder
+
+import de.ddb.apd.exception.BackendErrorException;
+import de.ddb.apd.exception.ItemNotFoundException;
 
 
+/**
+ * The main wrapper class for all backend calls.
+ * 
+ * @author hla
+ */
 class ApiConsumer {
+
+    /**
+     * This String will be appended as a parameter to all backend calls. For example: http://aaa.bbb.ccc/ddd?client=APD
+     */
+    public static final String APD_CLIENT_NAME = "APD"
+
     private static final log = LogFactory.getLog(this)
     private static Pattern nonProxyHostsPattern
 
-    static def postText(String baseUrl, String path, query, method = Method.POST) {
+
+    /**
+     * Requests a TEXT ressource from the backend by calling GET
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text, 
+     *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set 
+     *      to true, the json-parser is explicitly overwritten with the text-parser.  
+     * @return An ApiResponse object containing the server response
+     */
+    static def getText(String baseUrl, String path, fixWrongContentTypeHeader) {
+        if(fixWrongContentTypeHeader){
+            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.JSON, true)
+        }else{
+            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.TEXT)
+        }
+    }
+
+    /**
+     * Requests a JSON ressource from the backend by calling GET
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @return An ApiResponse object containing the server response
+     */
+    static def getJson(String baseUrl, String path) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.JSON)
+    }
+
+    /**
+     * Requests a XML ressource from the backend by calling GET
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @return An ApiResponse object containing the server response
+     */
+    static def getXml(String baseUrl, String path) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.XML)
+    }
+
+    /**
+     * Requests a BINARY ressource from the backend by calling GET
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @return An ApiResponse object containing the server response
+     */
+    static def getBinary(String baseUrl, String path) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.BINARY)
+    }
+
+    /**
+     * Central method to call the backend, all other methods just delegate.
+     * @param baseUrl The base REST-server url (e.g. "http://backend.escidoc.org")
+     * @param path The path to the requested resource (e.g. "/item/ASDGAHASDFASDFDFDGDSVFFDGSDG/view")
+     * @param query The query parameters to append to the request (e.g. "[client: 'APD']")
+     * @param method The request method (Method.GET, Method.POST)
+     * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @return An ApiResponse object containing the server response
+     */
+    private static def requestServer(baseUrl, path, query, method, content, fixWrongContentTypeHeader = false) {
+        def timestampStart = System.currentTimeMillis();
+
         try {
-            path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
-            def timestampStart = System.currentTimeMillis();
-            http.request(method, ContentType.TEXT) {
+            http.request(method, content) {
                 uri.path = path
                 uri.query = query
-                response.success = { resp, reader ->
-                    log.info "postText(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug "response status: ${resp.statusLine}"
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h ->
-                        log.debug " ${h.name} : ${h.value}"
+
+                if(content == ContentType.XML){
+                    headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                }
+                if(fixWrongContentTypeHeader){
+                    http.parser.'application/json' = http.parser.'text/html'
+                }
+
+                response.success = { resp, output ->
+                    if(content == ContentType.TEXT){
+                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output.getText())
+                    }else if(content == ContentType.JSON){
+                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                    }else if(content == ContentType.XML){
+                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                    }else if(content == ContentType.BINARY){
+                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
+                    }else{
+                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
                     }
-                    return reader.getText()
                 }
                 response.'404' = {
-                    log.error "postText(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    return 'Not found'
+                    return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), "Server answered 404 -> " + uri.toString())
                 }
                 response.failure = { resp ->
-                    log.error "postText(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
-                    return null
+                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), "Server answered 500 -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "postText(): A HttpResponseException occured", ex
-            return null
+            log.error "requestText(): A HttpResponseException occured", ex
+            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex)
         } catch (java.net.ConnectException ex) {
-            log.error "postText(): A ConnectException occured", ex
-            return null
+            log.error "requestText(): A ConnectException occured", ex
+            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex)
         } catch (java.lang.Exception ex) {
-            log.error "postText(): An unexpected exception occured", ex
-            return null
+            log.error "requestText(): An Exception occured", ex
+            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex)
         }
     }
 
-    static def getText(String baseUrl, String path, query) {
-        return postText(baseUrl, path, query, Method.GET)
+    /**
+     * Utility method to build the ApiResponse object for successfull requests
+     * @param timestampStart The timestamp when the request was send
+     * @param calledUrl The complete URL that was called
+     * @param method The request method (Method.GET, Method.POST)
+     * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param responseObject The response from the server
+     * @return An ApiResponse object containing the server response
+     */
+    private static def build200Response(timestampStart, calledUrl, method, content, responseObject){
+        def duration = System.currentTimeMillis()-timestampStart
+        def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, null, ApiResponse.HttpStatus.HTTP_200)
+        log.info response.toString()
+        return response
     }
 
-    static def getTextAsJson(String baseUrl, String path, query, method = Method.GET) {
-        try {
-            path = checkContext(baseUrl, path)
-            def http = new HTTPBuilder(baseUrl)
-            setProxy(http, baseUrl)
-
-            def timestampStart = System.currentTimeMillis();
-            http.request(method, JSON) {
-                uri.path = path
-                uri.query = query
-                response.success = { resp, json ->
-                    log.info "getTextAsJson(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug "response status: ${resp.statusLine}"
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return json
-                }
-                response.failure = { resp ->
-                    log.error "getTextAsJson(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
-                    //                    response.
-                    log.debug 'Headers: -----------'
-
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return null
-                }
-                response.'404' = {resp, reader ->
-                    log.error "getTextAsJson(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return 'Not found'
-                }
-            }
-        } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "getTextAsJson(): A HttpResponseException occured", ex
-            return null
-        } catch (java.net.ConnectException ex) {
-            log.error "getTextAsJson(): A ConnectException occured", ex
-            return null
-        } catch (java.lang.Exception ex) {
-            log.error "getTextAsJson(): An unexpected exception occured", ex
-            return null
-        }
+    /**
+     * Utility method to build the ApiResponse object for 404 responses
+     * @param timestampStart The timestamp when the request was send
+     * @param calledUrl The complete URL that was called
+     * @param method The request method (Method.GET, Method.POST)
+     * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param exceptionDescription The text for the ItemNotFoundException that will be attached but not thrown
+     * @return An ApiResponse object containing the response information
+     */
+    private static def build404Response(timestampStart, calledUrl, method, content, exceptionDescription){
+        def duration = System.currentTimeMillis()-timestampStart
+        def exception = new ItemNotFoundException(exceptionDescription)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_404)
+        log.info response.toString()
+        return response
     }
 
-    static def getTextAsXml(String baseUrl, String path, query, method = Method.GET) {
-        try {
-            path = checkContext(baseUrl, path)
-            def http = new HTTPBuilder(baseUrl)
-            setProxy(http, baseUrl)
-
-            def timestampStart = System.currentTimeMillis();
-            http.request(method, XML) {
-                uri.path = path
-                uri.query = query
-                headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-                response.success = { resp, xml ->
-                    log.info "getTextAsXml(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug "response status: ${resp.statusLine}"
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return xml
-                }
-                response.'404' = {resp, reader ->
-                    log.error "getTextAsXml(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return 'Not found'
-                }
-                response.failure = { resp ->
-                    log.error "getTextAsXml(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
-                    log.debug 'Headers: -----------'
-
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return null
-                }
-            }
-        } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "getTextAsXml(): A HttpResponseException occured", ex
-            return null
-        } catch (java.net.ConnectException ex) {
-            log.error "getTextAsXml(): A ConnectException occured", ex
-            return null
-        } catch (java.lang.Exception ex) {
-            log.error "getTextAsXml(): An unexpected exception occured", ex
-            return null
-        }
+    /**
+     * Utility method to build the ApiResponse object for 500 responses
+     * @param timestampStart The timestamp when the request was send
+     * @param calledUrl The complete URL that was called
+     * @param method The request method (Method.GET, Method.POST)
+     * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param exceptionDescription The text for the BackendErrorException that will be attached but not thrown
+     * @return An ApiResponse object containing the response information
+     */
+    private static def build500Response(timestampStart, calledUrl, method, content, exceptionDescription){
+        def duration = System.currentTimeMillis()-timestampStart
+        def exception = new BackendErrorException(exceptionDescription)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500)
+        log.info response.toString()
+        return response
     }
 
-    static def getAnyText(String baseUrl, String path, query, method = Method.GET) {
-        try {
-            path = checkContext(baseUrl, path)
-            def http = new HTTPBuilder(baseUrl)
-            setProxy(http, baseUrl)
-
-            def timestampStart = System.currentTimeMillis();
-            http.request(method, ContentType.ANY) {
-                uri.path = path
-                uri.query = query
-                response.success = { resp, reader ->
-                    log.info "getAnyText(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug "response status: ${resp.statusLine}"
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    log.debug reader
-                    return reader
-                }
-                response.'404' = {resp, reader ->
-                    log.error "getAnyText(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return 'Not found'
-                }
-                response.failure = { resp ->
-                    log.error "getAnyText(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return null
-                }
-            }
-        } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "getAnyText(): A HttpResponseException occured", ex
-            return null
-        } catch (java.net.ConnectException ex) {
-            log.error "getAnyText(): A ConnectException occured", ex
-            return null
-        } catch (java.lang.Exception ex) {
-            log.error "getAnyText(): An unexpected exception occured", ex
-            return null
-        }
+    /**
+     * Utility method to build the ApiResponse object for 500 responses
+     * @param timestampStart The timestamp when the request was send
+     * @param calledUrl The complete URL that was called
+     * @param method The request method (Method.GET, Method.POST)
+     * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param exceptionDescription The actual exception that occured
+     * @return An ApiResponse object containing the response information
+     */
+    private static def build500ResponseWithException(timestampStart, calledUrl, method, content, exception){
+        def duration = System.currentTimeMillis()-timestampStart
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500)
+        log.info response.toString()
+        return response
     }
 
-    static def getBinaryContent(String baseUrl, String path, query, method = Method.GET) {
-        try {
-            path = checkContext(baseUrl, path)
-            def http = new HTTPBuilder(baseUrl)
-            setProxy(http, baseUrl)
-
-            def timestampStart = System.currentTimeMillis();
-            http.request(method, ContentType.BINARY) {
-                uri.path = path
-                uri.query = query
-                response.success = { resp, inputstream ->
-                    log.debug "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug "response status: ${resp.statusLine}"
-                    log.debug 'Headers: -----------'
-
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return [bytes:inputstream.getBytes(),"Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
-                }
-                response.'404' = {resp, reader ->
-                    log.error "404 getBinaryContent(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return 'Not found'
-                }
-                response.failure = { resp ->
-                    log.error "Failure getBinaryContent(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
-                    log.debug 'Headers: -----------'
-                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return null
-                }
-            }
-        } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "getBinaryContent(): A HttpResponseException occured", ex
-            return null
-        } catch (java.net.ConnectException ex) {
-            log.error "getBinaryContent(): A ConnectException occured", ex
-            return null
-        } catch (java.lang.Exception ex) {
-            log.error "getBinaryContent(): An unexpected exception occured", ex
-            return null
-        }
-    }
-
-    static def setProxy(http, String baseUrl) {
+    /**
+     * Sets the proxy information for each request
+     * @param http The HttpBuilder object
+     * @param baseUrl The base request URL
+     * @return void
+     */
+    private static def setProxy(http, String baseUrl) {
         def proxyHost = System.getProperty("http.proxyHost")
         def proxyPort = System.getProperty("http.proxyPort")
         def nonProxyHosts = System.getProperty("http.nonProxyHosts")
@@ -275,16 +246,4 @@ class ApiConsumer {
             http.setProxy(proxyHost, new Integer(proxyPort), 'http')
         }
     }
-
-    static def checkContext(String baseUrl, String path) {
-        def grailsApplication = Holders.getGrailsApplication()
-        if (grailsApplication.config.apd.apis.url == baseUrl) {
-            if (path == null) {
-                path = ""
-            }
-            path = ServletContextHolder.servletContext.contextPath + path
-        }
-        return path
-    }
-
 }

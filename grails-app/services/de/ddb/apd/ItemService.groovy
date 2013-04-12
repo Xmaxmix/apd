@@ -19,12 +19,8 @@ import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 import de.ddb.apd.ApiConsumer;
-
-import static groovyx.net.http.ContentType.*
-import static groovyx.net.http.Method.*
-
-import groovyx.net.http.HTTPBuilder
-
+import de.ddb.apd.exception.BackendErrorException;
+import de.ddb.apd.exception.ItemNotFoundException;
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -43,72 +39,49 @@ class ItemService {
     private static final def MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY = 350
 
     def transactional = false
-    def grailsApplication
+    def configurationService
+
     LinkGenerator grailsLinkGenerator
 
     def findItemById(id) {
-        def http = new HTTPBuilder(grailsApplication.config.apd.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.apd.backend.url.toString())
-
-        /* TODO remove this hack, once the server deliver the right content
-         type*/
-        http.parser.'application/json' = http.parser.'application/xml'
-
         final def componentsPath = "/access/" + id + "/components/"
-        final def viewPath = componentsPath + "view"
+        final def path = componentsPath + "view"
 
-        def institution, item, title, fields, viewerUri, pageLabel
-        http.request( GET) { req ->
-            uri.path = viewPath
-
-            response.success = { resp, xml ->
-                institution= xml.institution
-                item = xml.item
-
-                title = shortenTitle(id, item)
-
-                fields = xml.item.fields.field.findAll()
-                viewerUri = buildViewerUri(item, componentsPath)
-
-                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
-                    'fields': fields, pageLabel: xml.pagelabel]
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp ->
-                log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """
-                return response
-            }
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), path)
+        if(!apiResponse.isOk()){
+            log.error "findItemById(): Server returned no results -> " + id
+            throw apiResponse.getException()
         }
+        def response = apiResponse.getResponse()
+
+
+
+        def institution= response.institution
+        def item = response.item
+        def title = shortenTitle(id, item)
+        def fields = response.item.fields.field.findAll()
+        def viewerUri = buildViewerUri(item, componentsPath)
+        def pageLabel = response.pagelabel
+
+        return [
+            'uri': '',
+            'viewerUri': viewerUri,
+            'institution': institution,
+            'item': item,
+            'title': title,
+            'fields': fields,
+            'pageLabel': pageLabel
+        ]
     }
 
     private getItemTitle(id) {
-        def http = new HTTPBuilder(grailsApplication.config.apd.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.apd.backend.url.toString())
+        final def path = "/access/" + id + "/components/title"
 
-        /* TODO remove this hack, once the server deliver the right content
-         type*/
-        http.parser.'application/json' = http.parser.'text/html'
-
-        final def componentsPath = "/access/" + id + "/components/"
-        final def titlePath = componentsPath + "title"
-
-        http.request( GET) { req ->
-            uri.path = titlePath
-
-            response.success = { resp, html -> return html }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
+        def apiResponse = ApiConsumer.getText(configurationService.getBackendUrl(), path, true)
+        if(!apiResponse.isOk()){
+            log.error "getItemTitle(): Server returned no results -> " + id
         }
+        return apiResponse.getResponse()
     }
 
     private shortenTitle(id, item) {
@@ -159,27 +132,16 @@ class ItemService {
     }
 
     private def fetchBinaryList(id) {
+        final def path = "/access/" + id + "/components/binaries"
 
-        def http = new HTTPBuilder(grailsApplication.config.apd.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.apd.backend.url.toString())
-        http.parser.'application/json' = http.parser.'application/xml'
-        final def binariesPath= "/access/" + id + "/components/binaries"
-
-        http.request( GET) { req ->
-            uri.path = binariesPath
-
-            response.success = { resp, xml ->
-                def binaries = xml
-                return binaries.binary.list()
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), path)
+        if(!apiResponse.isOk()){
+            log.error "fetchBinaryList(): Server returned no results -> " + id
+            throw apiResponse.getException()
         }
+        def response = apiResponse.getResponse()
+
+        return response.binary.list()
     }
 
     private def parse(binaries) {
@@ -267,37 +229,22 @@ class ItemService {
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"
-        return ApiConsumer.getTextAsJson(grailsApplication.config.apd.backend.url.toString(), parentsPath, [:]);
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), parentsPath)
+        if(!apiResponse.isOk()){
+            log.error "getParent(): Server returned no parents -> " + itemId
+            throw apiResponse.getException()
+        }
+        return apiResponse.getResponse()
     }
 
     def getChildren(itemId){
         final def childrenPath = "/hierarchy/" + itemId + "/children/"
-        return ApiConsumer.getTextAsJson(grailsApplication.config.apd.backend.url.toString(), childrenPath, [:]);
-    }
-
-    private def log(list) {
-        list.each { it ->
-            log.debug "---"
-            log.debug "name: ${it.'@name'}"
-            log.debug "mime: ${it.'@mimetype'}"
-            log.debug "path: ${it.'@path'}"
-            log.debug "pos: ${it.'@position'}"
-            log.debug "is primary?: ${it.'@primary'}"
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), childrenPath)
+        if(!apiResponse.isOk()){
+            log.error "getChildren(): Server returned no children -> " + itemId
+            throw apiResponse.getException()
         }
+        return apiResponse.getResponse()
     }
 
-    private def log(resp, xml) {
-        // print response
-        log.debug "response status: ${resp.statusLine}"
-        log.debug 'Headers: -----------'
-
-        resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-
-        log.debug 'Response data: -----'
-        log.debug xml
-        log.debug '\n--------------------'
-
-        // parse
-        assert xml instanceof groovy.util.slurpersupport.GPathResult
-    }
 }

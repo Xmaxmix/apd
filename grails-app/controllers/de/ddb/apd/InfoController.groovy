@@ -17,43 +17,41 @@ package de.ddb.apd
 
 import de.ddb.apd.ApiConsumer;
 import de.ddb.apd.SupportedLocales;
+import de.ddb.apd.exception.BackendErrorException;
 import de.ddb.apd.exception.ItemNotFoundException;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 class InfoController {
 
+    def configurationService
+
     def index() {
 
-        try{
-
-            def page = "neues"
-            if(params.page){
-                page = params.page
-            }
-            def url = getStaticUrl()
-            def lang = getShortLocale()
-            def path = "/static-apd/"+lang+"/"+page+".html"
-            def query = [ client: "APD" ]
-            //Submit a request via GET
-            def response = ApiConsumer.getText(url, path, query)
-            if (response == "Not found"){
-                throw new ItemNotFoundException()
-            }
-
-            def map = retrieveArguments(response)
-            render(view: "info", model: map)
-
-        } catch(ItemNotFoundException infe){
-            log.error "staticcontent(): Request for nonexisting item with page: '" + params?.page + "'. Going 404..."
-            forward controller: "error", action: "notFound"
+        def page = "neues"
+        if(params.page){
+            page = params.page
         }
+
+        def url = configurationService.getStaticUrl()
+        def lang = getShortLocale()
+        def path = "/static-apd/"+lang+"/"+page+".html"
+
+        def apiResponse = ApiConsumer.getText(url, path, false)
+        if(!apiResponse.isOk()){
+            log.error "index(): Server returned no results -> " + page
+            throw apiResponse.getException()
+        }
+
+        def response = apiResponse.getResponse()
+
+        def map = retrieveArguments(response)
+        render(view: "info", model: map)
+        //        } catch(ItemNotFoundException infe){
+        //            log.error "index(): Request for nonexisting item with page: '" + params?.page + "'. Going 404..."
+        //            forward controller: "error", action: "notFound"
+        //        }
     }
 
-    private def getStaticUrl(){
-        def url = grailsApplication.config.apd.static.url
-        assert url instanceof String, "This is not a string"
-        return url;
-    }
 
     private def getShortLocale() {
         def locale = RequestContextUtils.getLocale(request)
@@ -67,7 +65,6 @@ class InfoController {
         def robot = fetchRobots(content)
         def body = fetchBody(content)
         return [title:title, author:author, keywords:keywords, robot:robot, content:body]
-
     }
 
     private def fetchBody(content) {
@@ -98,5 +95,4 @@ class InfoController {
         if (robotMatch)
             return robotMatch[0][3]
     }
-
 }

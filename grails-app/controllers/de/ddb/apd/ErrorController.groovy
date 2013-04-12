@@ -22,6 +22,7 @@ import grails.util.Environment
  */
 class ErrorController {
 
+    def configurationService
 
     def uncaughtException() {
         log.error "uncaughtException(): An uncaught exception occured in the frontend."
@@ -39,17 +40,17 @@ class ErrorController {
         log.error "serverError(): The user will be redirected to the 500 page."
         if(request?.exception){
             try{
-                log.error "Source of the error is: '"+request.exception.getMessage()+"'"
+                log.error "serverError(): Source of the error is: '"+request.exception.getMessage()+"'"
                 def stackElements = request.exception.getStackTrace();
                 for(stackElement in stackElements){
                     log.error "Stack: "+stackElement.getClassName()+"."+stackElement.getMethodName()+" ["+stackElement.getLineNumber()+"]"
                 }
 
             }catch(Throwable ex){
-                log.error "Grails did not provide a valid error object", ex
+                log.error "serverError(): Grails did not provide a valid error object", ex
             }
         }else{
-            log.error "Grails did not provide an error object. No stacktrace available. Most probably an earlier try-catch already consumed it. Check your log."
+            log.error "serverError(): Grails did not provide an error object. No stacktrace available. Most probably an earlier try-catch already consumed it. Check your log."
         }
 
         // Return response code 500
@@ -57,18 +58,18 @@ class ErrorController {
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
-        def contentTypeFromConfig = grailsApplication.config.grails.mime.types["html"][0]
-        def encodingFromConfig = grailsApplication.config.grails.views.gsp.encoding
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
 
         // Return the view dependent on the configured environment (PROD vs DEV)
         if ( Environment.PRODUCTION == Environment.getCurrent() ) {
 
             // Production: show a nice error message
-            log.error "Return view '505_production'"
+            log.error "serverError(): Return view '505_production'"
             return render(view:'500_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
         } else {
             // Not it production? show an ugly, developer-focused error message
-            log.error "Return view '505_development'"
+            log.error "serverError(): Return view '505_development'"
             return render(view:'500_development', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
         }
     }
@@ -86,11 +87,11 @@ class ErrorController {
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
-        def contentTypeFromConfig = grailsApplication.config.grails.mime.types["html"][0]
-        def encodingFromConfig = grailsApplication.config.grails.views.gsp.encoding
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
 
         // Return the 404 view
-        log.error "Return view '404'"
+        log.error "notFound(): Return view '404'"
         return render(view:'404', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
     }
 }
