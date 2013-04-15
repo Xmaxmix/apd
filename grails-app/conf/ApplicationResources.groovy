@@ -30,6 +30,7 @@ modules = {
         resource url:'/css/structureview.css', bundle: 'screen'
         resource url:'/css/listview.css', bundle: 'screen'
         resource url:'/css/errors.css', bundle: 'screen'
+        resource url:'/css/advancedsearch.css', bundle: 'screen'
     }
 
     cssprint {
@@ -40,9 +41,19 @@ modules = {
         resource url:'/js/vendor/jquery-1.9.1.js'
         resource url:'/js/vendor/bootstrap.js'
         resource url:'/js/vendor/jwplayer/jwplayer.js'
+        resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
+        resource url:'/js/vendor/large-cookie.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/global-variables.js'
         resource url:'/js/binaries-viewer.js'
+        resource url:'/js/advanced-search.js'
+    }
+
+    // TODO use module to define the explicit dependencies.
+    advancedsearch { /*
+         resource url:'/js/vendor/jquery-1.9.1.js'
+         resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
+         resource url:'/js/vendor/large-cookie.js'
+         */ resource url:'/js/advanced-search.js'
     }
 }
-

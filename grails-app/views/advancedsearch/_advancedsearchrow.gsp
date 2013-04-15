@@ -53,13 +53,13 @@
     <div class="span3">
       <select class="match" name="match-${group}-${row}">
         <option value="ANY">
-          <g:message code="ddbnext.AdvancedSearch_Any" />
+          <g:message code="apd.AdvancedSearch_Any" />
         </option>
         <option value="ALL">
-          <g:message code="ddbnext.AdvancedSearch_All" />
+          <g:message code="apd.AdvancedSearch_All" />
         </option>
         <option value="EXACT">
-          <g:message code="ddbnext.AdvancedSearch_Exact" />
+          <g:message code="apd.AdvancedSearch_Exact" />
         </option>
       </select>
     </div>
