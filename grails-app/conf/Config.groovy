@@ -132,6 +132,7 @@ apd.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/bin
 apd.static.url="http://dev.escidoc.org"  //temporary workaround for development until we have existing pages on the real backend server
 apd.apis.url="http://localhost:8080"
 apd.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+apd.ddb.url="http://www.deutsche-digitale-bibliothek.de"
 //apd.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
 apd.logging.folder="target/logs"
 //apd.tracking.piwikfile="${userHome}/.grails/tracking.txt"

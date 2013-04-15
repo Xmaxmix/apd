@@ -15,5 +15,10 @@
  */
 package de.ddb.apd.exception
 
+/**
+ * Exception indication that an object requested from the backend was not found.
+ * 
+ * @author hla
+ */
 class ItemNotFoundException extends Exception {
 }

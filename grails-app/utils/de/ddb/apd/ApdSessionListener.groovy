@@ -21,11 +21,19 @@ import javax.servlet.http.HttpSessionListener;
 import org.apache.log4j.Logger;
 
 
+/**
+ * This class just logs a stacktrace if a session was created. This makes finding the cause of the session creation easier.
+ * The class is put into the project by a dynamic adjustment of the web.xml in the /scripts/_Events.groovy file.
+ * 
+ * @author hla
+ */
 class ApdSessionListener implements HttpSessionListener {
 
     private Logger log = Logger.getLogger(this.getClass())
 
-    // called by servlet container upon session creation
+    /* (non-Javadoc)
+     * @see javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)
+     */
     void sessionCreated(HttpSessionEvent event) {
         HttpSession session = event.getSession()
         log.error "A serverside session was created. This should not happen!"
@@ -35,7 +43,9 @@ class ApdSessionListener implements HttpSessionListener {
         }
     }
 
-    // called by servlet container upon session destruction
+    /* (non-Javadoc)
+     * @see javax.servlet.http.HttpSessionListener#sessionDestroyed(javax.servlet.http.HttpSessionEvent)
+     */
     void sessionDestroyed(HttpSessionEvent event) {
         HttpSession session = event.getSession()
         log.info "A serverside session was destroyed."

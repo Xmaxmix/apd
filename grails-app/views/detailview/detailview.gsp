@@ -7,28 +7,26 @@
     
   </head>
   <body>
-    <div class="detailview">
-      <div>
-        <div class="hierarchy">
-          Hierarchy
-          <g:render template="hierarchy" />
+    <div class="container detailview">
+      <div class="row">
+        <div class="span6 hierarchy">
+          <div class="hierarchy-container">
+            <g:set var="hierarchyItem" value="${hierarchyRoot}" />
+            <g:render template="hierarchy" />
+          </div>
         </div>
-        <div class="navigation">
-          Navigation
+        <div class="span4 navigation">
           <g:render template="navigation" />
         </div>
-        <div class="logo">
-          Logo
+        <div class="span2 logo">
           <g:render template="logo" />
         </div>
       </div>
-      <div>
-        <div class="fields">
-          Item Details
+      <div class="row">
+        <div class="span8 fields">
           <g:render template="fields" />
         </div>
-        <div class="binaries">
-          Binary Viewer
+        <div class="span4 binaries">
           <g:render template="binaries" />
         </div>
       </div>    
