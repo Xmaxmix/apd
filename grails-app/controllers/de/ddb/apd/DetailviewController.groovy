@@ -37,7 +37,7 @@ class DetailviewController {
 
             def friendlyTitle = StringManipulation.getFriendlyUrlString(item.title)
 
-            def hierarchyRootItem = buildItemHierarchy(id)
+            def hierarchyRootItem = buildItemHierarchy(id, item.title)
 
             def binaryList = itemService.findBinariesById(id)
             def binariesCounter = itemService.binariesCounter(binaryList)
@@ -60,6 +60,7 @@ class DetailviewController {
                 redirect(controller: 'error')
             } else {
                 def itemUri = request.forwardURI
+                def ddbUri = getDDBUrlOfItem(id)
                 def fields = translate(item.fields)
 
                 //                if(params.print){
@@ -73,6 +74,7 @@ class DetailviewController {
                 render(
                         view: "detailview",
                         model: ['itemUri': itemUri,
+                            'ddbUri': ddbUri,
                             'viewerUri': item.viewerUri,
                             'title': item.title,
                             'friendlyTitle': friendlyTitle,
@@ -82,6 +84,7 @@ class DetailviewController {
                             'fields': fields,
                             'binaryList': binaryList,
                             'pageLabel': item.pageLabel,
+                            'hierarchyRoot': hierarchyRootItem,
                             //'firstHit': searchResultParameters["searchParametersMap"]["firstHit"],
                             //'lastHit': searchResultParameters["searchParametersMap"]["lastHit"],
                             //'hitNumber': params["hitNumber"],
@@ -111,17 +114,29 @@ class DetailviewController {
         }
     }
 
-    def buildItemHierarchy(String itemId) {
+    def buildItemHierarchy(id, label) {
 
         // Build the hierarchy from the item to the root element. The root element is kept.
-        def parentList = itemService.getParent(itemId)
+        def parentList = itemService.getParent(id)
 
-        def rootItem = Item.buildHierarchy(parentList)
+        def startItem = new Item(['id': id, 'label': label])
+
+        def rootItem = Item.buildHierarchy(startItem, parentList)
 
         // Get the mainItem
-        Item mainItem = rootItem.getItemFromHierarchy(itemId)
+        Item mainItem = rootItem.getItemFromHierarchy(id)
         mainItem.setMainItem(true);
 
-        return rootItem
+        Item emptyStartItem = new Item()
+        emptyStartItem.children.add(rootItem)
+
+        return emptyStartItem
+    }
+
+    def getDDBUrlOfItem(itemId){
+        def ddbServer = grailsApplication.config.apd.ddb.url
+        assert ddbServer instanceof String, "This is not a string"
+        ddbServer += "/item/"+itemId
+        return ddbServer
     }
 }
