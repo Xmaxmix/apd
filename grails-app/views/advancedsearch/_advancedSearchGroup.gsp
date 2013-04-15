@@ -17,7 +17,7 @@
         <g:set var="row" value="${0}"/>
         <g:while test="${row < searchFieldCount}">
           <div class="row search-field-row">
-            <g:render template="/search/advancedsearchrow" />
+            <g:render template="advancedsearchrow" />
           </div>
           <%row++%>
         </g:while>

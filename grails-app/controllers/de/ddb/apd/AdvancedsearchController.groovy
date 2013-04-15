@@ -30,13 +30,17 @@ class AdvancedsearchController {
     def messageSource
 
     def index() {
-        int searchGroupCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchGroupCount)
-        int searchFieldCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchFieldCount)
+
+        int searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount
+        int searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount
+
         String url = grailsApplication.config.apd.backend.url
+        // this is okay.
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        // now here
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
-        render(view: "/search/advancedsearch",
+        render(view: "advancedsearch",
         model: [
             searchGroupCount: searchGroupCount,
             searchFieldCount: searchFieldCount,
@@ -95,6 +99,7 @@ class AdvancedsearchController {
         def facetsRequester = new FacetsService(url:url)
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {
+                // this is okay
                 def facetValues = facetsRequester.getFacet(facetSearchfield.name + facetNameSuffix, allFacetFilters)
                 def facetDisplayValuesMap = new TreeMap()
                 for (facetValue in facetValues) {

@@ -81,6 +81,7 @@ class ErrorController {
 
         // Return response code 400
         response.status = 404
+        log error response
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
