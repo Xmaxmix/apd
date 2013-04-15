@@ -120,17 +120,29 @@ class ApiConsumer {
                 }
 
                 response.success = { resp, output ->
-                    if(content == ContentType.TEXT){
-                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output.getText())
-                    }else if(content == ContentType.JSON){
-                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
-                    }else if(content == ContentType.XML){
-                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
-                    }else if(content == ContentType.BINARY){
-                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
-                    }else{
-                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                    switch(content) {
+                        case ContentType.TEXT:
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output.getText())
+                        case ContentType.JSON:
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                        case ContentType.XML:
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                        case ContentType.BINARY:
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
+                        default:
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
                     }
+                    //                    if(content == ContentType.TEXT){
+                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output.getText())
+                    //                    }else if(content == ContentType.JSON){
+                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                    //                    }else if(content == ContentType.XML){
+                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                    //                    }else if(content == ContentType.BINARY){
+                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
+                    //                    }else{
+                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                    //                    }
                 }
                 response.'404' = {
                     return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), "Server answered 404 -> " + uri.toString())
