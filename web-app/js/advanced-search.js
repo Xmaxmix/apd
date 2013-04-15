@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 var page = {};
-(function ($) {
+(function($) {
     'use strict';
-    page.init = function (root) {
+    page.init = function(root) {
         var searchStateCookie = new LargeCookie('advancedsearch');
 
         var selectors = {
-            groupWidget: ".search-group",
-            group: ".search-field-group",
-            removeGroupButton: "button.remove-group-button",
-            addGroupButtonContainer: ".button-group",
-            addGroupButton: "button.add-group-button",
-            row: ".search-field-row",
+            groupWidget: '.search-group',
+            group: '.search-field-group',
+            removeGroupButton: 'button.remove-group-button',
+            addGroupButtonContainer: '.button-group',
+            addGroupButton: 'button.add-group-button',
+            row: '.search-field-row',
 
-            removeButton: "button.remove-button",
-            addButton: "button.add-button",
+            removeButton: 'button.remove-button',
+            addButton: 'button.add-button',
 
             resetButton: "button[type='reset']",
-            facet: "select.facet-simple",
-            facetDisabled: "select.facet-js",
-            operator: "select.operator",
-            globalOperator: ".global-operator",
-            value: "input.value",
-            matchValue: "select.match",
-            facetValues: "select.facet-values",
-            facetValueIdAttribute: "data-inputid",
-            contextualHelp: "span.contextualHelp",
-            contextualHelpTooltip: "div.tooltip"
+            facet: 'select.facet-simple',
+            facetDisabled: 'select.facet-js',
+            operator: 'select.operator',
+            globalOperator: '.global-operator',
+            value: 'input.value',
+            matchValue: 'select.match',
+            facetValues: 'select.facet-values',
+            facetValueIdAttribute: 'data-inputid',
+            contextualHelp: 'span.contextualHelp',
+            contextualHelpTooltip: 'div.tooltip'
         };
 
         //switches input text-field <-> select-box dependent on selected facet
@@ -67,16 +67,16 @@ var page = {};
             }
         }
 
-        // Each facet dropdown has an associated text field or a select list.  
+        // Each facet dropdown has an associated text field or a select list.
         // Each option element in the facet select list has a custom data-* attribute which points to the associated input.
         // This improves performance to avoid searching through all fields and selecting it directly
         function getTargetFacetValueElement($row) {
             var facetName = $row.find(selectors.facet).val();
 
-            var $selectedOption = $("option[" + selectors.facetValueIdAttribute + "][value='" + facetName + "']", $row);
+            var $selectedOption = $('option[' + selectors.facetValueIdAttribute + "][value='" + facetName + "']", $row);
 
             // construct jQuery #id selector using option data-* attribute
-            var $targetEl = $row.find("#" + $selectedOption.attr(selectors.facetValueIdAttribute));
+            var $targetEl = $row.find('#' + $selectedOption.attr(selectors.facetValueIdAttribute));
 
             return $targetEl;
         }
@@ -89,7 +89,7 @@ var page = {};
         // helper to determine if a group has any values entered (Back button support)
         function haveFacetValuesBeenEnteredForGroup($group) {
             var ret = false;
-            $(selectors.row, $group).each(function () {
+            $(selectors.row, $group).each(function() {
                 if (hasFacetValueBeenEnteredForRow($(this))) {
                     ret = true;
                     return false; // break;
@@ -104,7 +104,7 @@ var page = {};
             // when removing a group, only the last visible group needs to be reset, and the values copied up
 
             // shuffle group values up into previous group
-            $groupWidget.nextAll(":visible").andSelf().filter(selectors.groupWidget).each(function () {
+            $groupWidget.nextAll(':visible').andSelf().filter(selectors.groupWidget).each(function() {
                 var $that = $(this),
                     rowInputSelectors = [selectors.facet, selectors.value, selectors.matchValue, selectors.facetValues],
                     $prevRows = $(selectors.row, $prev),
@@ -117,25 +117,25 @@ var page = {};
                 resetFields($currentOperator);
 
                 // for each row, copy the values into the previous groups row
-                $prevRows.each(function (rowIndex, item) {
+                $prevRows.each(function(rowIndex, item) {
                     // find the previous group and get the related row by index
                     var $currentRow = $($currentRows.get(rowIndex));
                     var $prevRow = $(this);
 
                     // for each input, copy the value from the previous row
-                    $(rowInputSelectors).each(function (inputIndex, selector) {
+                    $(rowInputSelectors).each(function(inputIndex, selector) {
                         var $prevElements = $(selector, $prevRow);
                         var $currentElements = $(selector, $currentRow);
 
                         // use the index to copy current values into the corresponding previous element
-                        $prevElements.each(function (index, item) {
+                        $prevElements.each(function(index, item) {
                             var $current = $($currentElements[index]);
                             $(this).val($current.val());
                         });
                     });
 
                     // make sure the new row is visible if it's copy was also.
-                    if ($currentRow.is(":visible")) {
+                    if ($currentRow.is(':visible')) {
                         $prevRow.show();
                     } else {
                         $prevRow.hide();
@@ -151,14 +151,14 @@ var page = {};
                 $prev = $that;
             });
 
-            return $prev.slideUp(100, function () {
+            return $prev.slideUp(100, function() {
                 resetGroup($prev);
                 updateGroupButtons();
             });
         }
 
         function showNextGroup() {
-            $(selectors.groupWidget, root).filter(":hidden:first").slideDown(100, function () {
+            $(selectors.groupWidget, root).filter(':hidden:first').slideDown(100, function() {
                 updateGroupButtons();
                 updateRowButtons($(selectors.group, this));
             });
@@ -166,9 +166,9 @@ var page = {};
 
         function showNextRow(group) {
             //show the next hidden row
-            var $nextRow = $(selectors.row, group).filter(":hidden").first();
+            var $nextRow = $(selectors.row, group).filter(':hidden').first();
 
-            return $nextRow.slideDown(100, function () {
+            return $nextRow.slideDown(100, function() {
                 updateRowButtons(group);
 
                 $(selectors.facet, $(this)).focus();
@@ -180,19 +180,19 @@ var page = {};
             var $prev = $row;
 
             // shuffle row values up
-            $row.nextAll(":visible").andSelf().each(function () {
+            $row.nextAll(':visible').andSelf().each(function() {
                 var $that = $(this),
                     valueSelectors = [selectors.facet, selectors.value, selectors.matchValue, selectors.facetValues];
 
 
                 //shift facet related fields up
-                $(valueSelectors).each(function (index, selector) {
+                $(valueSelectors).each(function(index, selector) {
 
                     var $prevElements = $(selector, $prev);
                     var $currentElements = $(selector, $that);
 
                     // use the index to copy current values into the corresponding previous row element
-                    $prevElements.each(function (idx, item) {
+                    $prevElements.each(function(idx, item) {
                         var $current = $($currentElements[idx]);
                         $(this).val($current.val());
                         resetFields($current);
@@ -206,7 +206,7 @@ var page = {};
                 $prev = $that;
             });
 
-            return $prev.slideUp(100, function () {
+            return $prev.slideUp(100, function() {
                 updateRowButtons(group);
             });
         }
@@ -215,30 +215,30 @@ var page = {};
         function updateGroupButtons() {
             var groups = $(selectors.groupWidget, root);
 
-            if (groups.filter(":hidden").length == 0) {
+            if (groups.filter(':hidden').length == 0) {
                 $(selectors.addGroupButton, root).hide();
                 $(selectors.removeGroupButton, root).show();
                 $(selectors.globalOperator, root).show();
             }
-            else if (groups.filter(":visible").length == 1) {
+            else if (groups.filter(':visible').length == 1) {
                 $(selectors.addGroupButton, root).show();
                 $(selectors.removeGroupButton, root).hide();
                 $(selectors.globalOperator, root).hide();
             }
             else {
-                $(selectors.removeGroupButton, groups.filter(":visible")).show();
+                $(selectors.removeGroupButton, groups.filter(':visible')).show();
                 $(selectors.addGroupButton, root).show();
                 $(selectors.globalOperator, root).show();
             }
 
             //set the focus on the first element of the new search group
-            $("select", groups.filter(':visible:last')).first().focus();
+            $('select', groups.filter(':visible:last')).first().focus();
 
         }
 
         function updateRowButtons(group) {
             var $rows = $(selectors.row, group);
-            var $visibleRows = $rows.filter(":visible");
+            var $visibleRows = $rows.filter(':visible');
 
             //hide all the addButtons
             $(selectors.addButton, $visibleRows).hide();
@@ -270,11 +270,11 @@ var page = {};
 
             var valueSelectors = [selectors.operator, selectors.facet, selectors.value, selectors.matchValue, selectors.facetValues];
             // clear values in group, reset select boxes
-            $(valueSelectors, group).each(function (index, selector) {
+            $(valueSelectors, group).each(function(index, selector) {
                 resetFields($(selector, group));
             });
 
-            rows.each(function (index, item) {
+            rows.each(function(index, item) {
                 resetRow($(this));
             });
         }
@@ -283,7 +283,7 @@ var page = {};
             // reset facet values
             var valueSelectors = [selectors.facet, selectors.value, selectors.matchValue, selectors.facetValues];
 
-            $(valueSelectors).each(function (index, selector) {
+            $(valueSelectors).each(function(index, selector) {
                 resetFields($(selector, $row));
             });
 
@@ -294,36 +294,36 @@ var page = {};
         // Helper: Clearing a field in IE9 using using jQuery $field.val(undefined) will blank out the field rather than selecting the first default item.
         // As a workaround, test if a field is a infact a select list and set the selected index to 0 instead.  For every thing else, use .val(undefined)
         function resetFields($fields) {
-            $fields.each(function (index, item) {
-                if ($(item).is("select")) {
+            $fields.each(function(index, item) {
+                if ($(item).is('select')) {
                     if (item.selectedIndex != 0) {
                         item.selectedIndex = 0;
                     }
                 } else if (item.value) {
-                    item.value = "";
+                    item.value = '';
                 }
             });
         }
 
-//FUNCTIONS TO INITIALIZE        
-        
+//FUNCTIONS TO INITIALIZE
+
         function upgradeNonJsFacetSelectLists() {
             var $textOnlyFacets = $(selectors.facet, root);
             var $allFacets = $(selectors.facetDisabled, root);
 
             // remove the non-js and prepare the js facet select list
-            $allFacets.each(function (index, item) {
+            $allFacets.each(function(index, item) {
                 var textOnlyFacet = $textOnlyFacets[index];
 
                 $(this)
-                    .attr("class", textOnlyFacet.className)
-                    .removeAttr("disabled")
+                    .attr('class', textOnlyFacet.className)
+                    .removeAttr('disabled')
                     .show();
 
                 // we don't need the text only facets anymore
                 $(textOnlyFacet)
-                    .attr("class", "")
-                    .attr("disabled", "disabled").hide();
+                    .attr('class', '')
+                    .attr('disabled', 'disabled').hide();
             });
         }
 
@@ -331,10 +331,10 @@ var page = {};
         function initializeGroups() {
           //bind events to change from input field to controlled select-box for search string
             bindFacetChangeEvents();
-            
+
             //bind events to add/remove group
             bindGroupButtonEvents();
-            
+
             //formats groups and rows in groups
             setGroupInitialState();
 
@@ -345,7 +345,7 @@ var page = {};
         // bind change event for facets to trigger input reflow
       // change from input field to controlled select-box for search string
         function bindFacetChangeEvents() {
-            $(selectors.facet, root).change(function () {
+            $(selectors.facet, root).change(function() {
                 var $row = $(this).closest(selectors.row);
                 showFacetValueInput($row);
             });
@@ -353,13 +353,13 @@ var page = {};
 
         function bindGroupButtonEvents() {
           //bind events for add/removal of group
-            $(selectors.removeGroupButton, root).click(function () {
+            $(selectors.removeGroupButton, root).click(function() {
                 var $groupWidget = $(this).closest(selectors.groupWidget);
                 removeGroup($groupWidget);
                 return false;
             });
 
-            $(selectors.addGroupButton, root).click(function () {
+            $(selectors.addGroupButton, root).click(function() {
                 showNextGroup();
                 return false;
             });
@@ -367,7 +367,7 @@ var page = {};
 
         //formats groups and rows in groups
         function setGroupInitialState() {
-            $(selectors.groupWidget, root).each(function (groupIndex) {
+            $(selectors.groupWidget, root).each(function(groupIndex) {
                 var $group = $(this);
 
                 if (groupIndex === 0 || haveFacetValuesBeenEnteredForGroup($(this))) {
@@ -392,7 +392,7 @@ var page = {};
             var $last;
 
             //find last row that has some value. usually this is populated by the browser.
-            $(selectors.row, group).each(function (index) {
+            $(selectors.row, group).each(function(index) {
                 var $row = $(this);
                 if (index <= 1 || hasFacetValueBeenEnteredForRow($row)) {
                     $last = $(this);
@@ -410,12 +410,12 @@ var page = {};
 
         function bindRowButtonEvents(group) {
           //bind events for add/removal of row
-            $(selectors.addButton, group).click(function () {
+            $(selectors.addButton, group).click(function() {
                 showNextRow(group);
                 return false;
             });
 
-            $(selectors.removeButton, group).click(function () {
+            $(selectors.removeButton, group).click(function() {
                 var $row = $(this).closest(selectors.row);
                 removeRow($row, group);
                 return false;
@@ -425,10 +425,10 @@ var page = {};
         //handle click of reset button
         function bindFormButtonEvents() {
 
-            $(selectors.resetButton, root).click(function () {
+            $(selectors.resetButton, root).click(function() {
                 searchStateCookie.del();
 
-                $(selectors.group, root).each(function (index, item) {
+                $(selectors.group, root).each(function(index, item) {
                     resetFields($(selectors.globalOperator, root));
                     resetGroup(this);
                 });
@@ -446,20 +446,20 @@ var page = {};
         function bindContextualHelp() {
             var fader;
 
-            $(selectors.contextualHelp, root).removeAttr("title").unbind('mouseover').bind('mouseover', function () {
+            $(selectors.contextualHelp, root).removeAttr('title').unbind('mouseover').bind('mouseover', function() {
                 clearTimeout(fader);
 
                 var tooltip = $(selectors.contextualHelpTooltip, root);
                 tooltip.fadeIn();
-                tooltip.bind("mouseenter", function () {
+                tooltip.bind('mouseenter', function() {
                     clearTimeout(fader);
-                }).bind("mouseleave", function () {
-                    fader = setTimeout(function () {
+                }).bind('mouseleave', function() {
+                    fader = setTimeout(function() {
                         tooltip.fadeOut();
                     }, 500);
                 });
-            }).bind('mouseout', function () {
-                fader = setTimeout(function () {
+            }).bind('mouseout', function() {
+                fader = setTimeout(function() {
                     $(selectors.contextualHelpTooltip, root).fadeOut();
                 }, 3000);
             });
@@ -476,12 +476,12 @@ var page = {};
                 }
             }
 
-            $("form#advanced-search-form", root).bind('submit', function () {
+            $('form#advanced-search-form', root).bind('submit', function() {
                 // store key value params in cookie
                 var selectedValues = [];
                 // use regex replace to combine selected values
-                $(this).serialize().replace(/([^=&]+)=([^=&]+)/ig, function ($0, $1, $2) {
-                    selectedValues.push($1 + "=" + escape(decodeURIComponent(($2).replace(/\+/g, '%20'))));
+                $(this).serialize().replace(/([^=&]+)=([^=&]+)/ig, function($0, $1, $2) {
+                    selectedValues.push($1 + '=' + escape(decodeURIComponent(($2).replace(/\+/g, '%20'))));
                     return null;
                 });
 
@@ -491,10 +491,10 @@ var page = {};
 
         //switch facet select box to the one with facets-selection
         upgradeNonJsFacetSelectLists();
-        
+
         //initialize cookie for stored last search query
         initializeStateStorage();
-        
+
         //format adn hide/display correct groups + rows + buttons
         initializeGroups();
 
@@ -504,12 +504,10 @@ var page = {};
         //contextual help
         bindContextualHelp();
     };
-} 
+}
 (jQuery));
 
-if($("#advanced-search")){
-    console.log( 'run advanced search script.');
-    var as = $('.advanced-search');
-    console.log( 'as: ' + as);
+if ($('#advanced-search')) {
+    console.log('run advanced search script.');
     page.init($('#advanced-search').get(0));
 }
