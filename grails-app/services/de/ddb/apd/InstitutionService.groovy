@@ -28,12 +28,12 @@ class InstitutionService {
 
     def transactional = false
 
-    def grailsApplication
+    def configurationService
 
     def grailsLinkGenerator
 
     def findAll() {
-        def cortexHostPort = grailsApplication.config.apd.backend.url
+        def cortexHostPort = configurationService.getBackendUrl()
 
         def http = new HTTPBuilder(cortexHostPort)
         ApiConsumer.setProxy(http, cortexHostPort)
@@ -101,13 +101,13 @@ class InstitutionService {
 
     private putToIndex(institutionByFirstLetter, institutionWithUri, firstLetter) {
         switch(firstLetter) {
-            case 'Ä':
+            case 'ï¿½':
                 institutionByFirstLetter['A'].add(institutionWithUri)
                 break
-            case 'Ö':
+            case 'ï¿½':
                 institutionByFirstLetter['O'].add(institutionWithUri)
                 break
-            case 'Ü':
+            case 'ï¿½':
                 institutionByFirstLetter['U'].add(institutionWithUri)
                 break
             default:
@@ -130,7 +130,7 @@ class InstitutionService {
 
     private def buildIndex() {
         // create a map with empty arrays as initial values.
-        def institutionByFirstLetter = [:].withDefault{ [] }
+        def institutionByFirstLetter = [:].withDefault{ []}
 
         // use A..Z as keys
         LETTERS.each {

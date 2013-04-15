@@ -21,6 +21,7 @@ import de.ddb.apd.exception.ItemNotFoundException;
 
 class ApisController {
 
+    def configurationService
 
     def index() {
     }
@@ -34,18 +35,18 @@ class ApisController {
             log.warn "binary(): A binary content was requested, but no filename was given in the url"
             throw new ItemNotFoundException();
         }
-        def query = [ client: "APD" ]
-        def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(), params.filename, query );
-        byte[] bytes = urlResponse.get("bytes");
-        response.setContentType(urlResponse.get("Content-Type"))
-        response.setContentLength(urlResponse.get("Content-Length").toInteger())
+
+        def apiResponse = ApiConsumer.getBinary(configurationService.getBinaryBackendUrl(), params.filename)
+        if(!apiResponse.isOk()){
+            log.error "binary(): binary content was not found"
+            throw apiResponse.getException()
+        }
+        def responseObject = apiResponse.getResponse()
+
+        byte[] bytes = responseObject.get("bytes");
+        response.setContentType(responseObject.get("Content-Type"))
+        response.setContentLength(responseObject.get("Content-Length").toInteger())
         response.setHeader("Content-Disposition", "inline; filename=" + params.filename.tokenize('/')[-1])
         response.outputStream << bytes
-    }
-
-    private def getBinaryServerUrl(){
-        def url = grailsApplication.config.apd.binary.backend.url
-        assert url instanceof String, "This is not a string"
-        return url;
     }
 }

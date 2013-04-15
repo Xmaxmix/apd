@@ -17,7 +17,8 @@
 class UrlMappings {
 
     static mappings = {
-        "/$controller/$action?/$id?"{ constraints { // apply constraints here
+        "/$controller/$action?/$id?"{ constraints {
+                // apply constraints here
             } }
 
         "/" {
@@ -55,9 +56,12 @@ class UrlMappings {
             action="binary"
         }
 
-        "500"(controller: "error", action: "serverError")
-        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
-
         "404"(controller: "error", action: "notFound")
+
+        "500"(controller: "error", action: "notFound", exception: de.ddb.apd.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.apd.exception.ConfigurationException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.apd.exception.BackendErrorException)
+        //        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
+        "500"(controller: "error", action: "serverError")
     }
 }

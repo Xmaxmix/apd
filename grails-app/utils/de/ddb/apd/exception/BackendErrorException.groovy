@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package de.ddb.apd
+package de.ddb.apd.exception
 
-class BackendVersionTagLib {
+class BackendErrorException extends Exception {
 
-    def configurationService
+    BackendErrorException() {
+        super()
+    }
 
-    def backendVersion = { attrs, body ->
-        out << ApiConsumer.getText(configurationService.getBackendUrl(), "/version", null)
+    BackendErrorException(String description) {
+        super(description)
     }
 }
