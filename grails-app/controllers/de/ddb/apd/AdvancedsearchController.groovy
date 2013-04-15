@@ -23,6 +23,7 @@ class AdvancedsearchController {
     private static final String languageTagPrefix = "apd.facet_"
     private static final String facetNameSuffix = "_fct"
     private static final String labelSortType = "ALPHA_LABEL"
+    private static final String MESSAGE_PROPERTY_PREFIX = "apd."
 
     static defaultAction = "fillValues"
 
@@ -31,7 +32,7 @@ class AdvancedsearchController {
     def index() {
         int searchGroupCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchGroupCount)
         int searchFieldCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchFieldCount)
-
+        String url = grailsApplication.config.apd.backend.url
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
@@ -79,7 +80,18 @@ class AdvancedsearchController {
         def url = grailsApplication.config.apd.backend.url
 
         // TODO: ask @mih for the value
-        def allFacetFilters = grailsApplication.config.apd.backend.facets.filter
+        // [{facetName=language_fct, filter=term:unknown}, {facetName=language_fct, filter=term:termunknown}]
+        // def allFacetFilters = grailsApplication.config.apd.backend.facets.filter
+        def allFacetFilters =  [
+            [
+                'facetName': 'language_fct',
+                'filter': 'term:unknown'
+            ],
+            [
+                'facetName': 'language_fct',
+                'filter': 'term:termunknown'
+            ]
+        ]
         def facetsRequester = new FacetsService(url:url)
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {
@@ -87,7 +99,9 @@ class AdvancedsearchController {
                 def facetDisplayValuesMap = new TreeMap()
                 for (facetValue in facetValues) {
                     //translate because of sorting
-                    facetDisplayValuesMap[facetValue] = getMessage("ddbnext." + facetSearchfield.name + facetNameSuffix + "_" + facetValue)
+                    facetDisplayValuesMap[facetValue] =
+                            getMessage(MESSAGE_PROPERTY_PREFIX + facetSearchfield.name +
+                            facetNameSuffix + "_" + facetValue)
                 }
                 if (facetSearchfield.sortType != null && facetSearchfield.sortType.equals(labelSortType)) {
                     facetDisplayValuesMap = facetDisplayValuesMap.sort {it.value}

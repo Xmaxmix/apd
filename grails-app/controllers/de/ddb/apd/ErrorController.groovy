@@ -25,7 +25,7 @@ class ErrorController {
 
     def uncaughtException() {
         log.error "uncaughtException(): An uncaught exception occured in the frontend."
-        serverError();
+        serverError()
     }
 
     /**
@@ -33,14 +33,12 @@ class ErrorController {
      * @return Either the 500_development view or the 500_production view, dependent on the environment
      */
     def serverError() {
-
-
         //Lot of logging to make bugfixing easier
         log.error "serverError(): The user will be redirected to the 500 page."
         if(request?.exception){
             try{
                 log.error "Source of the error is: '"+request.exception.getMessage()+"'"
-                def stackElements = request.exception.getStackTrace();
+                def stackElements = request.exception.getStackTrace()
                 for(stackElement in stackElements){
                     log.error "Stack: "+stackElement.getClassName()+"."+stackElement.getMethodName()+" ["+stackElement.getLineNumber()+"]"
                 }
