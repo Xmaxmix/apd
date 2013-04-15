@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.ddb.apd
 
-class IndexController {
-
-    def index() {
-        render(view: "index", model: [isStartValue:true])
+class BackendVersionTagLib {
+    def backendVersion = {
+        attrs, body ->
+        out << ApiConsumer.getText(grailsApplication.config.apd.backend.url, "/version", null)
     }
 }
