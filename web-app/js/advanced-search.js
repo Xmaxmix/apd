@@ -509,5 +509,7 @@ var page = {};
 
 if($("#advanced-search")){
     console.log( 'run advanced search script.');
-    page.init($('.advanced-search').get(0));
+    var as = $('.advanced-search');
+    console.log( 'as: ' + as);
+    page.init($('#advanced-search').get(0));
 }

@@ -129,3 +129,12 @@
   color: #3e3a37;
   font-size: 0.938em;
 }
+
+#advanced-search .contextual-help {
+  margin-left: 4px;
+  margin-top: 5px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/tooltips.png") no-repeat 0px 0px;
+}

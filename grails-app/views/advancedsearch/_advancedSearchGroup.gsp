@@ -1,25 +1,21 @@
 <div class="row search-group">
   <div class="span12">
     <div class="row">
-      <div class="span11 operator group-operator">
-        <label for="operator-group-${group}"><g:message code="apd.AdvancedSearch_Operator_MatchLabel"/></label>
-        <select id="operator-group-${group}" name="operator-group-${group}">
-          <option value="OR"><g:message code="apd.AdvancedSearchGroupOperator_AnyTerms"/></option>
-          <option value="AND"><g:message code="apd.AdvancedSearchGroupOperator_AllTerms"/></option>
-        </select>
-      </div>
-      <div class="span1 button-group">
-        <button type="button" class="remove-group-button fr" style="display:none" title="<g:message code="apd.AdvancedSearch_RemoveGroupButton_Title"/>"></button>
-      </div>
+      <g:render template="groupOperator" />
+      <g:render template="removeGroup" />
     </div>
     <div class="row bt">
       <div class="span12 search-field-group">
-        <g:set var="row" value="${0}"/>
+        <!-- TODO refactor the use of while, set and row++. Replace them with GSP tag -->
+        <!-- 
+        We show a number of rows by default. We read it from the application config. It defaults to 5
+         -->
+        <g:set var="row" value="${ 0 }"/>
         <g:while test="${row < searchFieldCount}">
           <div class="row search-field-row">
-            <g:render template="advancedsearchrow" />
+            <g:render template="advancedSearchRow" />
           </div>
-          <%row++%>
+          <% row++ %>
         </g:while>
       </div>
     </div>
