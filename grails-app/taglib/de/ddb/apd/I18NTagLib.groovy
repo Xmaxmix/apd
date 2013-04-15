@@ -62,24 +62,12 @@ class I18NTagLib {
             out << "<a class=\""+localeclass+"\">"+currentLanguage(attrs)+"</a>"
         }else{
             def linkUrl = createLink("url": attrs.params)
-            //            def cleanedParams = attrs.params.clone()
-            //            if(linkUrl.contains("info")){
-            //                linkUrl = linkUrl.replaceAll("info", attrs.params?.dir)
-            //                cleanedParams.remove("dir")
-            //            }
-            //            cleanedParams.remove("controller")
-            //            cleanedParams.remove("action")
-            //            cleanedParams.remove("id")
-            //            cleanedParams.put("lang", checkLocaleString)
-            //            def paramString = "?"
-            //            cleanedParams.each {
-            //                paramString += it.key + "=" + it.value + "&"
-            //            }
-            //            if(paramString.length() > 1){
-            //                paramString = paramString.substring(0, paramString.length()-1)
-            //            }
-            //            out << "<a href=\""+linkUrl+paramString+"\" >"+body()+"</a>"
-            out << "<a class=\""+localeclass+"\" href=\""+linkUrl+"\">"+checkLocaleString+"</a>"
+            if(linkUrl.contains("?")){
+                linkUrl += "&lang="+checkLocaleString
+            }else{
+                linkUrl += "?lang="+checkLocaleString
+            }
+            out << "<a class=\""+localeclass+"\" href=\""+linkUrl+"\">"+body()+"</a>"
         }
     }
 }
