@@ -23,7 +23,7 @@ modules = {
     images {  resource url:'/images/favicon.ico' }
 
     cssscreen {
-        resource url:'/css/vendor/bootstrap.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap/css/bootstrap.css', bundle: 'screen'
         resource url:'/css/apd.css', bundle: 'screen'
         resource url:'/css/binaries-viewer.css', bundle: 'screen'
         resource url:'/css/apd.css', bundle: 'screen'
