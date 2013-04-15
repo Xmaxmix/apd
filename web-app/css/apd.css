@@ -14,40 +14,6 @@
  * limitations under the License.
  */
 
-.detailview {
+.off {
+  display: none;
 }
-
-.detailview .hierarchy {
-  padding-bottom: 30px;
-}
-
-.detailview .hierarchy .hierarchy-container {
-  border: 1px solid black;  
-}
-
-.detailview .hierarchy ul {
-  margin: 0 0 10px 15px;
-  padding: 0;
-  list-style-type: none;
-}
-
-.detailview .hierarchy li {
-  line-height: 20px;
-}
-
-.detailview .navigation {
-  text-align: center;
-  padding-bottom: 30px;
-}
-
-.detailview .logo {
-  padding-bottom: 30px;
-  text-align: right;
-}
-
-.detailview .fields {
-}
-
-.detailview .binaries {
-}
-

@@ -15,6 +15,12 @@
  */
 package de.ddb.apd.hierarchy
 
+/**
+ * Utility class representing an item from the backend. 
+ * It offers utility methods to create a hierarchy tree structure of Item object.
+ * 
+ * @author hla
+ */
 class Item {
 
     String id
@@ -46,23 +52,19 @@ class Item {
     }
 
     public boolean hasChildren(){
-        if(children.size()>0){
-            return true;
-        }else{
-            return false
-        }
+        return children.size() > 0
     }
 
     public List<Item> getChildren(){
         return children;
     }
 
+    public Item getFirstChild(){
+        return children[0]
+    }
 
     public void addItemsToHierarchy(List itemListJson) {
-        List<Item> allItemList = []
-        itemListJson.each {
-            allItemList.add(new Item(it))
-        }
+        List<Item> allItemList = itemListJson.collect { new Item(it) }
 
         for(int i=0; i<allItemList.size(); i++){
             Item currentItem = allItemList.get(i)
@@ -113,10 +115,14 @@ class Item {
         return false;
     }
 
-    static Item buildHierarchy(List allItemsJson){
+    static Item buildHierarchy(Item mainItem, List allItemsJson){
         List<Item> allItemList = []
         allItemsJson.each {
             allItemList.add(new Item(it))
+        }
+
+        if(allItemList.size()==0){
+            return mainItem
         }
 
         Item root = getRootItem(allItemList)
