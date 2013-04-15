@@ -4,15 +4,14 @@
     <div class="row">
       <div class="span12">
         <g:render template="globalOperator" />
-        <!-- TODO refactor how to create the group -->
 
-        <!-- create a group of search fields. Initially we create #searchGroupCount. -->
-        <g:set var="group" value="${0}"/>
-        <g:while test="${ group < searchGroupCount }">
+        <!-- TODO this is the first search group with preselected facets -->
+        <g:render template="firstSearchGroup" />
+        
+        <g:each var="group" in="${ (1..<searchGroupCount) }">
           <g:render template="advancedSearchGroup" />
-          <% group++ %>
-        </g:while>
-
+        </g:each>
+        
       <g:render template="groupButton" />
       <g:render template="buttons" />
       </div>
@@ -20,3 +19,4 @@
     </g:form>
   </div>
 </div>
+

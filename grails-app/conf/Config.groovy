@@ -183,7 +183,6 @@ log4j = {
             //Don't filter messages in production
         }
     }
-
 }
 
 jawr {

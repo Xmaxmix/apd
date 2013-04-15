@@ -37,6 +37,7 @@ class AdvancedsearchController {
         String url = grailsApplication.config.apd.backend.url
         // this is okay.
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        log.info 'values' + facetSearchfields
         // now here
         Map facetValuesMap = getFacetValues(facetSearchfields)
 

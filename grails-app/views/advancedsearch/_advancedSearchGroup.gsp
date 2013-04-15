@@ -6,17 +6,14 @@
     </div>
     <div class="row bt">
       <div class="span12 search-field-group">
-        <!-- TODO refactor the use of while, set and row++. Replace them with GSP tag -->
         <!-- 
         We show a number of rows by default. We read it from the application config. It defaults to 5
          -->
-        <g:set var="row" value="${ 0 }"/>
-        <g:while test="${row < searchFieldCount}">
+        <g:each var="group" in="${ (0..<searchFieldCount) }">
           <div class="row search-field-row">
             <g:render template="advancedSearchRow" />
           </div>
-          <% row++ %>
-        </g:while>
+        </g:each>
       </div>
     </div>
   </div>
