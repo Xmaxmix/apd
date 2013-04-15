@@ -3,10 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    
     <title><g:layoutTitle default="ArchivportalD" /></title>
-
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <%-- 
     <meta name="description" content="Deutsche Digitale Bibliothek" />
     <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
