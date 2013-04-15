@@ -32,13 +32,13 @@ Open the .classpath file (Ctlr+Shift+R -> enter .classpath) and add the followin
 hange the .classpath adding the paths for the entries we want.
  
 For everybody, the .classpath file should have the following:
-    <classpathentry kind="src" path="grails-app/conf"/>
+```<classpathentry kind="src" path="grails-app/conf"/>
     <classpathentry kind="src" path="grails-app/controllers"/>
     <classpathentry kind="src" path="grails-app/domain"/>
     <classpathentry kind="src" path="grails-app/services"/>
     <classpathentry kind="src" path="grails-app/taglib"/>
     <classpathentry kind="src" path="grails-app/utils"/>
-    <classpathentry kind="src" path="test/unit"/> 
+    <classpathentry kind="src" path="test/unit"/> ```
 
 #### Github 
 You are probably on Github, or you received this file from there
