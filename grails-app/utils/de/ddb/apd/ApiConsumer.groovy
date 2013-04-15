@@ -54,7 +54,7 @@ class ApiConsumer {
      *      to true, the json-parser is explicitly overwritten with the text-parser.  
      * @return An ApiResponse object containing the server response
      */
-    static def getText(String baseUrl, String path, fixWrongContentTypeHeader) {
+    static def getText(String baseUrl, String path, fixWrongContentTypeHeader = false) {
         if(fixWrongContentTypeHeader){
             return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.JSON, true)
         }else{

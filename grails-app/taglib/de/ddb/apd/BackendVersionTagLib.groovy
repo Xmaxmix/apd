@@ -21,6 +21,7 @@ class BackendVersionTagLib {
     def configurationService
 
     def backendVersion = { attrs, body ->
-        out << ApiConsumer.getText(configurationService.getBackendUrl(), "/version", null)
+        def responseWrapper = ApiConsumer.getText(configurationService.getBackendUrl(), "/version")
+        out << responseWrapper.getResponse()
     }
 }
