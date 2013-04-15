@@ -22,13 +22,13 @@
               </a>
               <div class="nav-collapse collapse navbar-responsive-collapse">
                 <ul class="nav">
-                  <li class="root dropdown<g:isMappingActive context="${params}" testif="${[[controller: "index"]]}"> active-default</g:isMappingActive>">
+                  <li class="root dropdown<g:isMappingActive context="${params}" testif="${[[controller: "index"], [controller: "advancedsearch"], [controller: "structureview"]]}"> active-default</g:isMappingActive>">
                     <g:link controller="index" class="dropdown-toggle"><g:message code="apd.Home"/></g:link>
                     <ul class="dropdown-menu inline">
-                      <li>
+                      <li class="<g:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</g:isMappingActive>">
                         <g:link controller="advancedsearch"><g:message code="apd.Advanced_Search"/></g:link>
                       </li>
-                      <li>
+                      <li class="<g:isMappingActive context="${params}" testif="${[[controller: "structureview"]]}">active-default</g:isMappingActive>">
                         <g:link controller="structureview"><g:message code="apd.Tree_View"/></g:link>
                       </li>
                     </ul>
@@ -56,7 +56,7 @@
                     </ul>
                   <li>
                 </ul>
-                <g:if test="${isStart!=1}">
+                <g:if test="${!isStart}">
                   <g:form controller="advancedsearch" class="navbar-search pull-right" method="GET">
                     <input id="query" name="query" type="text" class="search-query span2" placeholder="<g:message code="apd.Search_Placeholder"/>">
                   </g:form>
