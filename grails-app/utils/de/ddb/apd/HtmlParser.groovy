@@ -45,8 +45,12 @@ class HtmlParser {
      * @return The content of the tag
      */
     def getContentOfFirstTag(String tagName){
-        def bodyTag = htmlParser.body
-        return bodyTag.text()
+        def tagContents = htmlParser."**".findAll{it.name() == tagName}
+        if(tagContents.size() > 0){
+            return tagContents[0].text()
+        }else{
+            return ""
+        }
     }
 
     /**
@@ -55,7 +59,7 @@ class HtmlParser {
      * @return The value of the content attribute of the metag-tag
      */
     def getContentOfMetaTag(String metaTagName){
-        def metaTagContent = htmlParser.head.children().find{it.name() == 'meta' && it.@name == metaTagName}.@content
+        def metaTagContent = htmlParser."**".find{it.name() == 'meta' && it.@name == metaTagName}.@content
         return metaTagContent
     }
 }
