@@ -22,6 +22,7 @@ import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+import groovyx.net.http.HttpResponseDecorator.HeadersDecorator;
 
 import org.apache.commons.logging.LogFactory
 
@@ -49,16 +50,17 @@ class ApiConsumer {
      * Requests a TEXT ressource from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
+     * @param optionalHeaders Optional request headers to add to the request
      * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text, 
      *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set 
      *      to true, the json-parser is explicitly overwritten with the text-parser.  
      * @return An ApiResponse object containing the server response
      */
-    static def getText(String baseUrl, String path, fixWrongContentTypeHeader = false) {
+    static def getText(String baseUrl, String path, optionalHeaders = [:], fixWrongContentTypeHeader = false) {
         if(fixWrongContentTypeHeader){
-            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.JSON, true)
+            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.JSON, optionalHeaders, true)
         }else{
-            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.TEXT)
+            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.TEXT, optionalHeaders)
         }
     }
 
@@ -66,30 +68,33 @@ class ApiConsumer {
      * Requests a JSON ressource from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
+     * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def getJson(String baseUrl, String path) {
-        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.JSON)
+    static def getJson(String baseUrl, String path, optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.JSON, optionalHeaders)
     }
 
     /**
      * Requests a XML ressource from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
+     * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def getXml(String baseUrl, String path) {
-        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.XML)
+    static def getXml(String baseUrl, String path, optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.XML, optionalHeaders)
     }
 
     /**
      * Requests a BINARY ressource from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
+     * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def getBinary(String baseUrl, String path) {
-        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.BINARY)
+    static def getBinary(String baseUrl, String path, optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ], Method.GET, ContentType.BINARY, optionalHeaders)
     }
 
     /**
@@ -99,9 +104,13 @@ class ApiConsumer {
      * @param query The query parameters to append to the request (e.g. "[client: 'APD']")
      * @param method The request method (Method.GET, Method.POST)
      * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param optionalHeaders Optional request headers to add to the request
+     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text, 
+     *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set 
+     *      to true, the json-parser is explicitly overwritten with the text-parser.  
      * @return An ApiResponse object containing the server response
      */
-    private static def requestServer(baseUrl, path, query, method, content, fixWrongContentTypeHeader = false) {
+    private static def requestServer(baseUrl, path, query, method, content, optionalHeaders, fixWrongContentTypeHeader = false) {
         def timestampStart = System.currentTimeMillis();
 
         try {
@@ -111,6 +120,10 @@ class ApiConsumer {
             http.request(method, content) {
                 uri.path = path
                 uri.query = query
+
+                optionalHeaders.each { key, value ->
+                    headers.put(key, value)
+                }
 
                 if(content == ContentType.XML){
                     headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
@@ -122,15 +135,15 @@ class ApiConsumer {
                 response.success = { resp, output ->
                     switch(content) {
                         case ContentType.TEXT:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output.getText())
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output.getText())
                         case ContentType.JSON:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output)
                         case ContentType.XML:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output)
                         case ContentType.BINARY:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
                         default:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output)
                     }
                     //                    if(content == ContentType.TEXT){
                     //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output.getText())
@@ -144,11 +157,11 @@ class ApiConsumer {
                     //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
                     //                    }
                 }
-                response.'404' = {
-                    return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), "Server answered 404 -> " + uri.toString())
+                response.'404' = { resp ->
+                    return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 404 -> " + uri.toString())
                 }
                 response.failure = { resp ->
-                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), "Server answered 500 -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
+                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 500 -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
@@ -169,12 +182,13 @@ class ApiConsumer {
      * @param calledUrl The complete URL that was called
      * @param method The request method (Method.GET, Method.POST)
      * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param responseHeader The headers of the response
      * @param responseObject The response from the server
      * @return An ApiResponse object containing the server response
      */
-    private static def build200Response(timestampStart, calledUrl, method, content, responseObject){
+    private static def build200Response(timestampStart, calledUrl, method, content, responseHeader, responseObject){
         def duration = System.currentTimeMillis()-timestampStart
-        def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, null, ApiResponse.HttpStatus.HTTP_200)
+        def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, null, ApiResponse.HttpStatus.HTTP_200, responseHeader)
         log.info response.toString()
         return response
     }
@@ -185,13 +199,14 @@ class ApiConsumer {
      * @param calledUrl The complete URL that was called
      * @param method The request method (Method.GET, Method.POST)
      * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param responseHeader The headers of the response
      * @param exceptionDescription The text for the ItemNotFoundException that will be attached but not thrown
      * @return An ApiResponse object containing the response information
      */
-    private static def build404Response(timestampStart, calledUrl, method, content, exceptionDescription){
+    private static def build404Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription){
         def duration = System.currentTimeMillis()-timestampStart
         def exception = new ItemNotFoundException(exceptionDescription)
-        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_404)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_404, responseHeader)
         log.info response.toString()
         return response
     }
@@ -202,13 +217,14 @@ class ApiConsumer {
      * @param calledUrl The complete URL that was called
      * @param method The request method (Method.GET, Method.POST)
      * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param responseHeader The headers of the response
      * @param exceptionDescription The text for the BackendErrorException that will be attached but not thrown
      * @return An ApiResponse object containing the response information
      */
-    private static def build500Response(timestampStart, calledUrl, method, content, exceptionDescription){
+    private static def build500Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription){
         def duration = System.currentTimeMillis()-timestampStart
         def exception = new BackendErrorException(exceptionDescription)
-        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, responseHeader)
         log.info response.toString()
         return response
     }
@@ -224,7 +240,7 @@ class ApiConsumer {
      */
     private static def build500ResponseWithException(timestampStart, calledUrl, method, content, exception){
         def duration = System.currentTimeMillis()-timestampStart
-        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, [:])
         log.info response.toString()
         return response
     }

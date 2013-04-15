@@ -16,6 +16,7 @@ package de.ddb.apd
  */
 
 
+import de.ddb.apd.institutions.InstitutionsCache;
 import groovyx.net.http.HTTPBuilder
 
 class InstitutionService {
@@ -30,49 +31,59 @@ class InstitutionService {
 
     def configurationService
 
+    static def institutionsCache = new InstitutionsCache()
+
     def grailsLinkGenerator
 
-    def findAll() {
-        def cortexHostPort = configurationService.getBackendUrl()
+    //    def findAll() {
+    //        def cortexHostPort = configurationService.getBackendUrl()
+    //
+    //        def http = new HTTPBuilder(cortexHostPort)
+    //        ApiConsumer.setProxy(http, cortexHostPort)
+    //
+    //        def totalInstitution = 0
+    //        def allInstitutions = [data: [:], total: totalInstitution]
+    //
+    //        http.get(path: '/institutions') { resp, institutionList->
+    //            def institutionByFirstChar = buildIndex()
+    //
+    //            institutionList.each { it ->
+    //
+    //                totalInstitution++
+    //
+    //                def firstChar = it?.name[0]?.toUpperCase()
+    //                it.firstChar = firstChar
+    //
+    //                /*
+    //                 * mark an institution as the first one that start with the
+    //                 * character. We will use it for assigning the id in the HTML.
+    //                 * See: views/institutions/_listItem.gsp
+    //                 * */
+    //                if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
+    //                    it.isFirst = true
+    //                }
+    //
+    //                it.sectorLabelKey = 'ddbnext.' + it.sector
+    //                buildChildren(it, totalInstitution)
+    //                institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
+    //            }
+    //
+    //            allInstitutions.data = institutionByFirstChar
+    //            allInstitutions.total = getTotal(institutionList)
+    //
+    //            return allInstitutions
+    //        }
+    //
+    //        return allInstitutions
+    //    }
 
-        def http = new HTTPBuilder(cortexHostPort)
-        ApiConsumer.setProxy(http, cortexHostPort)
+    def findAll(etagValue) {
 
-        def totalInstitution = 0
-        def allInstitutions = [data: [:], total: totalInstitution]
 
-        http.get(path: '/institutions') { resp, institutionList->
-            def institutionByFirstChar = buildIndex()
-
-            institutionList.each { it ->
-
-                totalInstitution++
-
-                def firstChar = it?.name[0]?.toUpperCase()
-                it.firstChar = firstChar
-
-                /*
-                 * mark an institution as the first one that start with the
-                 * character. We will use it for assigning the id in the HTML.
-                 * See: views/institutions/_listItem.gsp
-                 * */
-                if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
-                    it.isFirst = true
-                }
-
-                it.sectorLabelKey = 'ddbnext.' + it.sector
-                buildChildren(it, totalInstitution)
-                institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
-            }
-
-            allInstitutions.data = institutionByFirstChar
-            allInstitutions.total = getTotal(institutionList)
-
-            return allInstitutions
-        }
 
         return allInstitutions
     }
+
 
     private getTotal(rootList) {
         def total = rootList.size()
