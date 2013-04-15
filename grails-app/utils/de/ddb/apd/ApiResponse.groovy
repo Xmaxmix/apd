@@ -39,34 +39,6 @@ class ApiResponse {
         this.status = status
     }
 
-    def getCalledUrl() {
-        return calledUrl
-    }
-
-    def getMethod() {
-        return method
-    }
-
-    def getContent() {
-        return content
-    }
-
-    def getResponse() {
-        return response
-    }
-
-    def getDuration() {
-        return duration
-    }
-
-    def getException() {
-        return exception
-    }
-
-    def getStatus() {
-        return status
-    }
-
     def isOk() {
         return this.status == HttpStatus.HTTP_200
     }
