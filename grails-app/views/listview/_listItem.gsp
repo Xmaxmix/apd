@@ -2,14 +2,14 @@
   <g:if test="${ child?.children }">
     <div class="tree-folder">
       <div class="tree-folder-header">
-        <i class="icon-folder icon-folder-open"></i>
+        <i class="icon-folder icon-folder-close"></i>
         <div class="tree-folder-name">
           <a href="${child.uri}"> 
             ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
           </a>
         </div>
       </div>
-      <div class="tree-folder-content">
+      <div class="tree-folder-content off">
         <g:render template="listItem" model="['children': child?.children]" />
       </div>
       <div class="tree-loader off">

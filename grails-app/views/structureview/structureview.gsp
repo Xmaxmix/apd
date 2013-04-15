@@ -27,10 +27,10 @@
 
             <div id="institution-tree" class="tree">
               <g:each in="${ all }">
-                <g:if test="${ it?.size() > 0 }">
-                  <div class="tree-folder" style="display: block;">
+                <g:if test="${ it?.children}">
+                  <div class="tree-folder">
                     <div class="tree-folder-header">
-                      <i class="icon-folder-open"></i>
+                      <i class="icon-folder icon-folder-open"></i>
                       <div class="tree-folder-name">
                         <a href="${it.uri}"> 
                           ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
@@ -40,13 +40,13 @@
                     <div class="tree-folder-content">
                       <g:render template="listItem" model="['children': it?.children]" />
                     </div>
-                    <div class="tree-loader" style="display: none">
+                    <div class="tree-loader off">
                       <div>Loading...</div>
                     </div>
                   </div>
                 </g:if>
                 <g:else>
-                  <div class="tree-item" data-sector="${ it?.sector }" data-institution-id="${ it.id }" style="display: block;">
+                  <div class="tree-item" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
                     <i class="tree-dot"></i>
                     <div class="tree-item-name">
                       <a href="${it.uri}">

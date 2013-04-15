@@ -24,9 +24,13 @@
 }
 
 .fuelux .icon-folder-open {
-  background-position: -430px -96px;
+  background-position: -24px -96px;
 }
 
 .fuelux .tree .tree-item {
   height: 60px;
+}
+
+.off {
+  display: none;
 }
