@@ -52,11 +52,7 @@ class Item {
     }
 
     public boolean hasChildren(){
-        if(children.size()>0){
-            return true;
-        }else{
-            return false
-        }
+        return children.size() > 0
     }
 
     public List<Item> getChildren(){
@@ -64,18 +60,11 @@ class Item {
     }
 
     public Item getFirstChild(){
-        if(children.size()>0){
-            return children.get(0)
-        }else{
-            return null
-        }
+        return children[0]
     }
 
     public void addItemsToHierarchy(List itemListJson) {
-        List<Item> allItemList = []
-        itemListJson.each {
-            allItemList.add(new Item(it))
-        }
+        List<Item> allItemList = itemListJson.collect { new Item(it) }
 
         for(int i=0; i<allItemList.size(); i++){
             Item currentItem = allItemList.get(i)
