@@ -38,13 +38,15 @@ modules = {
     }
 
     javascript {
-        resource url:'/js/vendor/jquery-1.9.1.js'
+        resource url:'/js/vendor/jquery.js'
         resource url:'/js/vendor/bootstrap.js'
         resource url:'/js/vendor/jwplayer/jwplayer.js'
+        resource url:'/js/vendor/jstree.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/global-variables.js'
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/navbar-manager.js'
+        resource url:'/js/structure.js'
     }
 }
 

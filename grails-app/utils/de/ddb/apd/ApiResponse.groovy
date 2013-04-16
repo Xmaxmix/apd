@@ -1,5 +1,10 @@
 package de.ddb.apd
 
+import javax.servlet.http.HttpServletRequest;
+
+import de.ddb.apd.exception.BackendErrorException;
+import de.ddb.apd.exception.ItemNotFoundException;
+
 /**
  * Wrapper for all responses of the backend servers.
  * The response itself and additional meta informations about the request and response 
@@ -12,10 +17,13 @@ package de.ddb.apd
  * duration: The duration of the whole backend request
  * exception: If an exception has occured, it will be stored here. This happens also on 404 (ItemNotFoundException) and 500 (BackendErrorException)
  * status: The response status of type ApiResponse.HttpStatus (HTTP_200, HTTP_404, HTTP_500)
+ * headers: The response headers from the server
  * 
  * @author hla
  */
 class ApiResponse {
+
+    public final static String REQUEST_ATTRIBUTE_APIRESPONSE = "REQUEST_ATTRIBUTE_APIRESPONSE"
 
     public static enum HttpStatus {
         HTTP_200, HTTP_404, HTTP_500
@@ -28,8 +36,9 @@ class ApiResponse {
     def duration
     def exception
     def status
+    def headers
 
-    ApiResponse(calledUrl, method, content, response, duration, exception, status){
+    ApiResponse(calledUrl, method, content, response, duration, exception, status, headers){
         this.calledUrl = calledUrl
         this.method = method
         this.content = content
@@ -37,6 +46,7 @@ class ApiResponse {
         this.duration = duration
         this.exception = exception
         this.status = status
+        this.headers = headers
     }
 
     def isOk() {
@@ -49,5 +59,10 @@ class ApiResponse {
             out += " / Exception='" + exception.getMessage()+"'"
         }
         return out
+    }
+
+    def throwException(request){
+        request.setAttribute(REQUEST_ATTRIBUTE_APIRESPONSE, this)
+        throw this.exception
     }
 }

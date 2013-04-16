@@ -16,7 +16,7 @@
 
 package de.ddb.apd.exception
 
-class ConfigurationException {
+class ConfigurationException extends Exception {
 
     ConfigurationException() {
         super()

@@ -1,9 +1,13 @@
-.tree-container {
-  min-height: 400px; 
+#institution-tree {
+  max-height: 600px;
+  overflow: auto;
+  border: 1px solid #BBBBBB;
+  border-radius: 4px 4px 4px 4px;
 }
 
-.list-container {
-  width: 100%;
+.jstree a:hover {
+  text-decoration: underline;
+  color: green;
 }
 
 .search-widget-container {
@@ -17,8 +21,20 @@
   margin: 2px;
   float: left;
   cursor: pointer;
+  background-color: grey;
+  color: black;
 }
+
+.selector.active{
+  background-color: green;
+  color: white;
+}
+
 .border {
   border-style: solid;
   border-width: 1px;
+}
+
+.off {
+  display: none;
 }

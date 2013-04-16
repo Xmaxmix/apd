@@ -38,7 +38,7 @@ class UrlMappings {
 
         "/liste" {
             controller="listview"
-            action="index"
+            action="results"
         }
 
         "/item/$id/$name?" {

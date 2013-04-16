@@ -16,14 +16,79 @@
 
 package de.ddb.apd
 
-import de.ddb.apd.ApiConsumer;
-import de.ddb.apd.exception.ItemNotFoundException;
+import net.sf.json.JSONNull;
+import de.ddb.apd.ApiConsumer
+import de.ddb.apd.exception.ItemNotFoundException
+
+import grails.converters.JSON
 
 class ApisController {
 
     def configurationService
 
-    def index() {
+    def apisService
+
+    def search(){
+
+      def resultList = [:]
+      def facets = []
+      def highlightedTerms = []
+      def docs = []
+      def query = apisService.getQueryParameters(params)
+      def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', query)
+      if(!apiResponse.isOk()){
+        log.error "Json: Json file was not found"
+        throw apiResponse.getException()
+      }
+      def jsonResp = apiResponse.getResponse()
+
+      jsonResp.results["docs"].get(0).each{
+
+        def tmpResult = [:]
+        def title
+        def subtitle
+        def thumbnail
+        def media = []
+
+        def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
+        if (titleMatch)
+          title= titleMatch[0][3]
+
+          def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
+          subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
+
+          def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
+          if (thumbnailMatch){
+            thumbnail= thumbnailMatch[0][2]
+          }
+          def mediaMatch = it.preview.toString() =~ /(?m)<div (.*?)data-media="(.*?)"/
+          if (mediaMatch){
+            mediaMatch[0][2].split (",").each{ media.add(it) }
+          }
+          tmpResult["id"] = it.id
+          tmpResult["view"] = (it.view instanceof JSONNull)?"":it.view
+          tmpResult["label"] = (it.label instanceof JSONNull)?"":it.label
+          tmpResult["latitude"] = (it.latitude instanceof JSONNull)?"":it.latitude
+          tmpResult["longitude"] = (it.longitude instanceof JSONNull)?"":it.longitude
+          tmpResult["category"] = (it.category instanceof JSONNull)?"":it.category
+
+          def properties = [:]
+
+          tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
+          tmpResult["properties"] = properties
+          docs.add(tmpResult)
+        }
+        if(jsonResp.results["docs"].get(0).size()>0){
+          apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() { obj, i ->
+          docs[i].properties = obj
+        }
+      }
+      resultList["facets"] = jsonResp.facets
+      resultList["highlightedTerms"] = jsonResp.highlightedTerms
+      resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
+      resultList["numberOfResults"] = jsonResp.numberOfResults
+      resultList["randomSeed"] = jsonResp.randomSeed
+      render (contentType:"text/json"){resultList}
     }
 
     /**

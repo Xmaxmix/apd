@@ -17,7 +17,51 @@ package de.ddb.apd
 
 class ListviewController {
 
-    def index() {
-        render(view: "listview", model: [:])
+    def institutionService
+    def searchService
+    def configurationService
+
+    def results() {
+
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+
+        def urlPath = request.getContextPath()+'/apis/search'
+        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,urlPath, urlQuery)
+        if(!apiResponse.isOk()){
+          log.error "Json: Json file was not found"
+          throw apiResponse.getException()
+        }
+        def resultsItems = apiResponse.getResponse()
+
+        def queryString = request.getQueryString()
+
+        if(!queryString?.contains("sort=random") && urlQuery["randomSeed"])
+            queryString = queryString+"&sort="+urlQuery["randomSeed"]
+
+        def allInstitution = institutionService.findAll()
+        def institutionByFirstLetter = allInstitution.data
+
+        // TODO: make this more idiomatic Groovy
+        def all = []
+        institutionByFirstLetter?.each { all.addAll(it.value) }
+
+        // no institutions
+        institutionByFirstLetter.each { k,v ->
+            if(institutionByFirstLetter[k]?.size() == 0) {
+                institutionByFirstLetter[k] = true
+            } else {
+                institutionByFirstLetter[k] = false
+            }
+        }
+
+        // TODO: move to service
+        def index = []
+        institutionByFirstLetter.each {
+            index.add(it)
+        }
+
+        render(view: "listview", model: [results: resultsItems,offset: params["offset"], index: index, all: all, total: allInstitution?.total])
+
     }
+
 }
