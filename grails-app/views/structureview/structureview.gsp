@@ -14,21 +14,41 @@
       <div class="span4">
         <div class="row">
           <div class="span4">
-            <div class="selector border"><g:message code="apd.Struktur"/></div>
-            <div class="selector border"><g:message code="apd.Objecte"/></div>
+            <a href="struktur">
+              <div class="selector active"><g:message code="apd.Struktur"/></div>
+            </a>
+            <a href="liste">
+              <div class="selector"><g:message code="apd.Objecte"/></div>
+            </a>
           </div>
         </div>
         <div class="row">
-          <div class="span4 tree-container border">
-            <ol id="institution-list">
-              <g:each in="${ all }">
-                <li class="institution-listitem" data-sector="${ it?.sector }" data-institution-id="${ it?.id }">
-                  <i class="icon-institution"></i>
-                  <g:render template="listItem" model="['item': it]"/>
-                  <g:render template="children" model="['children': it?.children]"/>
-                </li>
-              </g:each>
-            </ol>
+          <div class="span4">
+
+            <div id="institution-tree">
+              <ul>
+                <g:each in="${ all }">
+                  <g:if test="${ it?.children}">
+                    <li class="jstree-closed" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
+                      <a href="${it.uri}" class="">
+                        ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
+                      </a>
+                      <ul>
+                        <g:render template="listItem" model="['children': it?.children]" />
+                      </ul>
+                    </li>
+                  </g:if>
+                  <g:else>
+                    <li class="jstree-leaf" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
+                      <a href="${it.uri}" class="">
+                        ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
+                      </a>
+                    </li>
+                  </g:else>
+                </g:each>
+              </ul>
+            </div>
+
           </div>
         </div>
       </div>
