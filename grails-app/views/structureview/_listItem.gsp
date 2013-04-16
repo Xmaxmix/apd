@@ -1,30 +1,19 @@
 <g:each var="child" in="${ children }">
-  <g:if test="${ child?.children }">
-    <div class="tree-folder">
-      <div class="tree-folder-header">
-        <i class="icon-folder icon-folder-open"></i>
-        <div class="tree-folder-name">
-          <a href="${child.uri}"> 
-            ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
-          </a>
-        </div>
-      </div>
-      <div class="tree-folder-content">
+  <g:if test="${ child?.children}">
+    <li class="jstree-closed" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
+      <a href="${child.uri}" class=""> 
+        ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
+      </a>
+      <ul>
         <g:render template="listItem" model="['children': child?.children]" />
-      </div>
-      <div class="tree-loader off">
-        <div>Loading...</div>
-      </div>
-    </div>
+      </ul>
+    </li>
   </g:if>
   <g:else>
-    <div class="tree-item" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
-      <i class="tree-dot"></i>
-      <div class="tree-item-name">
-        <a href="${child.uri}">
-          ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
-        </a>
-      </div>
-    </div>
+    <li class="jstree-leaf" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
+      <a href="${child.uri}" class="">
+        ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
+      </a>
+    </li>
   </g:else>
 </g:each>
