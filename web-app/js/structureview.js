@@ -16,30 +16,15 @@
 
 $(document).ready(function () {
 	if(jsPageName == "structureview") {
-		  
+		
+		var apiWrapper = new InstitutionsApiWrapper();
 	  
 		// when click on "Struktur" -> reload data and print tree
 		$(".deletableclickanchor").click(function(){
-			loadInstitutionsList(function(json){
+			apiWrapper.getFullInstitutionsList(function(json){
 				printInstitutionsList(json);
-			});			
+			});		
 		}); 
-		
-		
-		// load the data from the backend with a unique hashed url that changes when the server-data changes
-		function loadInstitutionsList(callback){
-			var request = $.ajax({
-				type: 'GET',
-				dataType: 'text', // Explicitly use "text/plain" as contenttype because some browsers disable caching for JSON
-				async: true,
-				cache: true, // always cache this request!
-				url: jsContextPath+"/institutions/"+jsInstitutionsListHash, // it is important to always add the hash!
-				complete: function(data){
-					var jsonResponse = jQuery.parseJSON(data.responseText);
-					callback(jsonResponse);
-				}
-			});			
-		};
 		
 		// Build the tree
 		function printInstitutionsList(json){
@@ -51,7 +36,7 @@ $(document).ready(function () {
 		}
 		
 		// When page loads -> load the data and build tree
-		loadInstitutionsList(function(json){
+		apiWrapper.getFullInstitutionsList(function(json){
 			printInstitutionsList(json);
 		});		
 	  

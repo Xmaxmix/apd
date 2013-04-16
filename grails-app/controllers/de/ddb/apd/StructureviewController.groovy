@@ -35,12 +35,25 @@ class StructureviewController {
                 ])
     }
 
-    def getAjaxList() {
+    def getAjaxListFull() {
         def hash = params.hashId
         def allInstitutions = institutionService.findAll()
 
         response.setHeader("Cache-Control", "public, max-age=31536000")
-        // Explicitly use "text/plain" as contenttype because some browsers disable caching for JSON
         render (contentType: ContentType.TEXT.toString(), text: allInstitutions.toString())
+    }
+
+    def isAjaxListFullOutdated() {
+        def hash = params.hashId
+        def hasChanged = institutionService.institutionsCache.hasChanged(hash)
+
+        def builder = new JsonBuilder()
+        def root = builder {
+            isOutdated hasChanged
+            hashId institutionService.institutionsCache.getHash()
+        }
+
+        response.setHeader("Cache-Control", "no-cache")
+        render (contentType: ContentType.JSON.toString()) { builder }
     }
 }

@@ -145,17 +145,6 @@ class ApiConsumer {
                         default:
                             return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output)
                     }
-                    //                    if(content == ContentType.TEXT){
-                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output.getText())
-                    //                    }else if(content == ContentType.JSON){
-                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
-                    //                    }else if(content == ContentType.XML){
-                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
-                    //                    }else if(content == ContentType.BINARY){
-                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
-                    //                    }else{
-                    //                        return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), output)
-                    //                    }
                 }
                 response.'404' = { resp ->
                     return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 404 -> " + uri.toString())
