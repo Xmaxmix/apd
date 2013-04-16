@@ -1,8 +1,6 @@
 <!-- Here we define each field row -->
 <div class="span11">
   <div class="row">
-    <div>group: ${ group }</div>
-    <div>row: ${ row }</div>
     <g:render template="facetsSelection" />
     <g:render template="facetSearchValue" />
     <g:render template="matchesSelection" />

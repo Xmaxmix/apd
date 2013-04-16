@@ -30,15 +30,18 @@ class AdvancedsearchController {
     def messageSource
 
     def index() {
-
+        /* TODO: These don't work, if we use external properties file. When we
+         * use external properties the values are Strings *not* Integer.
+         */
         int searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount
         int searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount
 
         String url = grailsApplication.config.apd.backend.url
-        // this is okay.
+        /* We use facetSearchFiels to fill the facet selection.
+         * Example of facetSearchFiels = [ 'search_all', 'title', 'place' ]
+         * */
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
-        log.info 'values' + facetSearchfields
-        // now here
+     
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
         render(view: "advancedsearch",

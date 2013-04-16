@@ -62,16 +62,124 @@ public class FacetsService {
      *     ALPHA_LABEL: sort by value.<br>
      */
     public List getExtendedFacets() throws IOException {
-        def res = []
+           /*
+         * facetSearchFields =  [
+         *   {name=search_all, searchType=TEXT, sortType=null},
+         *   {name=title, searchType=TEXT, sortType=null},
+         *   {name=description, searchType=TEXT, sortType=null},
+         *   {name=time, searchType=ENUM, sortType=ALPHA_ID},
+         *   {name=place, searchType=TEXT, sortType=null},
+         *   {name=affiliate, searchType=TEXT, sortType=null},
+         *   {name=keywords, searchType=TEXT, sortType=null},
+         *   {name=language, searchType=ENUM, sortType=ALPHA_LABEL},
+         *   {name=type, searchType=ENUM, sortType=ALPHA_LABEL},
+         *   {name=sector, searchType=ENUM, sortType=ALPHA_LABEL},
+         *   {name=provider, searchType=TEXT, sortType=null}
+         * ]
+         * */
+        /*
+         *
+         *  JSON = [
+              {
+                "name": "search_all",
+                "paths": [],
+                "searchType": "TEXT",
+                "sortType": null,
+                "displayType": "EXTENDED",
+                "position": 1
+              },
+              {
+                "name": "title",
+                "paths": [],
+                "searchType": "TEXT",
+                "sortType": null,
+                "displayType": "EXTENDED",
+                "position": 2
+              },
+              {
+                "name": "description",
+                "paths": [],
+                "searchType": "TEXT",
+                "sortType": null,
+                "displayType": "EXTENDED",
+                "position": 3
+              },
+              {
+                "name": "time",
+                "paths": [],
+                "searchType": "ENUM",
+                "sortType": "ALPHA_ID",
+                "displayType": "EXTENDED",
+                "position": 4
+              },
+              {
+                "name": "place",
+                "paths": [],
+                "searchType": "TEXT",
+                "sortType": null,
+                "displayType": "EXTENDED",
+                "position": 5
+              },
+              {
+                "name": "affiliate",
+                "paths": [],
+                "searchType": "TEXT",
+                "sortType": null,
+                "displayType": "EXTENDED",
+                "position": 6
+              },
+              {
+                "name": "keywords",
+                "paths": [],
+                "searchType": "TEXT",
+                "sortType": null,
+                "displayType": "EXTENDED",
+                "position": 7
+              },
+              {
+                "name": "language",
+                "paths": [],
+                "searchType": "ENUM",
+                "sortType": "ALPHA_LABEL",
+                "displayType": "EXTENDED",
+                "position": 8
+              },
+              {
+                "name": "type",
+                "paths": [],
+                "searchType": "ENUM",
+                "sortType": "ALPHA_LABEL",
+                "displayType": "EXTENDED",
+                "position": 9
+              },
+              {
+                "name": "sector",
+                "paths": [],
+                "searchType": "ENUM",
+                "sortType": "ALPHA_LABEL",
+                "displayType": "EXTENDED",
+                "position": 10
+              },
+              {
+                "name": "provider",
+                "paths": [],
+                "searchType": "TEXT",
+                "sortType": null,
+                "displayType": "EXTENDED",
+                "position": 11
+              }
+            ]
+         */
+        def facetSearchFields = []
         def json = ApiConsumer.getTextAsJson(url ,'/search/facets/', [type:'EXTENDED'])
         json.each{
             def part = [:]
             part["name"] = it.name
             part["searchType"] = it.searchType
             part["sortType"] = it.sortType
-            res[it.position - 1] = part
+            facetSearchFields[it.position - 1] = part
         }
-        return res
+        return facetSearchFields
     }
 
 
