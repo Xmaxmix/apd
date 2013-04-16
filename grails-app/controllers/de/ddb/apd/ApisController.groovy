@@ -23,14 +23,12 @@ class ApisController {
 
     def configurationService
 
-    def index() {
-    }
 
     /**
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream
      */
-    def binary(){
+    def index(){
         if(!params.filename){
             log.warn "binary(): A binary content was requested, but no filename was given in the url"
             throw new ItemNotFoundException();

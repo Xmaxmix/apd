@@ -15,33 +15,32 @@
  */
 package de.ddb.apd
 
+import groovy.json.JsonBuilder;
+import groovyx.net.http.ContentType;
+
+import javax.servlet.http.HttpServletResponse;
+
 class StructureviewController {
 
     def institutionService
 
-    def show() {
-        def allInstitution = institutionService.findAll()
-        def institutionByFirstLetter = allInstitution.data
+    def index() {
+        //def allInstitution = institutionService.findAll()
+        def institutionsListHash = institutionService.institutionsCache.getHash()
+        render (
+                view: 'structureview',
+                model: [
+                    //'all': allInstitution,
+                    'institutionsListHash' : institutionsListHash
+                ])
+    }
 
-        // TODO: make this more idiomatic Groovy
-        def all = []
-        institutionByFirstLetter?.each { all.addAll(it.value) }
+    def getAjaxList() {
+        def hash = params.hashId
+        def allInstitutions = institutionService.findAll()
 
-        // no institutions
-        institutionByFirstLetter.each { k,v ->
-            if(institutionByFirstLetter[k]?.size() == 0) {
-                institutionByFirstLetter[k] = true
-            } else {
-                institutionByFirstLetter[k] = false
-            }
-        }
-
-        // TODO: move to service
-        def index = []
-        institutionByFirstLetter.each {
-            index.add(it)
-        }
-
-        render (view: 'structureview',  model: [index: index, all: all, total: allInstitution?.total])
+        response.setHeader("Cache-Control", "public, max-age=31536000")
+        // Explicitly use "text/plain" as contenttype because some browsers disable caching for JSON
+        render (contentType: ContentType.TEXT.toString(), text: allInstitutions.toString())
     }
 }

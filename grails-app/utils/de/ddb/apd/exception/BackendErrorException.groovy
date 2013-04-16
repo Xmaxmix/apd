@@ -16,6 +16,11 @@
 
 package de.ddb.apd.exception
 
+/**
+ * Exception indication that a call to the backend failed (maybe a 404 or 500 response).
+ * 
+ * @author hla
+ */
 class BackendErrorException extends Exception {
 
     BackendErrorException() {

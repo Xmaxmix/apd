@@ -19,6 +19,7 @@ package de.ddb.apd
 import de.ddb.apd.institutions.InstitutionsCache;
 import groovyx.net.http.HTTPBuilder
 
+
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
@@ -31,7 +32,7 @@ class InstitutionService {
 
     def configurationService
 
-    static def institutionsCache = new InstitutionsCache()
+    static InstitutionsCache institutionsCache = new InstitutionsCache()
 
     def grailsLinkGenerator
 
@@ -77,11 +78,64 @@ class InstitutionService {
     //        return allInstitutions
     //    }
 
-    def findAll(etagValue) {
+    def findAllAlphabetical(){
+        def institutionList = findAll()
 
+        def totalInstitution = 0
+        def allInstitutions = [data: [:], total: totalInstitution]
+        def institutionByFirstChar = buildIndex()
 
+        institutionList.each { it ->
+
+            totalInstitution++
+
+            def firstChar = it?.name[0]?.toUpperCase()
+            it.firstChar = firstChar
+
+            /*
+             * mark an institution as the first one that start with the
+             * character. We will use it for assigning the id in the HTML.
+             * See: views/institutions/_listItem.gsp
+             * */
+            if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
+                it.isFirst = true
+            }
+
+            it.sectorLabelKey = 'apd.' + it.sector
+            buildChildren(it, totalInstitution)
+            institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
+        }
+
+        allInstitutions.data = institutionByFirstChar
+        allInstitutions.total = getTotal(institutionList)
 
         return allInstitutions
+    }
+
+    def findAll() {
+        // Get the last known Etag (empty on first request)
+        def pendingEtag = institutionsCache.etag
+
+        // Call backend with the last known Etag
+        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", ["If-None-Match": pendingEtag])
+        if(!responseWrapper.isOk()){
+            log.error "findAll(): Server returned no results "
+            throw responseWrapper.getException()
+        }
+
+        // Get responses
+        def resultJson = responseWrapper.getResponse()
+        def resultEtag = responseWrapper.getHeaders()["ETag"]
+        if(!resultEtag){
+            resultEtag = ""
+        }
+
+        // If the Etags of request and response do not match -> update the cache
+        if(pendingEtag != resultEtag) {
+            institutionsCache.updateCache(resultJson, resultEtag)
+        }
+
+        return institutionsCache.cache
     }
 
 

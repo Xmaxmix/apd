@@ -1,0 +1,59 @@
+/*
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+$(document).ready(function () {
+	if(jsPageName == "structureview") {
+		  
+	  
+		// when click on "Struktur" -> reload data and print tree
+		$(".deletableclickanchor").click(function(){
+			loadInstitutionsList(function(json){
+				printInstitutionsList(json);
+			});			
+		}); 
+		
+		
+		// load the data from the backend with a unique hashed url that changes when the server-data changes
+		function loadInstitutionsList(callback){
+			var request = $.ajax({
+				type: 'GET',
+				dataType: 'text', // Explicitly use "text/plain" as contenttype because some browsers disable caching for JSON
+				async: true,
+				cache: true, // always cache this request!
+				url: jsContextPath+"/institutions/"+jsInstitutionsListHash, // it is important to always add the hash!
+				complete: function(data){
+					var jsonResponse = jQuery.parseJSON(data.responseText);
+					callback(jsonResponse);
+				}
+			});			
+		};
+		
+		// Build the tree
+		function printInstitutionsList(json){
+			// TODO build actual tree
+			$("#institution-list").empty();
+			$.each(json, function(i, field){
+				$("#institution-list").append(i + " / " + field.name + " <br />");
+			});
+		}
+		
+		// When page loads -> load the data and build tree
+		loadInstitutionsList(function(json){
+			printInstitutionsList(json);
+		});		
+	  
+	}
+});

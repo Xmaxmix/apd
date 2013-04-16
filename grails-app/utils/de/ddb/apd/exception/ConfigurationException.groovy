@@ -16,7 +16,12 @@
 
 package de.ddb.apd.exception
 
-class ConfigurationException {
+/**
+ * Exception indication that a configuration entry was not found or invalid.
+ * 
+ * @author hla
+ */
+class ConfigurationException extends Exception {
 
     ConfigurationException() {
         super()
