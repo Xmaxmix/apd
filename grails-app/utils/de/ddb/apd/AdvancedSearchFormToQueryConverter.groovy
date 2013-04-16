@@ -173,7 +173,11 @@ public class AdvancedSearchFormToQueryConverter {
             }
             else {
                 //facet searchfield, get value from select-box
-                String selectboxName = facetSearchfields.get(parameters.get(facetName + groupId + "-" + rowId)) + "-" + groupId + "-" + rowId
+                //String selectboxName = facetSearchfields.get(parameters.get(facetName + groupId + "-" + rowId)) + "-" + groupId + "-" + rowId
+                def foo = parameters.get(facetName + groupId + "-" + rowId)
+                log.info facetSearchfields
+
+                String selectboxName = facetSearchfields.get(foo) + "-" + groupId + "-" + rowId
                 if (parameters.get(selectboxName) != null
                 && !parameters.get(selectboxName).isEmpty()) {
                     searchValue = parameters.get(selectboxName)
@@ -229,4 +233,5 @@ public class AdvancedSearchFormToQueryConverter {
         }
         return rowQuery
     }
+
 }

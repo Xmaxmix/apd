@@ -6,12 +6,16 @@
         <g:render template="globalOperator" />
 
         <!-- TODO this is the first search group with preselected facets -->
-        <g:render template="firstSearchGroup" />
-        
-        <g:each var="group" in="${ (1..<searchGroupCount) }">
-          <g:render template="advancedSearchGroup" />
+        <%-- TODO: clever tricks do not work.
+        <g:each var="group" in="${ (0..<searchGroupCount) }">
+          <g:render template="advancedSearchGroup" model="['group':group]" />
         </g:each>
-        
+        --%>
+        <g:set var="group" value="${0}"/>
+        <g:while test="${group < searchGroupCount}">
+          <g:render template="advancedSearchGroup" />
+          <%group++%>
+        </g:while>
       <g:render template="groupButton" />
       <g:render template="buttons" />
       </div>
@@ -19,4 +23,3 @@
     </g:form>
   </div>
 </div>
-

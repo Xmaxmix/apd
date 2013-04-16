@@ -9,11 +9,20 @@
         <!-- 
         We show a number of rows by default. We read it from the application config. It defaults to 5
          -->
-        <g:each var="group" in="${ (0..<searchFieldCount) }">
+         <%--
+        <g:each var="row" in="${ (0..<searchFieldCount) }">
+          <div class="row search-field-row">
+            <g:render template="advancedSearchRow" model="['group':group, 'row':row]" />
+          </div>
+        </g:each>
+         --%>
+        <g:set var="row" value="${0}"/>
+        <g:while test="${row < searchFieldCount}">
           <div class="row search-field-row">
             <g:render template="advancedSearchRow" />
           </div>
-        </g:each>
+          <%row++%>
+        </g:while> 
       </div>
     </div>
   </div>

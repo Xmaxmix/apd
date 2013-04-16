@@ -141,7 +141,6 @@ apd.advancedSearch.searchFieldCount=5
 apd.advancedSearch.defaultOffset=0
 apd.advancedSearch.defaultRows=20
 
-
 // log4j configuration
 log4j = {
 

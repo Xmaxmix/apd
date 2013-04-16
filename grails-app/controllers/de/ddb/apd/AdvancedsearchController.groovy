@@ -62,17 +62,20 @@ class AdvancedsearchController {
      */
     def executeSearch() throws IOException {
         // TODO: research how to reduce the code duplication.
-        int searchGroupCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchGroupCount)
-        int searchFieldCount = Integer.parseInt(grailsApplication.config.apd.advancedSearch.searchFieldCount)
-        int offset = Integer.parseInt(grailsApplication.config.apd.advancedSearch.defaultOffset)
-        int rows = Integer.parseInt(grailsApplication.config.apd.advancedSearch.defaultRows)
+        int searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount
+        int searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount
+        int offset = grailsApplication.config.apd.advancedSearch.defaultOffset
+        int rows = grailsApplication.config.apd.advancedSearch.defaultRows
+
         def url = grailsApplication.config.apd.backend.url
         def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
+        log.info 'params: ' + params
         String query = converter.convertFormParameters()
-        redirect(uri: "/searchresults?query=" + query + "&offset=" + offset + "&rows=" + rows)
+        log.info 'query: ' + query
+        redirect(uri: "/liste?query=" + query + "&offset=" + offset + "&rows=" + rows)
     }
 
     /**
