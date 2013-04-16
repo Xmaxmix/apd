@@ -15,46 +15,42 @@
  */
 
 $(function() {
+  InstitutionsApiWrapper = function(){
+    this.init();
+  }
+
+  $.extend(InstitutionsApiWrapper.prototype, {
+
+    init: function() {
+    },
 	
-	InstitutionsApiWrapper = function(){
-		this.init();
-	}
+    getFullInstitutionsList: function(callback) {
 
-	$.extend(InstitutionsApiWrapper.prototype, {
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, // always no-cache this request!
+        url: jsContextPath+"/institutions/outdated/"+jsInstitutionsListHash, // it is important to always add the hash!
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          if(jsonResponse.content.isOutdated){
+            jsInstitutionsListHash = jsonResponse.content.hashId; //Refresh hash url if dataset changed
+          }
 
-		init: function() {
-		},
-		
-		getFullInstitutionsList: function(callback) {
-			
-			$.ajax({
-				type: 'GET',
-				dataType: 'json',
-				async: true,
-				cache: false, // always no-cache this request!
-				url: jsContextPath+"/institutions/outdated/"+jsInstitutionsListHash, // it is important to always add the hash!
-				complete: function(data){
-					var jsonResponse = jQuery.parseJSON(data.responseText);
-					if(jsonResponse.content.isOutdated){
-						jsInstitutionsListHash = jsonResponse.content.hashId; //Refresh hash url if dataset changed
-					}
-
-					$.ajax({
-						type: 'GET',
-						dataType: 'text', // Explicitly use "text/plain" as contenttype because some browsers disable caching for JSON
-						async: true,
-						cache: true, // always cache this request!
-						url: jsContextPath+"/institutions/full/"+jsInstitutionsListHash, // it is important to always add the hash!
-						complete: function(data){
-							var jsonResponse = jQuery.parseJSON(data.responseText);
-							callback(jsonResponse);
-						}
-					});			
-				}
-			});	
-
-			
-			
-		}
-	});
+          $.ajax({
+            type: 'GET',
+            dataType: 'text', // Explicitly use "text/plain" as contenttype because some browsers disable caching for JSON
+            async: true,
+            cache: true, // always cache this request!
+            url: jsContextPath+"/institutions/full/"+jsInstitutionsListHash, // it is important to always add the hash!
+            complete: function(data){
+              var jsonResponse = jQuery.parseJSON(data.responseText);
+              callback(jsonResponse);
+            }
+          });			
+        }
+      });			
+    }
+  });
 });
