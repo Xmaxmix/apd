@@ -57,7 +57,7 @@
                   <li>
                 </ul>
                 <g:if test="${!isStart}">
-                  <g:form controller="advancedsearch" class="navbar-search pull-right" method="GET">
+                  <g:form url="[controller:'liste', action:'']" class="navbar-search pull-right" method="GET">
                     <input id="query" name="query" type="text" class="search-query span2" placeholder="<g:message code="apd.Search_Placeholder"/>">
                   </g:form>
                 </g:if>
