@@ -41,6 +41,7 @@ class AdvancedsearchController {
          * Example of facetSearchFiels = [ 'search_all', 'title', 'place' ]
          * */
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        log.info "search : " +facetSearchfields
 
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
@@ -90,9 +91,8 @@ class AdvancedsearchController {
         def facetValuesMap = [:]
         def url = grailsApplication.config.apd.backend.url
 
-        // TODO: ask @mih for the value
-        // [{facetName=language_fct, filter=term:unknown}, {facetName=language_fct, filter=term:termunknown}]
-        // def allFacetFilters = grailsApplication.config.apd.backend.facets.filter
+        def allFacetFilters = grailsApplication.config.apd.backend.facets.filter
+        /*
         def allFacetFilters =  [
             [
                 'facetName': 'language_fct',
@@ -103,6 +103,7 @@ class AdvancedsearchController {
                 'filter': 'term:termunknown'
             ]
         ]
+        */
         def facetsRequester = new FacetsService(url:url)
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {

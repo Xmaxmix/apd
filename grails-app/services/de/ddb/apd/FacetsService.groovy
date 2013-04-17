@@ -179,7 +179,22 @@ public class FacetsService {
             part["sortType"] = it.sortType
             facetSearchFields[it.position - 1] = part
         }
-        return facetSearchFields
+
+         extend(facetSearchFields)
+    }
+
+    /*
+     * Because the back-end hasn't support other facets yet, we manually extend them. We need to replace it once
+     * the back-end support them.
+     *
+     * TODO: date has `text` as type, shouldn't it be date? What are the possible ENUM facet values?
+     */
+    def extend(facetSearchFields) {
+        def MISSING_FACET_NAMES = ['signature', 'archievetype', 'date']
+        def extendedFacets = MISSING_FACET_NAMES.inject(facetSearchFields) { initialList, facetName ->
+           initialList + [name: facetName, searchType: 'TEXT', sortType: null]
+        }
+        extendedFacets
     }
 
 

@@ -40,7 +40,7 @@
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
-                    <g:elseif test="${it.searchType?.equals(textSearchType)}">
+                    <g:elseif test="${it.searchType == textSearchType}">
                       <option value="${it.name}">
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
@@ -93,7 +93,7 @@
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
-                    <g:if test="${it.searchType?.equals(textSearchType)}">
+                    <g:if test="${it.searchType == textSearchType}">
                       <option value="${it.name}">
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
@@ -192,13 +192,14 @@
                 <!-- The non-JS version -->
                 <select class="facet facet-simple" name="facet-0-3">
                   <g:each in="${facetSearchfields}">
+                  <div>${ it.name }</div>
                     <!-- We set the default value here. -->
-                    <g:if test="${ it.name == 'type' && it.searchType == textSearchType }">
+                    <g:if test="${ it.name == 'archievetype' && it.searchType == textSearchType }">
                       <option value="${it.name}" selected>
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
-                    <g:if test="${it.searchType?.equals(textSearchType)}">
+                    <g:if test="${it.searchType == textSearchType}">
                       <option value="${it.name}">
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
