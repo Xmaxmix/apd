@@ -46,6 +46,7 @@ modules = {
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/global-variables.js'
         resource url:'/js/binaries-viewer.js'
+        resource url:'/js/tooltip.js'
         resource url:'/js/advanced-search.js'
     }
 
@@ -54,6 +55,7 @@ modules = {
          resource url:'/js/vendor/jquery-1.9.1.js'
          resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
          resource url:'/js/vendor/large-cookie.js'
-         */ resource url:'/js/advanced-search.js'
+         */
+        resource url:'/js/advanced-search.js'
     }
 }

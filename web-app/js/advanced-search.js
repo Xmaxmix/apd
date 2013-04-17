@@ -263,9 +263,18 @@ var page = {};
             }
         }
 
-        //bring group to initial state (show 2 rows, clear values)
+        // bring group to initial state (show 2 rows, clear values)
         function resetGroup(group) {
+            console.log('group: ', group);
+
+            // rows is an array
             var rows = $(selectors.row, group);
+            rows.each(function(index, row) {
+                console.log('row', $(row).show());
+//                row.show();
+                 $(row).show();
+            });
+
             rows.first().show();
             rows.next().show();
             rows.slice(2).hide();
@@ -329,9 +338,8 @@ var page = {};
             });
         }
 
-        //
         function initializeGroups() {
-          //bind events to change from input field to controlled select-box for search string
+            //bind events to change from input field to controlled select-box for search string
             bindFacetChangeEvents();
 
             //bind events to add/remove group
@@ -367,15 +375,20 @@ var page = {};
             });
         }
 
-        //formats groups and rows in groups
+        /*
+         * Formats groups and rows in groups.
+         *
+         * We always show the first and the second group, i.e. group with groupId 0 and 1
+         *
+         */
         function setGroupInitialState() {
             $(selectors.groupWidget, root).each(function(groupIndex) {
+                var numberOfGroupToShow = 2;
                 var $group = $(this);
 
-                if (groupIndex === 0 || haveFacetValuesBeenEnteredForGroup($(this))) {
+                if (groupIndex < numberOfGroupToShow || haveFacetValuesBeenEnteredForGroup($(this))) {
                     $(this).show();
-                }
-                else {
+                } else {
                     // no need to show this, reset it
                     resetGroup($group);
                     $group.hide();
@@ -390,6 +403,7 @@ var page = {};
             bindRowButtonEvents(group);
         }
 
+        // TODO: what does this function do?
         function setRowsInitialState(group) {
             var $last;
 
@@ -406,8 +420,8 @@ var page = {};
                     $row.hide();
                 }
             });
-            updateRowButtons(group);
 
+            updateRowButtons(group);
         }
 
         function bindRowButtonEvents(group) {
@@ -454,6 +468,7 @@ var page = {};
               .removeAttr('title')
               .unbind('mouseover')
               .bind('mouseover', function() {
+                console.log('mouse over');
                 clearTimeout(fader);
 
                 var tooltip = $(selectors.contextualHelpTooltip, root);
