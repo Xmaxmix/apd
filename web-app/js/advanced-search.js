@@ -39,7 +39,7 @@ var page = {};
             matchValue: 'select.match',
             facetValues: 'select.facet-values',
             facetValueIdAttribute: 'data-inputid',
-            contextualHelp: 'span.contextualHelp',
+            contextualHelp: 'span.contextual-help',
             contextualHelpTooltip: 'div.tooltip'
         };
 
@@ -444,9 +444,14 @@ var page = {};
 
         //contextual help
         function bindContextualHelp() {
+            console.log('bindContextualHelp');
+            
             var fader;
 
-            $(selectors.contextualHelp, root).removeAttr('title').unbind('mouseover').bind('mouseover', function() {
+            $(selectors.contextualHelp, root)
+              .removeAttr('title')
+              .unbind('mouseover')
+              .bind('mouseover', function() {
                 clearTimeout(fader);
 
                 var tooltip = $(selectors.contextualHelpTooltip, root);
@@ -458,7 +463,8 @@ var page = {};
                         tooltip.fadeOut();
                     }, 500);
                 });
-            }).bind('mouseout', function() {
+              })
+              .bind('mouseout', function() {
                 fader = setTimeout(function() {
                     $(selectors.contextualHelpTooltip, root).fadeOut();
                 }, 3000);
