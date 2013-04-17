@@ -17,29 +17,39 @@
                 <!-- The JS version -->
                 <select class="facet facet-js" id="facet-js-0-0" name="facet-0-0" style="display: none" disabled="disabled">
                   <g:each in="${facetSearchfields}">
-                    <g:if test="${it.searchType?.equals(enumSearchType)}">
+                  
+                    <g:if test="${it.searchType == enumSearchType}">
                       <option value="${it.name}"
                         data-inputid="${it.name}${facetNameSuffix}-0-0">
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
+                    
+                    <g:elseif test="${ it.name == 'title' && it.searchType == textSearchType }">
+                      <option value="${it.name}" selected data-inputid="value-0-0">
+                        <g:message code="${languageTagPrefix}${it.name}" />
+                      </option>
+                    </g:elseif>
+                    
                     <g:else>
                       <option value="${it.name}" data-inputid="value-0-0">
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:else>
+                    
                   </g:each>
                 </select>
                 
                 <!-- The non-JS version -->
                 <select class="facet facet-simple" name="facet-0-0">
                   <g:each in="${facetSearchfields}">
-                    <!-- We set the default value here. -->
+                  
                     <g:if test="${ it.name == 'title' && it.searchType == textSearchType }">
                       <option value="${it.name}" selected>
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
+                    
                     <g:elseif test="${it.searchType == textSearchType}">
                       <option value="${it.name}">
                         <g:message code="${languageTagPrefix}${it.name}" />
@@ -239,19 +249,14 @@
                     </g:else>
                   </g:each>
                 </select>
-                
+
                 <!-- The non-JS version -->
                 <select class="facet facet-simple" name="facet-0-4">
-                  <g:each in="${facetSearchfields}">
-                    <!-- We set the default value here. -->
-                    <g:if test="${ it.name == 'date' && it.searchType == textSearchType }">
-                      <option value="${it.name}" selected>
-                        <g:message code="${languageTagPrefix}${it.name}" />
-                      </option>
-                    </g:if>
-                  </g:each>
+                  <option value="date" selected>
+                    <g:message code="${languageTagPrefix}date" />
+                  </option>
                 </select>
-              
+
               </div><!-- /end of .span3 -->
                 <g:render template="dateFacetSearchValue" model="['group':0,'row':4]" />
               <g:render template="matchesSelection" model="['group':0,'row':4]" />

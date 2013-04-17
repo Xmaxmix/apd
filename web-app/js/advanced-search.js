@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 var page = {};
+
 (function($) {
     'use strict';
+
     page.init = function(root) {
         var searchStateCookie = new LargeCookie('advancedsearch');
 
@@ -43,6 +45,7 @@ var page = {};
             contextualHelpTooltip: 'div.tooltip'
         };
 
+        // TODO: why we declare functions in the init method?
         //switches input text-field <-> select-box dependent on selected facet
         function showFacetValueInput($row) {
 
@@ -215,7 +218,7 @@ var page = {};
         function updateGroupButtons() {
             var groups = $(selectors.groupWidget, root);
 
-            if (groups.filter(':hidden').length == 0) {
+            if (groups.filter(':hidden').length === 0) {
                 $(selectors.addGroupButton, root).hide();
                 $(selectors.removeGroupButton, root).show();
                 $(selectors.globalOperator, root).show();
@@ -296,7 +299,7 @@ var page = {};
         function resetFields($fields) {
             $fields.each(function(index, item) {
                 if ($(item).is('select')) {
-                    if (item.selectedIndex != 0) {
+                    if (item.selectedIndex !== 0) {
                         item.selectedIndex = 0;
                     }
                 } else if (item.value) {
@@ -305,8 +308,7 @@ var page = {};
             });
         }
 
-//FUNCTIONS TO INITIALIZE
-
+        //FUNCTIONS TO INITIALIZE
         function upgradeNonJsFacetSelectLists() {
             var $textOnlyFacets = $(selectors.facet, root);
             var $allFacets = $(selectors.facetDisabled, root);
@@ -445,7 +447,7 @@ var page = {};
         //contextual help
         function bindContextualHelp() {
             console.log('bindContextualHelp');
-            
+
             var fader;
 
             $(selectors.contextualHelp, root)
@@ -501,13 +503,13 @@ var page = {};
         //initialize cookie for stored last search query
         initializeStateStorage();
 
-        //format adn hide/display correct groups + rows + buttons
+        // format and hide/display correct groups + rows + buttons
         initializeGroups();
 
-        //handle click of reset button
+        // handle click of reset button
         bindFormButtonEvents();
 
-        //contextual help
+        // contextual help
         bindContextualHelp();
     };
 }

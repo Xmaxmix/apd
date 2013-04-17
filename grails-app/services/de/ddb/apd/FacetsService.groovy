@@ -190,7 +190,7 @@ public class FacetsService {
      * TODO: date has `text` as type, shouldn't it be date? What are the possible ENUM facet values?
      */
     def extend(facetSearchFields) {
-        def MISSING_FACET_NAMES = ['signature', 'archievetype', 'date']
+        def MISSING_FACET_NAMES = ['signature', 'archievetype']
         def extendedFacets = MISSING_FACET_NAMES.inject(facetSearchFields) { initialList, facetName ->
            initialList + [name: facetName, searchType: 'TEXT', sortType: null]
         }
