@@ -138,3 +138,11 @@
   height: 30px;
   background: url("../images/icons/tooltips.png") no-repeat 0px 0px;
 }
+
+#advanced-search .date-facet {
+  width: 45%;
+}
+
+#advanced-search #lifespan-to {
+  float: right;
+}

@@ -27,10 +27,10 @@ public class AdvancedSearchFormToQueryConverter {
     private String characterEncoding = "UTF-8"
 
     //Operator (AND/OR) to concatenate the groups
-    private String groupOperatorName = "operator"
+    private static final String GROUP_OPERATOR_NAME = "operator"
 
     //Operator (AND/OR) to concatenate the rows of one group
-    private String rowOperatorName = "operator-group-"
+    private static final String ROW_OPERATOR_NAME = "operator-group-"
 
     //Name of form-field that holds the facetname to search in(searchfield)
     private String facetName = "facet-"
@@ -61,10 +61,10 @@ public class AdvancedSearchFormToQueryConverter {
     //GET-Parameters from request
     def parameters
 
-    //Number of search-groups in andvanced search form
+    //Number of search-groups in advanced search form
     def searchGroupCount
 
-    //Number of search-rows per group in andvanced search form
+    //Number of search-rows per group in advanced search form
     def searchFieldCount
 
     //names of facet-searchfields. used to get name of selectbox containing facetted values.
@@ -91,66 +91,82 @@ public class AdvancedSearchFormToQueryConverter {
     }
 
     /**
-     * Convert parameters to Query
+     * Convert parameters to QueryString
      *
-     * @return String Query
+     * @return String QueryString
      */
     public String convertFormParameters() {
-        StringBuilder query = new StringBuilder()
-        String groupOperator = parameters.get(groupOperatorName)
+        def queryString = new StringBuilder()
+
+        String groupOperator = parameters.get(GROUP_OPERATOR_NAME)
+
+        // check if the parameter contains: `operator`, exit the method if empty
         if (groupOperator == null || groupOperator.isEmpty()) {
-            return query
+            return queryString.toString()
         }
-        List<String> groupParts = new ArrayList<String>()
-        for (int i = 0; i < searchGroupCount; i++) {
-            StringBuilder groupQuery = convertGroup(i)
-            if (groupQuery.length() > 0) {
-                groupParts.add(groupQuery)
+
+        List<String> groupParts = []
+
+        /*
+         * Search group count is default to 3.
+         * 0 <= groupId <= searchGroupCount - 1
+         * TODO: what happens if the user add or remove the group?
+         */
+        // for each group, we create a query string.
+        for (int groupId = 0; groupId < searchGroupCount; groupId++) {
+            StringBuilder groupQueryString = convertGroup(groupId)
+            if (groupQueryString) {
+                groupParts << groupQueryString
             }
         }
-        if (groupParts.size() > 0) {
+
+        if (groupParts) {
             for (String groupPart : groupParts) {
-                if (query.length() > 0) {
-                    query.append(" ").append(groupOperator).append(" ")
+                if (queryString) {
+                    queryString.append(" ").append(groupOperator).append(" ")
                 }
+                // When the user selects more than one group.
                 if (groupParts.size() > 1) {
-                    query.append("(").append(groupPart).append(")")
+                    queryString.append("(").append(groupPart).append(")")
                 }
                 else {
-                    query.append(groupPart)
+                    queryString.append(groupPart)
                 }
-
             }
         }
-        return URLEncoder.encode(query.toString(), characterEncoding)
+
+        return URLEncoder.encode(queryString.toString(), characterEncoding)
     }
 
     /**
-     * Convert group in searchform to (sub)query
+     * Convert group in search form to (sub)query
      *
      * @param groupId
      * @return (sub)query
      */
     private StringBuilder convertGroup(groupId) {
-        StringBuilder groupQuery = new StringBuilder()
-        String rowOperator = parameters.get(rowOperatorName + groupId)
+        def groupQueryString = new StringBuilder()
+        String rowOperator = parameters.get(ROW_OPERATOR_NAME + groupId)
+
         if (rowOperator == null || rowOperator.isEmpty()) {
-            return groupQuery
+            return groupQueryString
         }
-        for (int i = 0; i < searchFieldCount; i++) {
-            StringBuilder rowQuery = convertRow(groupId, i)
-            if (rowQuery.length() > 0) {
-                if (groupQuery.length() > 0) {
-                    groupQuery.append(" ").append(rowOperator).append(" ")
+
+        // The number of search field is read from the properties file, default to 5?
+        for (int rowId = 0; rowId < searchFieldCount; rowId++) {
+            StringBuilder rowQueryString = convertRow(groupId, rowId)
+            if (rowQueryString) {
+                if (groupQueryString) {
+                    groupQueryString.append(" ").append(rowOperator).append(" ")
                 }
-                groupQuery.append(rowQuery)
+                groupQueryString.append(rowQueryString)
             }
         }
-        return groupQuery
+        return groupQueryString
     }
 
     /**
-     * Convert row in searchform to (sub)query.
+     * Convert row in search form to (sub)query.
      * Decide where to get the searched value from (textfield or selectbox)
      *
      * @param groupId
@@ -158,7 +174,7 @@ public class AdvancedSearchFormToQueryConverter {
      * @return (sub)query
      */
     private StringBuilder convertRow(groupId, rowId) {
-        StringBuilder rowQuery = new StringBuilder()
+        def rowQuery = new StringBuilder()
         if (parameters.get(facetName + groupId + "-" + rowId) != null
         && !parameters.get(facetName + groupId + "-" + rowId).isEmpty()) {
             String searchValue = null
@@ -173,11 +189,9 @@ public class AdvancedSearchFormToQueryConverter {
             }
             else {
                 //facet searchfield, get value from select-box
-                //String selectboxName = facetSearchfields.get(parameters.get(facetName + groupId + "-" + rowId)) + "-" + groupId + "-" + rowId
-                def foo = parameters.get(facetName + groupId + "-" + rowId)
-                log.info facetSearchfields
+                def value = parameters.get(facetName + groupId + "-" + rowId)
 
-                String selectboxName = facetSearchfields.get(foo) + "-" + groupId + "-" + rowId
+                String selectboxName = facetSearchfields.get(value) + "-" + groupId + "-" + rowId
                 if (parameters.get(selectboxName) != null
                 && !parameters.get(selectboxName).isEmpty()) {
                     searchValue = parameters.get(selectboxName)

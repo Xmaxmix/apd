@@ -249,11 +249,6 @@
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
-                    <g:if test="${it.searchType?.equals(textSearchType)}">
-                      <option value="${it.name}">
-                        <g:message code="${languageTagPrefix}${it.name}" />
-                      </option>
-                    </g:if>
                   </g:each>
                 </select>
               

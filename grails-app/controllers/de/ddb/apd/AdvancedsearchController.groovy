@@ -40,8 +40,7 @@ class AdvancedsearchController {
         /* We use facetSearchFiels to fill the facet selection.
          * Example of facetSearchFiels = [ 'search_all', 'title', 'place' ]
          * */
-        List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
-        log.info "search : " +facetSearchfields
+        def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
@@ -76,6 +75,7 @@ class AdvancedsearchController {
 
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
+
         log.info 'params: ' + params
         String query = converter.convertFormParameters()
         log.info 'query: ' + query
