@@ -1,4 +1,4 @@
-<div class="row search-group">
+<div id="first-search-group" class="row search-group">
   <div class="span12">
     <div class="row">
       <g:render template="groupOperator" model="['group':0]" />
@@ -140,18 +140,28 @@
               
                 <!-- The JS version -->
                 <select class="facet facet-js" id="facet-js-0-2" name="facet-0-2" style="display: none" disabled="disabled">
+                
                   <g:each in="${facetSearchfields}">
-                    <g:if test="${it.searchType?.equals(enumSearchType)}">
+                  
+                    <g:if test="${it.searchType == enumSearchType}">
                       <option value="${it.name}"
-                        data-inputid="${it.name}${facetNameSuffix}-0-2">
+                        data-inputid="${it.name}${facetNameSuffix}-0-2>
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
+                    
+                    <g:elseif test="${ it.name == 'description' && it.searchType == textSearchType }">
+                      <option value="${it.name}" selected data-inputid="value-0-2">
+                        <g:message code="${languageTagPrefix}${it.name}" />
+                      </option>
+                    </g:elseif>
+                    
                     <g:else>
                       <option value="${it.name}" data-inputid="value-0-2">
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:else>
+                    
                   </g:each>
                 </select>
                 
@@ -195,12 +205,20 @@
                 <!-- The JS version -->
                 <select class="facet facet-js" id="facet-js-0-3" name="facet-0-3" style="display: none" disabled="disabled">
                   <g:each in="${facetSearchfields}">
-                    <g:if test="${it.searchType?.equals(enumSearchType)}">
+                    
+                    <g:if test="${it.searchType == enumSearchType}">
                       <option value="${it.name}"
-                        data-inputid="${it.name}${facetNameSuffix}-0-3">
+                        data-inputid="${it.name}${facetNameSuffix}-0-3>
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
+                    
+                    <g:elseif test="${ it.name == 'archievetype' && it.searchType == textSearchType }">
+                      <option value="${it.name}" selected data-inputid="value-0-3">
+                        <g:message code="${languageTagPrefix}${it.name}" />
+                      </option>
+                    </g:elseif>
+                    
                     <g:else>
                       <option value="${it.name}" data-inputid="value-0-3">
                         <g:message code="${languageTagPrefix}${it.name}" />
@@ -246,19 +264,9 @@
               
                 <!-- The JS version -->
                 <select class="facet facet-js" id="facet-js-0-4" name="facet-0-4" style="display: none" disabled="disabled">
-                  <g:each in="${facetSearchfields}">
-                    <g:if test="${it.searchType?.equals(enumSearchType)}">
-                      <option value="${it.name}"
-                        data-inputid="${it.name}${facetNameSuffix}-0-4">
-                        <g:message code="${languageTagPrefix}${it.name}" />
-                      </option>
-                    </g:if>
-                    <g:else>
-                      <option value="${it.name}" data-inputid="value-0-4">
-                        <g:message code="${languageTagPrefix}${it.name}" />
-                      </option>
-                    </g:else>
-                  </g:each>
+                  <option value="date" data-inputid="${it.name}${facetNameSuffix}-0-4" selected>
+                    <g:message code="${languageTagPrefix}date" />
+                  </option>
                 </select>
 
                 <!-- The non-JS version -->

@@ -264,15 +264,17 @@ var page = {};
         }
 
         // bring group to initial state (show 2 rows, clear values)
+        // TODO: show for the first group(groupId=0) 5 rows, and two for the rest
         function resetGroup(group) {
             console.log('group: ', group);
 
             // rows is an array
             var rows = $(selectors.row, group);
+
             rows.each(function(index, row) {
-                console.log('row', $(row).show());
+//                console.log('row', $(row).show());
 //                row.show();
-                 $(row).show();
+//                 row.show();
             });
 
             rows.first().show();
@@ -404,13 +406,17 @@ var page = {};
         }
 
         // TODO: what does this function do?
+        /* we show the number of rows here. */
         function setRowsInitialState(group) {
             var $last;
+            var numberOfRowToShow = 5;
 
             //find last row that has some value. usually this is populated by the browser.
             $(selectors.row, group).each(function(index) {
+                console.log('group: ',group);
                 var $row = $(this);
-                if (index <= 1 || hasFacetValueBeenEnteredForRow($row)) {
+
+                if (index <= numberOfRowToShow || hasFacetValueBeenEnteredForRow($row)) {
                     $last = $(this);
 
                     // redisplay the correct input depending on the selected facet
