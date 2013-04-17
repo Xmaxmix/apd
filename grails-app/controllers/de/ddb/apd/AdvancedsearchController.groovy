@@ -33,15 +33,15 @@ class AdvancedsearchController {
         /* TODO: These don't work, if we use external properties file. When we
          * use external properties the values are Strings *not* Integer.
          */
-        int searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount
-        int searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount
+        def searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount.toInteger()
+        def searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount.toInteger()
 
         String url = grailsApplication.config.apd.backend.url
         /* We use facetSearchFiels to fill the facet selection.
          * Example of facetSearchFiels = [ 'search_all', 'title', 'place' ]
          * */
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
-     
+
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
         render(view: "advancedsearch",
@@ -65,12 +65,12 @@ class AdvancedsearchController {
      */
     def executeSearch() throws IOException {
         // TODO: research how to reduce the code duplication.
-        int searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount
-        int searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount
-        int offset = grailsApplication.config.apd.advancedSearch.defaultOffset
-        int rows = grailsApplication.config.apd.advancedSearch.defaultRows
-
+        def searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount.toInteger()
+        def searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount.toInteger()
+        def offset = grailsApplication.config.apd.advancedSearch.defaultOffset.toInteger()
+        def rows = grailsApplication.config.apd.advancedSearch.defaultRows.toInteger()
         def url = grailsApplication.config.apd.backend.url
+
         def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 
         AdvancedSearchFormToQueryConverter converter =
