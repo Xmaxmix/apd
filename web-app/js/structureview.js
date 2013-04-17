@@ -17,14 +17,17 @@
 $(document).ready(function () {
   if(jsPageName == "structureview") {
 		
+	$('#institution-tree').jstree({ 
+		"themes" : {
+			"theme" : "classic",
+			"dots" : true,
+			"icons" : true
+		},
+		"plugins" : [ "themes", "html_data" ]
+	});	  
+	  
     var apiWrapper = new InstitutionsApiWrapper();
 	  
-    // when click on "Struktur" -> reload data and print tree
-//    $(".institution-tree").click(function(){
-//      apiWrapper.getFullInstitutionsList(function(json){
-//        printInstitutionsList(json);
-//      });		
-//    }); 
 
     // Build the tree
     function printInstitutionsList(json){
@@ -36,9 +39,9 @@ $(document).ready(function () {
     }
 
     // When page loads -> load the data and build tree
-    apiWrapper.getFullInstitutionsList(function(json){
-      printInstitutionsList(json);
-    });		
+//    apiWrapper.getFullInstitutionsList(function(json){
+//      printInstitutionsList(json);
+//    });		
   
   }
 });
