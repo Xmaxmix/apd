@@ -87,7 +87,6 @@
                   <g:each in="${facetSearchfields}">
                     <!-- We set the default value here. -->
                     <!-- TODO: We don't have a facet with value signature, yet. -->
-                    <!-- TODO: How can we include a facet value?. -->
                     <g:if test="${ it.name == 'signature' && it.searchType == textSearchType }">
                       <option value="${it.name}" selected>
                         <g:message code="${languageTagPrefix}${it.name}" />
