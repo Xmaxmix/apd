@@ -47,6 +47,8 @@ modules = {
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/navbar-manager.js'
         resource url:'/js/structure.js'
+        resource url:'/js/institutionsApiWrapper.js'
+        resource url:'/js/structureview.js'
     }
 }
 

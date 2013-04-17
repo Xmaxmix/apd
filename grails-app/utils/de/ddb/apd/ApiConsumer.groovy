@@ -51,9 +51,9 @@ class ApiConsumer {
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
      * @param optionalHeaders Optional request headers to add to the request
-     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text,
-     * the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set
-     * to true, the json-parser is explicitly overwritten with the text-parser.
+     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text, 
+     *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set 
+     *      to true, the json-parser is explicitly overwritten with the text-parser.  
      * @return An ApiResponse object containing the server response
      */
     static def getText(String baseUrl, String path, optionalHeaders = [:], fixWrongContentTypeHeader = false) {
@@ -105,9 +105,9 @@ class ApiConsumer {
      * @param method The request method (Method.GET, Method.POST)
      * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
      * @param optionalHeaders Optional request headers to add to the request
-     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text,
-     * the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set
-     * to true, the json-parser is explicitly overwritten with the text-parser.
+     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text, 
+     *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set 
+     *      to true, the json-parser is explicitly overwritten with the text-parser.  
      * @return An ApiResponse object containing the server response
      */
     private static def requestServer(baseUrl, path, query, method, content, optionalHeaders, fixWrongContentTypeHeader = false) {

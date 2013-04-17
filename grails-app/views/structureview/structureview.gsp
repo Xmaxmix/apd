@@ -24,7 +24,6 @@
         </div>
         <div class="row">
           <div class="span4">
-
             <div id="institution-tree">
               <ul>
                 <g:each in="${ all }">
@@ -48,7 +47,7 @@
                 </g:each>
               </ul>
             </div>
-
+            
           </div>
         </div>
       </div>
