@@ -46,10 +46,6 @@ class InfoController {
 
         def map = retrieveArguments(response)
         render(view: "info", model: map)
-        //        } catch(ItemNotFoundException infe){
-        //            log.error "index(): Request for nonexisting item with page: '" + params?.page + "'. Going 404..."
-        //            forward controller: "error", action: "notFound"
-        //        }
     }
 
 
