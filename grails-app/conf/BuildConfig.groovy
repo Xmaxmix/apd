@@ -42,7 +42,6 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-        runtime 'org.codehaus.groovy.modules.http-builder:http-builder:0.5.2'
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
     }
 
