@@ -33,13 +33,13 @@ class ApisController {
     def binary(){
         if(!params.filename){
             log.warn "binary(): A binary content was requested, but no filename was given in the url"
-            throw new ItemNotFoundException();
+            throw new ItemNotFoundException("binary(): A binary content was requested, but no filename was given in the url");
         }
 
         def apiResponse = ApiConsumer.getBinary(configurationService.getBinaryBackendUrl(), params.filename)
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
-            throw apiResponse.getException()
+            apiResponse.throwException(request)
         }
         def responseObject = apiResponse.getResponse()
 

@@ -15,6 +15,8 @@
  */
 package de.ddb.apd
 
+import de.ddb.apd.exception.BackendErrorException;
+import de.ddb.apd.exception.ItemNotFoundException;
 import grails.util.Environment
 
 /**
@@ -82,6 +84,16 @@ class ErrorController {
 
         // Here we have the possibility to add further logging to identify if some 404 urls were called
 
+        def exceptionMessage = ""
+        def apiResponse
+
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
+
         // Return response code 400
         response.status = 404
 
@@ -90,8 +102,20 @@ class ErrorController {
         def contentTypeFromConfig = configurationService.getMimeTypeHtml()
         def encodingFromConfig = configurationService.getEncoding()
 
-        // Return the 404 view
-        log.error "notFound(): Return view '404'"
-        return render(view:'404', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 404 view
+            log.error "notFound(): Return view '404'"
+            return render(view:'404_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "serverError(): Return view '505_development'"
+            return render(view:'404_development', model: ["message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        }
+
     }
 }

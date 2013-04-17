@@ -17,6 +17,7 @@ package de.ddb.apd
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.codehaus.groovy.grails.web.util.WebUtils;
 
 import de.ddb.apd.ApiConsumer;
 import de.ddb.apd.exception.BackendErrorException;
@@ -50,7 +51,7 @@ class ItemService {
         def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), path)
         if(!apiResponse.isOk()){
             log.error "findItemById(): Server returned no results -> " + id
-            throw apiResponse.getException()
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         def response = apiResponse.getResponse()
 
@@ -137,7 +138,7 @@ class ItemService {
         def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), path)
         if(!apiResponse.isOk()){
             log.error "fetchBinaryList(): Server returned no results -> " + id
-            throw apiResponse.getException()
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         def response = apiResponse.getResponse()
 
@@ -232,7 +233,7 @@ class ItemService {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), parentsPath)
         if(!apiResponse.isOk()){
             log.error "getParent(): Server returned no parents -> " + itemId
-            throw apiResponse.getException()
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         return apiResponse.getResponse()
     }
@@ -242,7 +243,7 @@ class ItemService {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), childrenPath)
         if(!apiResponse.isOk()){
             log.error "getChildren(): Server returned no children -> " + itemId
-            throw apiResponse.getException()
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         return apiResponse.getResponse()
     }
