@@ -1,11 +1,9 @@
+<g:set var="isStart" value="${isStartValue?1:0}"></g:set>
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
-    
     <title><g:layoutTitle default="ArchivportalD" /></title>
-
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <%-- 
     <meta name="description" content="Deutsche Digitale Bibliothek" />
     <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
@@ -15,7 +13,7 @@
     <r:layoutResources />
   </head>
   <body>
-    <g:render template="/general/header" />
+    <g:render template="/general/header" isStart="${isStart}"/>
     <div id="main-container" class="container" role="main">
       <g:layoutBody/>
     </div>

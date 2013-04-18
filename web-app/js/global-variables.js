@@ -16,6 +16,7 @@
 var jsContextPath = "";
 var jsLanguage = "";
 var jsPageName = "";
+var jsInstitutionsListHash = "";
 
 $(document).ready(function () {
     var jsVariablesDiv = $('#globalJsVariables');
@@ -26,6 +27,9 @@ $(document).ready(function () {
         }
         if (jsVariablesDiv.attr('data-js-language')) {
             jsLanguage = jsVariablesDiv.attr('data-js-language');
+        }
+        if (jsVariablesDiv.attr('data-js-institutions-list-hash')) {
+        	jsInstitutionsListHash = jsVariablesDiv.attr('data-js-institutions-list-hash');
         }
     }
     if (jsPageMeta) {
