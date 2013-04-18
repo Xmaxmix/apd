@@ -1,3 +1,4 @@
+<!-- TODO: refactor this template, a lot of repetition -->
 <div id="first-search-group" class="row search-group">
   <div class="span12">
     <div class="row">
@@ -138,17 +139,20 @@
             <div class="row">
               <div class="span3">
               
+              
                 <!-- The JS version -->
                 <select class="facet facet-js" id="facet-js-0-2" name="facet-0-2" style="display: none" disabled="disabled">
                 
+                
                   <g:each in="${facetSearchfields}">
                   
+                  
                     <g:if test="${it.searchType == enumSearchType}">
-                      <option value="${it.name}"
-                        data-inputid="${it.name}${facetNameSuffix}-0-2>
+                      <option value="${it.name}" data-inputid="${it.name}${facetNameSuffix}-0-2">
                         <g:message code="${languageTagPrefix}${it.name}" />
                       </option>
                     </g:if>
+                    
                     
                     <g:elseif test="${ it.name == 'description' && it.searchType == textSearchType }">
                       <option value="${it.name}" selected data-inputid="value-0-2">
