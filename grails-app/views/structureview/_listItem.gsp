@@ -1,12 +1,19 @@
-<g:if test="${ item.isFirst }">
-  <a id="${ item.firstChar }"
-    href="${item.uri}">
-    ${ item?.name } <span>(<g:message code="${ item?.sectorLabelKey }" />)
-    </span>
-  </a>
-</g:if>
-<g:else>
-  <a href="${item.uri}">
-    ${ item?.name } <span>(<g:message code="${ item?.sectorLabelKey }" />)</span>
-  </a>
-</g:else>
+<g:each var="child" in="${ children }">
+  <g:if test="${ child?.children}">
+    <li class="jstree-closed" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
+      <a href="${child.uri}" class=""> 
+        ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
+      </a>
+      <ul>
+        <g:render template="listItem" model="['children': child?.children]" />
+      </ul>
+    </li>
+  </g:if>
+  <g:else>
+    <li class="jstree-leaf" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
+      <a href="${child.uri}" class="">
+        ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
+      </a>
+    </li>
+  </g:else>
+</g:each>

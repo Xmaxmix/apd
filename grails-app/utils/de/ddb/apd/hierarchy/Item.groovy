@@ -32,7 +32,7 @@ class Item {
     String aggregationEntity
     List<Item> children = []
     Item parentItem
-    boolean isMainItem = false;
+    boolean isMainItem = false
 
     Item(){
     }
