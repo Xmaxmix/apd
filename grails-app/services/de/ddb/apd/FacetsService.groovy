@@ -19,13 +19,13 @@ import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.GET
 
 /**
- * Get facetted searchfields and values for facet from Backend.
+ * Get faceted search fields and values for facet from the Backend.
  *
  * @author mih
- *
+ * @author chh
  */
 public class FacetsService {
-    //Backend URL
+    //The Backend URL
     String url
 
     /**
@@ -190,7 +190,7 @@ public class FacetsService {
      * TODO: date has `text` as type, shouldn't it be date? What are the possible ENUM facet values?
      */
     def extend(facetSearchFields) {
-        def MISSING_FACET_NAMES = ['signature', 'archievetype']
+        def MISSING_FACET_NAMES = ['signature', 'archievetype', 'material', 'itemization_grade']
         def extendedFacets = MISSING_FACET_NAMES.inject(facetSearchFields) { initialList, facetName ->
            initialList + [name: facetName, searchType: 'TEXT', sortType: null]
         }
@@ -215,5 +215,4 @@ public class FacetsService {
         }
         return filtersForFacetName
     }
-
 }
