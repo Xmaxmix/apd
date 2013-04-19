@@ -27,6 +27,7 @@ var page = {};
       removeGroupButton: 'button.remove-group-button',
       addGroupButtonContainer: '.button-group',
       addGroupButton: 'button.add-group-button',
+      // this is *not* a row, but a list of rows.
       row: '.search-field-row',
 
       removeButton: 'button.remove-button',
@@ -37,8 +38,12 @@ var page = {};
       facetDisabled: 'select.facet-js',
       operator: 'select.operator',
       globalOperator: '.global-operator',
+
+      // TODO: change value to textFields
       value: 'input.value',
       matchValue: 'select.match',
+
+      // TODO: enumTypefacetValue: selection
       facetValues: 'select.facet-values',
       facetValueIdAttribute: 'data-inputid',
       contextualHelp: 'span.contextual-help',
@@ -121,7 +126,7 @@ var page = {};
             $prevRow.hide();
           }
           // redisplay the correct input depending on the selected facet
-          showFacetValueInput($prevRow);
+          changeFacetValueInputType($prevRow);
 
           // we are done with the current row, reset it
           resetRow($currentRow);
@@ -180,8 +185,8 @@ var page = {};
         });
 
         // redisplay the correct input depending on the selected facet
-        showFacetValueInput($prev);
-        showFacetValueInput($that);
+        changeFacetValueInputType($prev);
+        changeFacetValueInputType($that);
 
         $prev = $that;
       });
@@ -273,11 +278,14 @@ var page = {};
       });
 
       // redisplay the correct input depending on the selected facet
-      showFacetValueInput($row);
+      changeFacetValueInputType($row);
     }
 
-    // Helper: Clearing a field in IE9 using using jQuery $field.val(undefined) will blank out the field rather than selecting the first default item.
-    // As a workaround, test if a field is a infact a select list and set the selected index to 0 instead.  For every thing else, use .val(undefined)
+    /* Helper: Clearing a field in IE9 using using jQuery $field.val(undefined)
+     * will blank out the field rather than selecting the first default item.
+     * As a workaround, test if a field is a infact a select list and set the
+     * selected index to 0 instead.  For every thing else, use .val(undefined)
+     */
     function resetFields($fields) {
       $fields.each(function(index, item) {
         if ($(item).is('select')) {
@@ -290,7 +298,7 @@ var page = {};
       });
     }
 
-    //FUNCTIONS TO INITIALIZE
+    /* We execute following functions on init. */
     function upgradeNonJsFacetSelectLists() {
       var $textOnlyFacets = $(selectors.facet, root);
       var $allFacets = $(selectors.facetDisabled, root);
@@ -335,17 +343,19 @@ var page = {};
      */
     function bindFacetChangeEvents() {
       $(selectors.facet, root).change(function() {
+        // TODO: change selectors.row to selector.rows
         var $row = $(this).closest(selectors.row);
         if ($row) {
-          showFacetValueInput($row);
+          changeFacetValueInputType($row);
         }
       });
     }
 
     // switches input text-field <-> select-box dependent on selected facet
-    function showFacetValueInput($row) {
+    function changeFacetValueInputType($row) {
       var $targetEl = getTargetFacetValueElement($row);
 
+      // hide the facet value for the $row
       $row.find(selectors.value).hide();
       $row.find(selectors.facetValues).hide();
 
@@ -379,15 +389,20 @@ var page = {};
      * Formats groups and rows in groups.
      *
      * We always show the first and the second group, i.e. group with groupId 0 and 1
-     *
      */
     function setGroupInitialState() {
       $(selectors.groupWidget, root).each(function(groupIndex) {
-        var numberOfGroupToShow = 2;
+        // TODO: do not reset group with the id 0 to its initial state
+        if (groupIndex === 0) {
+          return;
+        }
+
         var $group = $(this);
 
-        if (groupIndex < numberOfGroupToShow || haveFacetValuesBeenEnteredForGroup($(this))) {
-          $(this).show();
+        var numberOfGroupToShow = 2;
+        if (groupIndex < numberOfGroupToShow ||
+            haveFacetValuesBeenEnteredForGroup($group)) {
+          $group.show();
         } else {
           // no need to show this, reset it
           resetGroup($group);
@@ -407,17 +422,17 @@ var page = {};
     /* we show the number of rows here. */
     function setRowsInitialState(group) {
       var $last;
-      var numberOfRowToShow = 5;
+      var numberOfRowToShow = 2;
 
-      //find last row that has some value. usually this is populated by the browser.
+      // find last row that has some value. usually this is populated by the browser.
       $(selectors.row, group).each(function(index) {
         var $row = $(this);
 
-        if (index <= numberOfRowToShow || hasFacetValueBeenEnteredForRow($row)) {
+        if (index < numberOfRowToShow || hasFacetValueBeenEnteredForRow($row)) {
           $last = $(this);
 
           // redisplay the correct input depending on the selected facet
-          showFacetValueInput($row);
+          changeFacetValueInputType($row);
         } else {
           resetRow($row);
           $row.hide();
