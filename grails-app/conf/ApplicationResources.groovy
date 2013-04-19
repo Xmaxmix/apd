@@ -25,7 +25,8 @@ modules = {
     cssscreen {
         resource url:'/css/vendor/bootstrap/css/bootstrap.css', bundle: 'screen'
         resource url:'/css/apd.css', bundle: 'screen'
-        resource url:'/css/index.css', bundle: 'screen'        resource url:'/css/binaries-viewer.css', bundle: 'screen'
+        resource url:'/css/index.css', bundle: 'screen'
+        resource url:'/css/binaries-viewer.css', bundle: 'screen'
         resource url:'/css/apd.css', bundle: 'screen'
         resource url:'/css/detailview.css', bundle: 'screen'
         resource url:'/css/structureview.css', bundle: 'screen'
