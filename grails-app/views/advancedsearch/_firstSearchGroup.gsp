@@ -133,6 +133,7 @@
           <div class="clearfix"></div>
         </div><!-- /end of .search-field-row -->
 
+
         <!-- For the search field `Enthaelt` -->
         <div class="row search-field-row">
           <div class="span11">
@@ -278,7 +279,7 @@
                 </select>
 
               </div><!-- /end of .span3 -->
-                <g:render template="dateFacetSearchValue" model="['group':0,'row':4]" />
+              <g:render template="dateFacetSearchValue" model="['group':0,'row':4]" />
               <g:render template="matchesSelection" model="['group':0,'row':4]" />
             </div><!-- /end of .row -->
           </div><!-- /end of .span11 -->
@@ -287,6 +288,7 @@
 
           <div class="clearfix"></div>
         </div><!-- /end of .search-field-row / laufzeit-->
+
 
       </div>
     </div>
