@@ -3,7 +3,6 @@
   <div class="span12">
     <div class="row">
       <g:render template="groupOperator" model="['group':0]" />
-      <g:render template="removeGroup" />
     </div>
     <div class="row bt">
       <div class="span12 search-field-group">

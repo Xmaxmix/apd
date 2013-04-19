@@ -196,7 +196,7 @@ var page = {};
       });
     }
 
-    //handle buttons for add/removal of group
+    // handle buttons for add/removal of group
     function updateGroupButtons() {
       var groups = $(selectors.groupWidget, root);
 
@@ -205,7 +205,7 @@ var page = {};
         $(selectors.removeGroupButton, root).show();
         $(selectors.globalOperator, root).show();
       }
-      else if (groups.filter(':visible').length == 1) {
+      else if (groups.filter(':visible').length === 1) {
         $(selectors.addGroupButton, root).show();
         $(selectors.removeGroupButton, root).hide();
         $(selectors.globalOperator, root).hide();
