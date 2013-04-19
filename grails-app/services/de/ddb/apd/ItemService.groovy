@@ -78,7 +78,7 @@ class ItemService {
     private getItemTitle(id) {
         final def path = "/access/" + id + "/components/title"
 
-        def apiResponse = ApiConsumer.getText(configurationService.getBackendUrl(), path, [:], true)
+        def apiResponse = ApiConsumer.getText(configurationService.getBackendUrl(), path, [:], [:], true)
         if(!apiResponse.isOk()){
             log.error "getItemTitle(): Server returned no results -> " + id
         }

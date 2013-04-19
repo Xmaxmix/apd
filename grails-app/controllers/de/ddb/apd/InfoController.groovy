@@ -36,7 +36,7 @@ class InfoController {
         def lang = getShortLocale()
         def path = "/static-apd/"+lang+"/"+page+".html"
 
-        def apiResponse = ApiConsumer.getText(url, path, [:], false)
+        def apiResponse = ApiConsumer.getText(url, path, [:], [:], false)
         if(!apiResponse.isOk()){
             log.error "index(): Server returned no results -> " + page
             apiResponse.throwException(request)

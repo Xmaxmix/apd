@@ -91,7 +91,7 @@ class InstitutionService {
         def pendingEtag = institutionsCache.etag
 
         // Call backend with the last known Etag
-        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", ["If-None-Match": pendingEtag])
+        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", [:], ["If-None-Match": pendingEtag])
         if(!responseWrapper.isOk()){
             log.error "findAll(): Server returned no results "
             throw responseWrapper.getException()
