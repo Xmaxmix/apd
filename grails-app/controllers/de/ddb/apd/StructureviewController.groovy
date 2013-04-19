@@ -15,17 +15,33 @@
  */
 package de.ddb.apd
 
+import groovy.json.JsonBuilder;
+import groovyx.net.http.ContentType;
+
+import javax.servlet.http.HttpServletResponse;
+
 class StructureviewController {
 
     def institutionService
 
-    def show() {
-        def allInstitution = institutionService.findAll()
+    def index() {
+        //def allInstitution = institutionService.findAll()
+        //        def institutionsListHash = institutionService.institutionsCache.getHash()
+        //        render (
+        //                view: 'structureview',
+        //                model: [
+        //                    //'all': allInstitution,
+        //                    'institutionsListHash' : institutionsListHash
+        //                ])
+
+        def allInstitution = institutionService.findAllAlphabetical()
         def institutionByFirstLetter = allInstitution.data
 
         // TODO: make this more idiomatic Groovy
         def all = []
-        institutionByFirstLetter?.each { all.addAll(it.value) }
+        institutionByFirstLetter?.each {
+            all.addAll(it.value)
+        }
 
         // no institutions
         institutionByFirstLetter.each { k,v ->
@@ -38,10 +54,30 @@ class StructureviewController {
 
         // TODO: move to service
         def index = []
-        institutionByFirstLetter.each {
-            index.add(it)
+        institutionByFirstLetter.each { index.add(it) }
+
+        render (view: 'structureview', model: [index: index, all: all, total: allInstitution?.total])
+    }
+
+    def getAjaxListFull() {
+        def hash = params.hashId
+        def allInstitutions = institutionService.findAll()
+
+        response.setHeader("Cache-Control", "public, max-age=31536000")
+        render (contentType: ContentType.TEXT.toString(), text: allInstitutions.toString())
+    }
+
+    def isAjaxListFullOutdated() {
+        def hash = params.hashId
+        def hasChanged = institutionService.institutionsCache.hasChanged(hash)
+
+        def builder = new JsonBuilder()
+        def root = builder {
+            isOutdated hasChanged
+            hashId institutionService.institutionsCache.getHash()
         }
 
-        render (view: 'structureview',  model: [index: index, all: all, total: allInstitution?.total])
+        response.setHeader("Cache-Control", "no-cache")
+        render (contentType: ContentType.JSON.toString()) { builder }
     }
 }
