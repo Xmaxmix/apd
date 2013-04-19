@@ -172,12 +172,27 @@ public class FacetsService {
          */
         def facetSearchFields = []
         def json = ApiConsumer.getTextAsJson(url ,'/search/facets/', [type:'EXTENDED'])
+        /* we don't want to include all facets in APD. We don't need following facets:
+         * - time,
+         * - sector,
+         * - provider
+         * */
+
+        def UNNEEDED_FACETS = ['time', 'sector', 'provider']
         json.each{
-            def part = [:]
-            part["name"] = it.name
-            part["searchType"] = it.searchType
-            part["sortType"] = it.sortType
-            facetSearchFields[it.position - 1] = part
+            // TODO: extract to constant
+            if(UNNEEDED_FACETS.contains(it.name)) {
+                log.debug('ignore facet: ' + it.name)
+            } else {
+                def part = [:]
+                part["name"] = it.name
+                part["searchType"] = it.searchType
+                part["sortType"] = it.sortType
+
+                // TODO: do we really need the order?
+                // facetSearchFields[it.position - 1] = part
+                facetSearchFields << part
+            }
         }
 
          extend(facetSearchFields)
@@ -190,7 +205,7 @@ public class FacetsService {
      * TODO: date has `text` as type, shouldn't it be date? What are the possible ENUM facet values?
      */
     def extend(facetSearchFields) {
-        def MISSING_FACET_NAMES = ['signature', 'archievetype', 'material', 'itemization_grade']
+        def MISSING_FACET_NAMES = ['signature', 'archieve_type', 'material', 'itemization_grade']
         def extendedFacets = MISSING_FACET_NAMES.inject(facetSearchFields) { initialList, facetName ->
            initialList + [name: facetName, searchType: 'TEXT', sortType: null]
         }
