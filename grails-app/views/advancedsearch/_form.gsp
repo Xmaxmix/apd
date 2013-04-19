@@ -26,7 +26,7 @@
       - modularize
       -->
       <label class="checkbox">
-        <input type="checkbox">Nur Objekt mit Digitalisat
+        <input type="checkbox" name="isMediaOnly" value="true">Nur Objekt mit Digitalisat
       </label>
       <g:render template="buttons" />
       </div>

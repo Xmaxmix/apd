@@ -25,6 +25,8 @@ import static groovyx.net.http.Method.GET
  * @author chh
  */
 public class FacetsService {
+
+    private static final def UNNEEDED_FACETS = ['time', 'sector', 'provider']
     //The Backend URL
     String url
 
@@ -50,7 +52,7 @@ public class FacetsService {
     }
 
     /**
-     * Get List of Searchfields(Facets) for advanced search.
+     * Get the list of Facets for advanced search. We will use them for the advanced's search fields.
      *
      * @return List of Arrays.<br>
      *     Array contains name, searchType(TEXT or ENUM), sortType(ALPHA_ID, ALPHA_LABEL).<br>
@@ -60,27 +62,10 @@ public class FacetsService {
      *     sortType (for searchType = ENUM): how to sort possible values.
      *     ALPHA_ID: sort by id.<br>
      *     ALPHA_LABEL: sort by value.<br>
-     */
-    public List getExtendedFacets() throws IOException {
-           /*
-         * facetSearchFields =  [
-         *   {name=search_all, searchType=TEXT, sortType=null},
-         *   {name=title, searchType=TEXT, sortType=null},
-         *   {name=description, searchType=TEXT, sortType=null},
-         *   {name=time, searchType=ENUM, sortType=ALPHA_ID},
-         *   {name=place, searchType=TEXT, sortType=null},
-         *   {name=affiliate, searchType=TEXT, sortType=null},
-         *   {name=keywords, searchType=TEXT, sortType=null},
-         *   {name=language, searchType=ENUM, sortType=ALPHA_LABEL},
-         *   {name=type, searchType=ENUM, sortType=ALPHA_LABEL},
-         *   {name=sector, searchType=ENUM, sortType=ALPHA_LABEL},
-         *   {name=provider, searchType=TEXT, sortType=null}
-         * ]
-         * */
-        /*
-         *
-         *  JSON = [
-              {
+     *
+     *     The JSON has following format:
+     *     JSON = [
+     *         {
                 "name": "search_all",
                 "paths": [],
                 "searchType": "TEXT",
@@ -169,16 +154,17 @@ public class FacetsService {
                 "position": 11
               }
             ]
-         */
+     *
+     */
+    public List getExtendedFacets() throws IOException {
         def facetSearchFields = []
         def json = ApiConsumer.getTextAsJson(url ,'/search/facets/', [type:'EXTENDED'])
+
         /* we don't want to include all facets in APD. We don't need following facets:
          * - time,
          * - sector,
          * - provider
          * */
-
-        def UNNEEDED_FACETS = ['time', 'sector', 'provider']
         json.each{
             // TODO: extract to constant
             if(UNNEEDED_FACETS.contains(it.name)) {
