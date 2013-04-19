@@ -21,7 +21,7 @@ class ListviewController {
     def searchService
     def configurationService
 
-    def results() {
+    def index() {
 
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
 
@@ -41,20 +41,10 @@ class ListviewController {
         def allInstitution = institutionService.findAll()
         def institutionByFirstLetter = allInstitution.data
 
-        // TODO: make this more idiomatic Groovy
+        //institution list
         def all = []
         institutionByFirstLetter?.each { all.addAll(it.value) }
 
-        // no institutions
-        institutionByFirstLetter.each { k,v ->
-            if(institutionByFirstLetter[k]?.size() == 0) {
-                institutionByFirstLetter[k] = true
-            } else {
-                institutionByFirstLetter[k] = false
-            }
-        }
-
-        // TODO: move to service
         def index = []
         institutionByFirstLetter.each {
             index.add(it)

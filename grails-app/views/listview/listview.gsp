@@ -27,27 +27,33 @@
 
             <div id="institution-tree">
               <ul>
-                <g:each in="${ all }">
-                  <g:if test="${ it?.children}">
-                    <li class="jstree-close" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
-                      <a href="${it.uri}" class="">
-                        ${ it?.name } 
-                        <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
-                        <span>(${ it?.children.size() } <g:message code="apd.Object"/>)</span>
-                      </a>
-                      <ul>
-                        <g:render template="listItem" model="['children': it?.children]" />
-                      </ul>
-                    </li>
-                  </g:if>
-                  <g:else>
-                    <li class="jstree-leaf" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
-                      <a href="${it.uri}" class="">
-                        ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
-                      </a>
-                    </li>
-                  </g:else>
-                </g:each>
+                <li rel="root" class="jstree-closed">
+                  <i class="icon-root"></i>
+                  <span>  ${total } <g:message code="apd.Object"/></span>
+                  <ul>
+                    <g:each in="${ all }">
+                      <g:if test="${ it?.children}">
+                        <li class="jstree-close" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
+                          <a href="${it.uri}" class="">
+                            ${ it?.name } 
+                            <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
+                            <span>(${ it?.children.size() } <g:message code="apd.Object"/>)</span>
+                          </a>
+                          <ul>
+                            <g:render template="listItem" model="['children': it?.children]" />
+                          </ul>
+                        </li>
+                      </g:if>
+                      <g:else>
+                        <li class="jstree-leaf" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
+                          <a href="${it.uri}" class="">
+                            ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
+                          </a>
+                        </li>
+                      </g:else>
+                    </g:each>
+                  </ul>
+                </li>
               </ul>
             </div>
 

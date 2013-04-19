@@ -57,11 +57,11 @@ class ApiConsumer {
      * to true, the json-parser is explicitly overwritten with the text-parser.
      * @return An ApiResponse object containing the server response
      */
-    static def getText(String baseUrl, String path, queryParameters = [:], optionalHeaders = [:], fixWrongContentTypeHeader = false) {
+    static def getText(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:], fixWrongContentTypeHeader = false) {
         if(fixWrongContentTypeHeader){
-            return requestServer(baseUrl, path, queryParameters.put("client", APD_CLIENT_NAME), Method.GET, ContentType.JSON, optionalHeaders, true)
+            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, optionalHeaders, true)
         }else{
-            return requestServer(baseUrl, path, queryParameters.put("client", APD_CLIENT_NAME), Method.GET, ContentType.TEXT, optionalHeaders)
+            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.TEXT, optionalHeaders)
         }
     }
 
@@ -73,8 +73,8 @@ class ApiConsumer {
      * @param queryParameters The query parameters to append to the request (e.g. "[client: 'APD']")
      * @return An ApiResponse object containing the server response
      */
-    static def getJson(String baseUrl, String path, queryParameters = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, queryParameters.put("client", APD_CLIENT_NAME), Method.GET, ContentType.JSON, optionalHeaders)
+    static def getJson(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, optionalHeaders)
     }
 
     /**
@@ -85,8 +85,8 @@ class ApiConsumer {
      * @param queryParameters The query parameters to append to the request (e.g. "[client: 'APD']")
      * @return An ApiResponse object containing the server response
      */
-    static def getXml(String baseUrl, String path, queryParameters = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, queryParameters.put("client", APD_CLIENT_NAME), Method.GET, ContentType.XML, optionalHeaders)
+    static def getXml(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.XML, optionalHeaders)
     }
 
     /**
@@ -97,8 +97,8 @@ class ApiConsumer {
      * @param queryParameters The query parameters to append to the request (e.g. "[client: 'APD']")
      * @return An ApiResponse object containing the server response
      */
-    static def getBinary(String baseUrl, String path, queryParameters = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, queryParameters.put("client", APD_CLIENT_NAME), Method.GET, ContentType.BINARY, optionalHeaders)
+    static def getBinary(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, optionalHeaders)
     }
 
     /**

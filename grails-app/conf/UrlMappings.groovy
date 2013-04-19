@@ -33,12 +33,17 @@ class UrlMappings {
 
         "/struktur" {
             controller="structureview"
+            action="index"
+        }
+
+        "/struktur/item/$id" {
+            controller="structureview"
             action="show"
         }
 
         "/liste" {
             controller="listview"
-            action="results"
+            action="index"
         }
 
         "/item/$id/$name?" {

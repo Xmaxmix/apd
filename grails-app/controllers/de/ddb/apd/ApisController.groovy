@@ -42,7 +42,7 @@ class ApisController {
       }
       def jsonResp = apiResponse.getResponse()
 
-      jsonResp.results["docs"].get(0).each{
+      jsonResp.results['docs'][0].each {
 
         def tmpResult = [:]
         def title
@@ -108,7 +108,7 @@ class ApisController {
         }
         def responseObject = apiResponse.getResponse()
 
-        byte[] bytes = responseObject.get("bytes");
+        byte[] bytes = responseObject['bytes']
         response.setContentType(responseObject.get("Content-Type"))
         response.setContentLength(responseObject.get("Content-Length").toInteger())
         response.setHeader("Content-Disposition", "inline; filename=" + params.filename.tokenize('/')[-1])
