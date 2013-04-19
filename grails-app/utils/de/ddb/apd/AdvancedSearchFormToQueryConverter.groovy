@@ -135,6 +135,11 @@ public class AdvancedSearchFormToQueryConverter {
             }
         }
 
+        if(parameters.get('isMediaOnly')) {
+            def allMediaQueryString='(type:(mediatype_001) OR type:(mediatype_002) OR type:(mediatype_3) OR type:(mediatype_5))'
+            queryString << ' AND ' << allMediaQueryString
+        }
+
         return URLEncoder.encode(queryString.toString(), characterEncoding)
     }
 
@@ -181,14 +186,14 @@ public class AdvancedSearchFormToQueryConverter {
             //check if facet-searchfield-name is in facetSearchfields
             if (facetSearchfields.get(parameters.get(facetName + groupId + "-" + rowId)) == null
             || facetSearchfields.get(parameters.get(facetName + groupId + "-" + rowId)).isEmpty()) {
-                //no facet searchfield, so use value-group-row as input fieldname
+                //no facet search field, so use value-group-row as input field name
                 if (parameters.get(valueName + groupId + "-" + rowId) != null
                 && !parameters.get(valueName + groupId + "-" + rowId).isEmpty()) {
                     searchValue = parameters.get(valueName + groupId + "-" + rowId)
                 }
             }
             else {
-                //facet searchfield, get value from select-box
+                //facet search field, get value from select-box
                 def value = parameters.get(facetName + groupId + "-" + rowId)
 
                 String selectboxName = facetSearchfields.get(value) + "-" + groupId + "-" + rowId

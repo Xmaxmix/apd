@@ -71,6 +71,7 @@ class AdvancedsearchController {
         def rows = grailsApplication.config.apd.advancedSearch.defaultRows.toInteger()
         def url = grailsApplication.config.apd.backend.url
 
+        // TODO: why we fetch the data again?
         def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 
         AdvancedSearchFormToQueryConverter converter =
