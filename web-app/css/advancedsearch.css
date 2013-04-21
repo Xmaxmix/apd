@@ -148,6 +148,8 @@
 }
 
 /* TODO: We include all CSS from DDB. We might have to remove unused styles. */
+
+/* TODO: why do we have two definitions for .tooltip? */
 .tooltip {
   position: static;
   z-index: auto;
@@ -159,416 +161,36 @@
   visibility: visible;
 }
 
-.tooltip.in {
-  opacity: 1;
-  filter: alpha(opacity = 100);
-}
-
-.tooltip.top {
-  margin-top: 0;
-}
-
-.tooltip.right {
-  margin-left: 0;
-}
-
-.tooltip.bottom {
-  margin-top: 0;
-}
-
-.tooltip.left {
-  margin-left: 0;
-}
-
-.tooltip-inner {
-  max-width: none;
-  padding: 0;
-  color: #3e3a37;
+.tooltip {
+  font-size: 0.813em;
+  color: #999;
+  position: absolute;
+  display: block;
+  z-index : 4;
+  padding: 3px 8px 3px;
+  background-color: #fff;
+  border: 1px solid #999;
   text-align: left;
-  text-decoration: none;
-  background-color: transparent;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
+  -moz-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; /* does not support IE6 & IE7. */
 }
 
-.tooltip-arrow {
-  position: static;
-  width: auto;
-  height: auto;
-  border-color: transparent;
-  border-style: solid;
-}
-
-.tooltip.top .tooltip-arrow {
-  bottom: auto;
-  left: auto;
-  margin-left: 0;
-  border-top-color: #000000;
-  border-width: medium;
-}
-
-.tooltip.right .tooltip-arrow {
-  top: auto;
-  left: auto;
-  margin-top: 0;
-  border-right-color: #000000;
-  border-width: medium;
-}
-
-.tooltip.left .tooltip-arrow {
-  top: auto; left : auto; margin-top : 0;
-  border-left-color: #000000;
-  left: auto;
-  margin-top: 0; border-left-color : #000000;
-  border-width: medium;
-}
-
-.tooltip.bottom .tooltip-arrow {
-  top: auto; left : auto; margin-top : 0;
-  border-bottom-color: #000000;
-  left: auto;
-  margin-top: 0; border-bottom-color : #000000;
-  border-width: medium;
+.tooltip a {
+  font-weight: bold;
 }
 /* end of .tooltip */
 
-
-.label {
-  display: inline;
-  padding: 0;
-  font-size: medium;
-  font-weight: normal;
-  line-height: normal;
-  color: #3e3a37;
-  text-shadow: none;
-  white-space: normal;
-  vertical-align: baseline;
-  background-color: transparent;
-}
-
-
-.search-header {
-  margin-top: 35px;
-  margin-bottom: 20px;
-}
-
-#form-search-header {
-  display: inline-block;
-}
-
-.search-header form label span {
-  display: block;
-  overflow: hidden;
-  height: 0px;
-  width: 0px;
-  margin: 0;
-}
-
-.search-header form .contextual-help {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 10px;
-}
-
-.search-header form .contextual-help a {
-  display: block;
-  overflow: hidden;
-  width: 20px;
-  height: 20px;
-}
-
-.search-header form .contextual-help a img {
-  position: absolute;
-  top: -58px;
-  right: -12px;
-  margin: 0;
-}
-
-.search-header form button {
-  box-shadow: none;
-  overflow: hidden;
-  background: none;
-  width: 25px;
-}
-
-#form-search-header button:before {
-  display: inline-block;
-  content: url("../images/icons/search.png");
-  margin: -150px 0px 0px 0px;
-}
-
-#form-search-header button:hover:before {
-  margin: -200px 0px 0px 0px;
-}
-
-#form-search-header .tooltip {
-  width: 340px;
-  top: 100px;
-  right: 0px;
-}
-
-.language-widget {
-  z-index: 1;
-}
-
-.language-widget form {
-  padding-top: 1em;
-}
-
-.language-widget label {
-  float: left;
-  margin-right: 0.5em;
-}
-
-.language-widget label span {
-  float: left;
-  margin-right: 1em;
-  display: block;
-  line-height: 24px;
-}
-
-.language-wrapper {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.language-wrapper a:hover {
-  text-decoration: none;
-}
-
-.language-wrapper .nopointer {
-  background-color: #EEEEEE !important;
-}
-
-header .selector,.header .selector {
-  display: none;
-  background-color: #fff;
-  padding: 7px 12px 5px;
-  border: 1px solid #e9e5e2;
-  z-index: 1;
-  width: 50px;
-  position: absolute;
-  right: 0;
-  top: 20px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-header .selector li,.header .selector li {
-  float: none;
-  cursor: pointer;
-  padding: 0 15px 0 0;
-  margin-bottom: 0px;
-  white-space: nowrap;
-}
-
-header .selector.language li,.header .selector.language li {
-  padding: 0;
-}
-
-header .toolbar .selector a,.header .toolbar .selector a {
-  background: none;
-}
-
-header .language-widget form,.header .language-widget form {
-  display: none;
-}
-/* header - end */
-
-/* mobile view header */
-.navbar {
-  background: none;
-}
-
-.navbar-fixed-top {
-  margin-bottom: 0px;
-}
-
-.brand img {
-  height: 20px;
-  margin: 0px;
-  padding: 0px;
-}
-
-.btn-navbar {
-  height: 30px;
-}
-
-.nav-list ul>li {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
-}
-
-.nav-list ul>li>a {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
-}
-@media (max-width: 979px) {
-  .search-header form input {
-    width: 240px;
-  }
-  header .link-adv-search, div.header .link-adv-search {
-    margin-left: 20px;
-  }
-}
-@media (min-width: 980px) and (max-width: 1199px) {
-  header .link-adv-search, div.header .link-adv-search {
-    margin-left: 40px;
-  }
-}
-/* mobile view header - end */
-
-/* index */
-.search-widget {
-  padding-top: 60px;
-  padding-bottom: 20px;
-  text-align: center;
-  height: 300px;
-}
-
-.search-widget img {
-  margin-left: 0;
-  margin: 0px 0px 23px 0px;
-  height: 178px;
-}
-
-.search-widget label span {
-  display: block;
-  overflow: hidden;
-  height: 0px;
-  width: 0px;
-  margin: 0;
-}
-
-.search-widget form button {
-  width: 40px;
-  height: 40px;
-  box-shadow: none;
-  overflow: hidden;
-  background: none;
-  vertical-align: top;
-}
-
-.search-widget form button:before {
-  display: inline-block;
-  content: url("../images/icons/search.png");
-  margin: 0px 0px 0px 0px;
-}
-
-.search-widget form button:hover:before {
-  margin: -50px 0px 0px 0px;
-}
-
-.search-widget .contextual-help,.advanced-search .contextual-help {
-  margin-left: 4px;
-  margin-top: 5px;
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/tooltips.png") no-repeat 0px 0px;
-}
-
-#form-search .contextual-help:hover,#form-search .contextual-help:active,#form-search .contextual-help:focus,.advanced-search .contextual-help:hover,.advanced-search .contextual-help:active,.advanced-search .contextual-help:focus {
-  background-position: 0px -30px;
-}
-
-#form-search {
-  position: relative;
-  width: 50%;
-  margin: 0 auto;
-}
-
-#form-search label {
-  float: left;
-}
-
-#form-search input {
-  font-size: 1.25em;
-  width: 82%;
-  height: 37px !important;
-  line-height: 40px;
-  float: left;
-}
-
-#form-search .link-adv-search {
-  margin-top: 10px;
-  font-size: 0.938em;
-}
-
-#form-search .tooltip {
-  max-width: 93%;
-  margin: 12px 0px;
-  color: #3e3a37;
-  font-size: 0.938em;
-  top: 40px;
-}
-
+/* TODO: use class instead of tag */
 form label {
   display: inline-block;
-  clear: left;
-  color: #3e3a37;
-  font-size: 0.938em;
 }
 
-form input {
-  width: 280px;
-  margin: 0 0 1px 0;
-  height: 23px !important;
-  vertical-align: middle !important;
-}
-
-input {
-  color: #3e3a37;
-  font-family: Calibri,Arial,sans-serif;
-  font-size: 0.875em;
-  background-color: #fff;
-  border: 1px solid;
-  border-color: #858280 #dcdbda #dcdbda #858280;
-  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  padding: 0 0 0 3px;
-}
-
-button,input[type="button"],input[type="submit"],.button {
-  color: #3e3a37;
-  font-size: 0.938em;
-  font-weight: bold;
-  border: none;
-  background: #ec0a3c url("../images/bg/primary_button_bg.png") repeat-x bottom center;
-  margin: 0;
-  padding: 2px 10px;
-  cursor: pointer;
-  height: 25px;
-  line-height: 14px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -moz-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -webkit-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-button:hover,input[type="button"]:hover,input[type="submit"]:hover {
-  background-position: top center;
-}
-
-button[disabled],input[type="button"][disabled],input[type="submit"][disabled] {
-  background: #999 url("../images/bg/primary_button_bg_disabled.png") repeat-x
-    bottom center;
-  cursor: default;
-}
-
-button,.button {
+/* TODO: use class instead of tag */
+button, .button {
   border: none;
   font-family: Calibri, Arial, sans-serif;
   font-size: 0.938em;
@@ -580,54 +202,7 @@ button,.button {
   cursor: pointer;
 }
 
-.tooltip a {
-  font-weight: bold;
-}
-
-.contextual-help {
-  display: block;
-  width: 17px;
-  height: 17px;
-  background: url("../images/icons/tooltips.png") no-repeat 0 -60px;
-  text-indent: -999em;
-}
-
-.contextual-help,.contextual-help a,.contextual-help img {
-  cursor: help;
-}
-
-.contextual-help,.contextual-help a,.contextual-help img {
-  cursor: help;
-}
-
-.contextual-help:hover,.contextual-help:active,.contextual-help:focus {
-  background-position: 0px -90px;
-}
-
-.tooltip {
-  font-size: 0.813em;
-  color: #999;
-  position: absolute;
-  display: block; z-index : 4;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  padding: 3px 8px 3px;
-  background-color: #fff;
-  border: 1px solid #999;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  text-align: left;
-  z-index: 4;
-}
-
-.warning {
-  background-color: #a5003b;
-  color: #fff;
-  padding: 5px 0 10px;
-  text-align: center;
-}
-
+/* TODO: use semantic class name */
 .fl {
   float: left !important;
 }
@@ -667,16 +242,3 @@ button,.button {
 .br-white {
   border-right: solid 1px #ffffff;
 }
-
-.off {
-  display: none !important;
-}
-
-.on {
-  display: block !important;
-}
-
-.nopointer {
-  cursor: default !important;
-}
-/* genaral rules - end */
