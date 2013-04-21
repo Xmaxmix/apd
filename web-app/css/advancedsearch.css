@@ -149,22 +149,6 @@
 
 
 /* TODO: We include all CSS from DDB. We might have to remove unused styles. */
-@font-face {
-  font-family: KarbidWeb;
-  src: url("fonts/KarbidWeb.eot")
-}
-
-@font-face {
-  font-family: KarbidWeb;
-  src: url("fonts/KarbidWeb.woff") format("woff")
-}
-
-@font-face {
-  font-family: KarbidWeb;
-  src: url("fonts/KarbidWeb-Bold.woff") format("woff");
-  font-weight: bold
-}
-
 /*
 * Bootstrap overridden rules
 */
@@ -176,7 +160,6 @@ label {
 
 label {
   display: inline;
-  margin-bottom: 0;
 }
 
 select,textarea,input[type="text"],input[type="password"],input[type="datetime"],input[type="datetime-local"],input[type="date"],input[type="month"],input[type="time"],input[type="week"],input[type="number"],input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"],.uneditable-input
@@ -874,8 +857,8 @@ header .language-widget form,.header .language-widget form {
   height:36px;
   padding:5px;
   line-height:18px;
-  margin:15px;  
-  overflow:hidden; 
+  margin:15px;
+  overflow:hidden;
   text-overflow:ellipsis;
 }
 
@@ -1036,7 +1019,7 @@ footer .legal ul li+li,.footer .legal ul li+li {
 
 /* responsive startpage */
 @media ( max-width : 767px) {
-  
+
   .search-widget {
     padding-top: 0px;
     height: auto;
@@ -1050,7 +1033,7 @@ footer .legal ul li+li,.footer .legal ul li+li {
     width: 100%;
     max-width: 500px;
   }
-  
+
 }
 /* responsive sartpage - end */
 
