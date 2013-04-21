@@ -136,17 +136,16 @@
   display: inline-block;
   width: 30px;
   height: 30px;
-  background: url("../images/icons/tooltips.png") no-repeat 0px 0px;
+  background: url("../images/icons/tooltips.png") no-repeat 0 0;
 }
 
 #advanced-search .date-facet {
   width: 45%;
 }
 
-#advanced-search #lifespan-to {
+#lifespan-to {
   float: right;
 }
-
 
 /* TODO: We include all CSS from DDB. We might have to remove unused styles. */
 /*
