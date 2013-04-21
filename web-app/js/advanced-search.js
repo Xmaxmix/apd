@@ -215,10 +215,6 @@ var page = {};
         $(selectors.addGroupButton, root).show();
         $(selectors.globalOperator, root).show();
       }
-
-      //set the focus on the first element of the new search group
-      $('select', groups.filter(':visible:last')).first().focus();
-
     }
 
     function updateRowButtons(group) {
@@ -248,8 +244,6 @@ var page = {};
     // bring group to initial state (show 2 rows, clear values)
     // TODO: show for the first group(groupId=0) 5 rows, and two for the rest
     function resetGroup(group) {
-      console.log('group: ', group);
-
       // rows is an array
       var rows = $(selectors.row, group);
 
@@ -478,15 +472,12 @@ var page = {};
 
     //contextual help
     function bindContextualHelp() {
-      console.log('bindContextualHelp');
-
       var fader;
 
       $(selectors.contextualHelp, root)
       .removeAttr('title')
       .unbind('mouseover')
       .bind('mouseover', function() {
-        console.log('mouse over');
         clearTimeout(fader);
 
         var tooltip = $(selectors.contextualHelpTooltip, root);
@@ -549,6 +540,5 @@ var page = {};
 (jQuery));
 
 if ($('#advanced-search')) {
-  console.log('run advanced search script.');
   page.init($('#advanced-search').get(0));
 }
