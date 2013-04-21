@@ -32,12 +32,22 @@ class UrlMappings {
 
         "/struktur" {
             controller="structureview"
-            action="show"
+            action="index"
+        }
+
+        "/institutions/full/$hashId?" {
+            controller="structureview"
+            action="getAjaxListFull"
+        }
+
+        "/institutions/outdated/$hashId?" {
+            controller="structureview"
+            action="isAjaxListFullOutdated"
         }
 
         "/liste" {
             controller="listview"
-            action="index"
+            action="show"
         }
 
         "/item/$id/$name?" {
@@ -52,12 +62,14 @@ class UrlMappings {
 
         "/binary/$filename**" {
             controller="apis"
-            action="binary"
+            action="index"
         }
 
-        "500"(controller: "error", action: "serverError")
-        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
-
         "404"(controller: "error", action: "notFound")
+
+        "500"(controller: "error", action: "notFound", exception: de.ddb.apd.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.apd.exception.ConfigurationException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.apd.exception.BackendErrorException)
+        "500"(controller: "error", action: "serverError")
     }
 }

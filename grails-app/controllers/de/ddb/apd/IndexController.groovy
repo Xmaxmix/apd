@@ -18,6 +18,6 @@ package de.ddb.apd
 class IndexController {
 
     def index() {
-        render(view: "index", model: [:])
+        render(view: "index", model: [isStartValue:true])
     }
 }

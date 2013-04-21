@@ -41,14 +41,19 @@ public class FacetsService {
         def filtersForFacetName = getFiltersForFacetName(facetName, allFacetFilters)
         def res = []
         int i = 0
-        def json = ApiConsumer.getTextAsJson(url ,'/search/facets/' + facetName, null)
-        json.facetValues.each{
-            if(filtersForFacetName.isEmpty() || !filtersForFacetName.contains(it.value)){
-                res[i] = it.value
-                i++
+        log.info "Facet name: ${facetName}"
+
+        def responseWrapper = ApiConsumer.getJson(url ,'/search/facets/' + facetName)
+        if(responseWrapper.isOk()) {
+            def json = responseWrapper.getResponse()
+            json.facetValues.each{
+                if(filtersForFacetName.isEmpty() || !filtersForFacetName.contains(it.value)){
+                    res[i] = it.value
+                    i++
+                }
             }
+            return res
         }
-        return res
     }
 
     /**
@@ -158,7 +163,14 @@ public class FacetsService {
      */
     public List getExtendedFacets() throws IOException {
         def facetSearchFields = []
-        def json = ApiConsumer.getTextAsJson(url ,'/search/facets/', [type:'EXTENDED'])
+            def responseWrapper = ApiConsumer.getJson(url ,'/search/facets/', [type:'EXTENDED'])
+
+            if(!responseWrapper.isOk()){
+                log.error "findAll(): Server returned no results "
+                throw responseWrapper.getException()
+            }
+
+        def json  = responseWrapper.response
 
         /* we don't want to include all facets in APD. We don't need following facets:
          * - time,

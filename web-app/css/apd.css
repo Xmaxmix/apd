@@ -13,6 +13,143 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+ /*
+ * Accessibility
+ */
+.invisible-but-readable {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/*
+ * Footer
+ */
+footer .legal .inner, .footer .legal .inner {
+  border-top: 1px solid #e9e5e2;
+  padding-top: 24px;
+  overflow: hidden;
+}
+footer .inner, .footer .inner {
+  margin: 0 auto;
+}
+footer .legal, .footer .legal {
+font-size: 0.813em;
+  color: #3e3a37;
+}
+footer .legal .inner, .footer .legal .inner {
+  border-top: 1px solid #e9e5e2;
+  padding-top: 24px;
+  overflow: hidden;
+}
+footer .legal small, .footer .legal small {
+  float: left;
+  font-size: 1em;
+  margin-right: 35px;
+}
+footer .legal ul, .footer .legal ul{
+  margin:0;
+}
+footer .legal ul li, .footer .legal ul li {
+  float: left;
+  padding-right: 17px;
+}
+footer .legal ul li+li, .footer .legal ul li+li {
+  border-left: 1px solid #d1cdcb;
+  padding-left: 17px;
+}
+.build {
+  float: right;
+  font-size: 0.75em;
+  color: #c1c1c1;
+  z-index: 3;
+}
+
+/*
+ * Navigation bar
+ */
+.navbar {
+  margin-top: 35px;
+}
+.navbar-inner {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background-image: none;
+  background-color: transparent;
+  border: none;
+  filter: none;
+}
+.navbar .nav{
+  margin: 10px 10px 0 0;
+}
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+.navbar .nav > li > a {
+  padding: 0 25px 10px 0;
+  text-transform:uppercase;
+}
+.dropdown-menu {
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  min-width: 600px;
+  width: auto;
+  padding: 0;
+  margin: 0;
+  margin-top: -2px;
+  border: 0;
+  background: transparent;
+}
+.navbar .nav > li > a:focus, .navbar .nav > li > a:hover, .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+  color: #005580;
+  text-decoration: underline;
+  background-image: none;
+  background-color: transparent;
+}
+.dropdown-menu > li > a {
+  padding: 0;
+}
+.dropdown-menu.inline > li{
+  border-top: #e9e5e2 1px solid;
+  margin-right: -5px;
+  padding-left: 0;
+  padding-right: 25px;
+}
+.dropdown-menu.inline >li:last-child,  .dropdown-menu.inline >li:last-child a {
+  padding-right: 0;
+}
+.navbar .nav > li > .dropdown-menu:before {
+  background: transparent;
+  border: 0;
+}
+.navbar-search .search-query {
+  line-height: 2;
+}
+.dropdown.active-default .dropdown-toggle, .dropdown-menu .active-default a{
+  color: #005580;
+  font-weight: bold;
+}
+.dropdown.active-default .dropdown-menu{
+  display:block;
+}
+/*
+* General
+*/
+#main-container {
+  min-height: 300px;
+  padding-top: 60px;
+}
 
 .off {
   display: none;
