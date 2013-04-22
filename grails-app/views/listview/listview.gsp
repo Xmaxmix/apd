@@ -24,7 +24,6 @@
         </div>
         <div class="row">
           <div class="span4">
-
             <div id="institution-tree">
               <ul>
                 <li rel="root" class="jstree-closed">
@@ -56,7 +55,6 @@
                 </li>
               </ul>
             </div>
-
           </div>
         </div>
       </div>
