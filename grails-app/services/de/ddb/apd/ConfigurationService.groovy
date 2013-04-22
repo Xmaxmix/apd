@@ -103,4 +103,62 @@ class ConfigurationService {
         }
         return mimeTypeHtml
     }
+
+/*
+apd.advancedSearch.defaultOffset=0
+apd.advancedSearch.defaultRows=20
+*/
+
+    def getSearchGroupCount() {
+        def searchGroupCount = grailsApplication.config.apd?.advancedSearch?.searchGroupCount
+        if(!searchGroupCount ){
+            throw new ConfigurationException("""getSearchGroupCount(): Configuration entry does not exist ->
+                apd.advancedSearch.searchGroupCount""")
+        }
+        if(!(searchGroupCount instanceof String)){
+            throw new ConfigurationException("""getSearchGroupCount(): apd.advancedSearch.searchGroupCount is not
+                a String""")
+        }
+        searchGroupCount
+    }
+
+    def getSearchFieldCount() {
+        def searchFieldCount= grailsApplication.config.apd.advancedSearch?.searchFieldCount
+        if(!searchFieldCount){
+            throw new ConfigurationException("""getSearchFieldCount(): Configuration entry does not exist ->
+                apd.advancedSearch.searchFieldCount""")
+        }
+        if(!(searchFieldCount instanceof String)){
+            throw new ConfigurationException("""getSearchFieldCount(): apd.advancedSearch.searchFieldCount is not
+                a String""")
+        }
+        searchFieldCount
+    }
+
+    def getSearchOffset() {
+        def offset = grailsApplication.config.apd.advancedSearch?.defaultOffset
+        if(!offset){
+            throw new ConfigurationException("""getSearchOffset(): Configuration entry does not exist ->
+                apd.advancedSearch.defaultOffset""")
+        }
+        if(!(offset instanceof String)){
+            throw new ConfigurationException("""getSearchOffset(): apd.advancedSearch.defaultOffset is not
+                a String""")
+        }
+        offset
+    }
+
+    def getSearchRows() {
+        def rows = grailsApplication.config.apd?.advancedSearch?.defaultRows
+        if(!rows){
+            throw new ConfigurationException("""getSearchRows(): Configuration entry does not exist ->
+                apd.advancedSearch.defaultRows""")
+        }
+        if(!(rows instanceof String)){
+            throw new ConfigurationException("""getSearchRows(): apd.advancedSearch.defaultRows is not
+                a String""")
+        }
+        rows
+    }
+
 }

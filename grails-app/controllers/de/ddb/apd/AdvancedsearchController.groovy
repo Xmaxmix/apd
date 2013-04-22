@@ -25,29 +25,22 @@ class AdvancedsearchController {
     private static final String labelSortType = "ALPHA_LABEL"
     private static final String MESSAGE_PROPERTY_PREFIX = "apd."
 
-    static defaultAction = "fillValues"
+    def configurationService
 
     def messageSource
 
     def index() {
-        /* TODO: These don't work, if we use external properties file. When we
-         * use external properties the values are Strings *not* Integer.
-         */
-        def searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount.toInteger()
-        def searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount.toInteger()
-
-        String url = grailsApplication.config.apd.backend.url
         /* We use facetSearchFiels to fill the facet selection.
          * Example of facetSearchFiels = [ 'search_all', 'title', 'place' ]
          * */
-        def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        def facetSearchfields = new FacetsService(url:configurationService.getBackendUrl()).getExtendedFacets()
 
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
         render(view: "advancedsearch",
         model: [
-            searchGroupCount: searchGroupCount,
-            searchFieldCount: searchFieldCount,
+            searchGroupCount: configurationService.getSearchGroupCount().toInteger(),
+            searchFieldCount: configurationService.getSearchFieldCount().toInteger(),
             facetSearchfields: facetSearchfields,
             facetValuesMap : facetValuesMap,
             textSearchType : textSearchType,
@@ -64,12 +57,11 @@ class AdvancedsearchController {
      * @throws IOException
      */
     def executeSearch() throws IOException {
-        // TODO: research how to reduce the code duplication.
-        def searchGroupCount = grailsApplication.config.apd.advancedSearch.searchGroupCount.toInteger()
-        def searchFieldCount = grailsApplication.config.apd.advancedSearch.searchFieldCount.toInteger()
-        def offset = grailsApplication.config.apd.advancedSearch.defaultOffset.toInteger()
-        def rows = grailsApplication.config.apd.advancedSearch.defaultRows.toInteger()
-        def url = grailsApplication.config.apd.backend.url
+        def searchGroupCount = configurationService.getSearchGroupCount().toInteger()
+        def searchFieldCount = configurationService.getSearchFieldCount().toInteger()
+        def offset = configurationService.getSearchOffset().toInteger()
+        def rows = configurationService.getSearchRows().toInteger()
+        def url = configurationService.getBackendUrl()
 
         // TODO: why we fetch the data again?
         def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
@@ -77,9 +69,7 @@ class AdvancedsearchController {
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
 
-        log.info 'params: ' + params
         String query = converter.convertFormParameters()
-        log.info 'query: ' + query
         redirect(uri: "/liste?query=" + query + "&offset=" + offset + "&rows=" + rows)
     }
 
