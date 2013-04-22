@@ -56,8 +56,8 @@ class InfoController {
 
     private def retrieveArguments(def content){
         HtmlParser parser = new HtmlParser(content)
-        def body = parser.getContentOfFirstTag("body")
-        def title = parser.getContentOfFirstTag("title")
+        def body = parser.getContentOfFirstTagAsHtml("body")
+        def title = parser.getContentOfFirstTagAsText("title")
         def author = parser.getContentOfMetaTag("author")
         def keywords = parser.getContentOfMetaTag("keywords")
         def robot = parser.getContentOfMetaTag("robots")
