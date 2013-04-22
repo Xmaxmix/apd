@@ -97,8 +97,16 @@ grails.exceptionresolver.params.exclude = ['password']
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
-
-
+apd {
+    backend {
+        facets {
+            filter = [
+                [facetName:'language_fct', filter:'term:unknown' ],
+                [facetName:'language_fct', filter:'term:termunknown']
+            ]
+        }
+    }
+}
 
 environments {
     development {
@@ -119,6 +127,7 @@ environments {
 //APD SPECIFIC Configuration variables
 //The variables can be overwritten by defining local configurations, see below environments
 apd.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
+// TODO: which one should we use?
 //apd.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
 apd.static.url="http://dev.escidoc.org"  //temporary workaround for development until we have existing pages on the real backend server
 apd.apis.url="http://localhost:8080"
@@ -127,11 +136,10 @@ apd.ddb.url="http://www.deutsche-digitale-bibliothek.de"
 //apd.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
 apd.logging.folder="target/logs"
 //apd.tracking.piwikfile="${userHome}/.grails/tracking.txt"
-//apd.advancedSearch.searchGroupCount=3
-//apd.advancedSearch.searchFieldCount=10
-//apd.advancedSearch.defaultOffset=0
-//apd.advancedSearch.defaultRows=20
-
+apd.advancedSearch.searchGroupCount=3
+apd.advancedSearch.searchFieldCount=5
+apd.advancedSearch.defaultOffset=0
+apd.advancedSearch.defaultRows=20
 
 // log4j configuration
 log4j = {
@@ -174,7 +182,6 @@ log4j = {
             //Don't filter messages in production
         }
     }
-
 }
 
 jawr {
