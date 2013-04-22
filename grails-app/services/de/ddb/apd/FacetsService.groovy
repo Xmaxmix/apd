@@ -129,7 +129,7 @@ public class FacetsService {
      *
      */
     def extend(facetSearchFields) {
-        def MISSING_FACET_NAMES = ['signature', 'archieve_type', 'material', 'itemization_grade']
+        def MISSING_FACET_NAMES = ['signature', 'archieve_type', 'material', 'itemization_grade', 'origin']
         def extendedFacets = MISSING_FACET_NAMES.inject(facetSearchFields) { initialList, facetName ->
            initialList + [name: facetName, searchType: 'TEXT', sortType: null]
         }
