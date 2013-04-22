@@ -1,10 +1,10 @@
 <html>
   <head>
     <title>${title} - <g:message code="apd.ArchivportalD"/></title>
-    
+
     <meta name="page" content="detailview" />
     <meta name="layout" content="main" />
-    
+
   </head>
   <body>
     <div class="container detailview">
@@ -29,7 +29,7 @@
         <div class="span4 binaries">
           <g:render template="binaries" />
         </div>
-      </div>    
+      </div>
     </div>
   </body>
 </html>
