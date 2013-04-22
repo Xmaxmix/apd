@@ -130,7 +130,7 @@ class ListviewController {
     }
 
     def show() {
-        def allInstitution = institutionService.findAll()
+        def allInstitution = institutionService.findAllAlphabetical()
         def institutionByFirstLetter = allInstitution.data
 
         // TODO: make this more idiomatic Groovy
@@ -148,9 +148,7 @@ class ListviewController {
 
         // TODO: move to service
         def index = []
-        institutionByFirstLetter.each {
-            index.add(it)
-        }
+        institutionByFirstLetter.each { index.add(it) }
 
         render (view: 'listview',  model: [index: index, all: all, total: allInstitution?.total])
     }

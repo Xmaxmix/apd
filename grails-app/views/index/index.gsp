@@ -17,5 +17,7 @@
         </div>
       </g:form>
     </div>
+    <div id="carousel-container">
+    </div>
   </body>
 </html>

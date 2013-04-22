@@ -16,6 +16,11 @@
 
 package de.ddb.apd
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import groovy.xml.StreamingMarkupBuilder;
+
 import org.ccil.cowan.tagsoup.Parser;
 
 /**
@@ -35,16 +40,31 @@ class HtmlParser {
      */
     def HtmlParser(String htmlPageSource){
         def tagsoupParser = new Parser()
+        tagsoupParser.setFeature(tagsoupParser.namespacesFeature, false)
         def slurper = new XmlSlurper(tagsoupParser)
         htmlParser = slurper.parseText(htmlPageSource)
     }
 
     /**
-     * Returns the content of the first found tag with the given name
+     * Returns the content of the first found tag with the given name as html
      * @param tagName The tag to search for
-     * @return The content of the tag
+     * @return The content of the tag as html
      */
-    def getContentOfFirstTag(String tagName){
+    def getContentOfFirstTagAsHtml(String tagName){
+        def tagContents = htmlParser."**".findAll{it.name() == tagName}
+        if(tagContents.size() > 0){
+            return (new StreamingMarkupBuilder().bindNode(tagContents[0])).toString()
+        }else{
+            return ""
+        }
+    }
+
+    /**
+     * Returns the content of the first found tag with the given name as text without any tags
+     * @param tagName The tag to search for
+     * @return The content of the tag as text 
+     */
+    def getContentOfFirstTagAsText(String tagName){
         def tagContents = htmlParser."**".findAll{it.name() == tagName}
         if(tagContents.size() > 0){
             return tagContents[0].text()

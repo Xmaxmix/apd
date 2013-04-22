@@ -36,7 +36,7 @@ class InfoController {
         def lang = getShortLocale()
         def path = "/static-apd/"+lang+"/"+page+".html"
 
-        def apiResponse = ApiConsumer.getText(url, path, [:], false)
+        def apiResponse = ApiConsumer.getText(url, path, [:], [:], false)
         if(!apiResponse.isOk()){
             log.error "index(): Server returned no results -> " + page
             apiResponse.throwException(request)
@@ -56,8 +56,8 @@ class InfoController {
 
     private def retrieveArguments(def content){
         HtmlParser parser = new HtmlParser(content)
-        def body = parser.getContentOfFirstTag("body")
-        def title = parser.getContentOfFirstTag("title")
+        def body = parser.getContentOfFirstTagAsHtml("body")
+        def title = parser.getContentOfFirstTagAsText("title")
         def author = parser.getContentOfMetaTag("author")
         def keywords = parser.getContentOfMetaTag("keywords")
         def robot = parser.getContentOfMetaTag("robots")
