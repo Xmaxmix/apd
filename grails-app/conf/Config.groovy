@@ -136,10 +136,10 @@ apd.ddb.url="http://www.deutsche-digitale-bibliothek.de"
 //apd.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
 apd.logging.folder="target/logs"
 //apd.tracking.piwikfile="${userHome}/.grails/tracking.txt"
-apd.advancedSearch.searchGroupCount=3
-apd.advancedSearch.searchFieldCount=5
-apd.advancedSearch.defaultOffset=0
-apd.advancedSearch.defaultRows=20
+apd.advancedSearch.searchGroupCount="3"
+apd.advancedSearch.searchFieldCount="5"
+apd.advancedSearch.defaultOffset="0"
+apd.advancedSearch.defaultRows="20"
 
 // log4j configuration
 log4j = {
