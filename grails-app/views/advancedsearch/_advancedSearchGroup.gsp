@@ -6,9 +6,7 @@
     </div>
     <div class="row bt">
       <div class="span12 search-field-group">
-        <!-- 
-        We show a number of rows by default. We read it from the application config. It defaults to 5
-         -->
+
          <%--
         <g:each var="row" in="${ (0..<searchFieldCount) }">
           <div class="row search-field-row">
@@ -16,13 +14,16 @@
           </div>
         </g:each>
          --%>
+
+        <!-- TODO: consider refactor using this code. We should remove
+          Groovy code if possible. -->
         <g:set var="row" value="${0}"/>
         <g:while test="${row < searchFieldCount}">
           <div class="row search-field-row">
             <g:render template="advancedSearchRow" />
           </div>
-          <%row++%>
-        </g:while> 
+          <% row++ %>
+        </g:while>
       </div>
     </div>
   </div>

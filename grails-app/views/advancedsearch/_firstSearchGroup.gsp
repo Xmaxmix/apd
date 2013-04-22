@@ -1,4 +1,4 @@
-<!-- TODO: refactor this template, a lot of repetition -->
+<!-- TODO: refactor this template, a lot of repetition [APD-39] -->
 <div id="first-search-group" class="row search-group">
   <div class="span12">
     <div class="row">
@@ -287,7 +287,6 @@
 
           <div class="clearfix"></div>
         </div><!-- /end of .search-field-row / laufzeit-->
-
 
       </div>
     </div>

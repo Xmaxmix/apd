@@ -52,13 +52,17 @@ var page = {};
 
     // TODO: why we declare functions in the init method?
 
-    // Each facet dropdown has an associated text field or a select list.
-    // Each option element in the facet select list has a custom data-* attribute which points to the associated input.
-    // This improves performance to avoid searching through all fields and selecting it directly
+    /* Each facet dropdown has an associated text field or a select list.
+     * Each option element in the facet select list has a custom data-* attribute
+     * which points to the associated input.
+     * This improves performance to avoid searching through all fields and
+     * selecting it directly
+     */
     function getTargetFacetValueElement($row) {
       var facetName = $row.find(selectors.facet).val();
 
-      var $selectedOption = $('option[' + selectors.facetValueIdAttribute + "][value='" + facetName + "']", $row);
+      var $selectedOption = $('option[' + selectors.facetValueIdAttribute + "][value='" +
+        facetName + "']", $row);
 
       // construct jQuery #id selector using option data-* attribute
       var $targetEl = $row.find('#' + $selectedOption.attr(selectors.facetValueIdAttribute));
@@ -86,12 +90,15 @@ var page = {};
 
     function removeGroup($groupWidget) {
       var $prev = $groupWidget;
-      // when removing a group, only the last visible group needs to be reset, and the values copied up
+      /* when removing a group, only the last visible group needs to be reset,
+       * and the values copied up.
+       */
 
       // shuffle group values up into previous group
       $groupWidget.nextAll(':visible').andSelf().filter(selectors.groupWidget).each(function() {
         var $that = $(this),
-        rowInputSelectors = [selectors.facet, selectors.value, selectors.matchValue, selectors.facetValues],
+        rowInputSelectors = [selectors.facet, selectors.value, selectors.matchValue,
+          selectors.facetValues],
         $prevRows = $(selectors.row, $prev),
         $currentRows = $(selectors.row, $that);
 
@@ -140,7 +147,7 @@ var page = {};
         resetGroup($prev);
         updateGroupButtons();
       });
-    };
+    }
 
     function showNextGroup() {
       $(selectors.groupWidget, root).filter(':hidden:first').slideDown(100, function() {
@@ -167,8 +174,8 @@ var page = {};
       // shuffle row values up
       $row.nextAll(':visible').andSelf().each(function() {
         var $that = $(this),
-        valueSelectors = [selectors.facet, selectors.value, selectors.matchValue, selectors.facetValues];
-
+        valueSelectors = [selectors.facet, selectors.value, selectors.matchValue,
+          selectors.facetValues];
 
         //shift facet related fields up
         $(valueSelectors).each(function(index, selector) {
@@ -252,7 +259,8 @@ var page = {};
       rows.slice(2).hide();
       updateRowButtons(group);
 
-      var valueSelectors = [selectors.operator, selectors.facet, selectors.value, selectors.matchValue, selectors.facetValues];
+      var valueSelectors = [selectors.operator, selectors.facet, selectors.value,
+        selectors.matchValue, selectors.facetValues];
       // clear values in group, reset select boxes
       $(valueSelectors, group).each(function(index, selector) {
         resetFields($(selector, group));
@@ -355,7 +363,9 @@ var page = {};
 
       $targetEl.show();
 
-      // show/hide the Match selection field - this must be displayed only if the free text value field is displayed.
+      /* show/hide the Match selection field - this must be displayed only if
+       * the free text value field is displayed.
+       */
       var isEnum = $targetEl.filter(selectors.value).length === 0;
 
       if (isEnum) {

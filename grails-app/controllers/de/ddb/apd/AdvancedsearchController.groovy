@@ -17,9 +17,9 @@ package de.ddb.apd
 
 class AdvancedsearchController {
 
+    // TODO: use UPPER_CASE for constants.
     private static final String enumSearchType = "ENUM"
     private static final String textSearchType = "TEXT"
-    // TODO: copy the message properties from DDB NEXT.
     private static final String languageTagPrefix = "apd.facet_"
     private static final String facetNameSuffix = "_fct"
     private static final String labelSortType = "ALPHA_LABEL"
@@ -93,22 +93,9 @@ class AdvancedsearchController {
         def url = grailsApplication.config.apd.backend.url
 
         def allFacetFilters = grailsApplication.config.apd.backend.facets.filter
-        /*
-        def allFacetFilters =  [
-            [
-                'facetName': 'language_fct',
-                'filter': 'term:unknown'
-            ],
-            [
-                'facetName': 'language_fct',
-                'filter': 'term:termunknown'
-            ]
-        ]
-        */
         def facetsRequester = new FacetsService(url:url)
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {
-                // this is okay
                 def facetValues = facetsRequester.getFacet(facetSearchfield.name + facetNameSuffix, allFacetFilters)
                 def facetDisplayValuesMap = new TreeMap()
                 for (facetValue in facetValues) {

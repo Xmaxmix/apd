@@ -71,95 +71,22 @@ public class FacetsService {
      *     The JSON has following format:
      *     JSON = [
      *         {
-                "name": "search_all",
-                "paths": [],
-                "searchType": "TEXT",
-                "sortType": null,
-                "displayType": "EXTENDED",
-                "position": 1
-              },
-              {
-                "name": "title",
-                "paths": [],
-                "searchType": "TEXT",
-                "sortType": null,
-                "displayType": "EXTENDED",
-                "position": 2
-              },
-              {
-                "name": "description",
-                "paths": [],
-                "searchType": "TEXT",
-                "sortType": null,
-                "displayType": "EXTENDED",
-                "position": 3
-              },
-              {
-                "name": "time",
-                "paths": [],
-                "searchType": "ENUM",
-                "sortType": "ALPHA_ID",
-                "displayType": "EXTENDED",
-                "position": 4
-              },
-              {
-                "name": "place",
-                "paths": [],
-                "searchType": "TEXT",
-                "sortType": null,
-                "displayType": "EXTENDED",
-                "position": 5
-              },
-              {
-                "name": "affiliate",
-                "paths": [],
-                "searchType": "TEXT",
-                "sortType": null,
-                "displayType": "EXTENDED",
-                "position": 6
-              },
-              {
-                "name": "keywords",
-                "paths": [],
-                "searchType": "TEXT",
-                "sortType": null,
-                "displayType": "EXTENDED",
-                "position": 7
-              },
-              {
-                "name": "language",
-                "paths": [],
-                "searchType": "ENUM",
-                "sortType": "ALPHA_LABEL",
-                "displayType": "EXTENDED",
-                "position": 8
-              },
-              {
-                "name": "type",
-                "paths": [],
-                "searchType": "ENUM",
-                "sortType": "ALPHA_LABEL",
-                "displayType": "EXTENDED",
-                "position": 9
-              },
-              {
-                "name": "sector",
-                "paths": [],
-                "searchType": "ENUM",
-                "sortType": "ALPHA_LABEL",
-                "displayType": "EXTENDED",
-                "position": 10
-              },
-              {
-                "name": "provider",
-                "paths": [],
-                "searchType": "TEXT",
-                "sortType": null,
-                "displayType": "EXTENDED",
-                "position": 11
-              }
-            ]
-     *
+     *           "name": "search_all",
+     *           "paths": [],
+     *           "searchType": "TEXT",
+     *           "sortType": null,
+     *           "displayType": "EXTENDED",
+     *           "position": 1
+     *         },
+     *         {
+     *           "name": "title",
+     *           "paths": [],
+     *           "searchType": "TEXT",
+     *           "sortType": null,
+     *           "displayType": "EXTENDED",
+     *           "position": 2
+     *         }
+     *        ]
      */
     public List getExtendedFacets() throws IOException {
         def facetSearchFields = []
@@ -200,7 +127,6 @@ public class FacetsService {
      * Because the back-end hasn't support other facets yet, we manually extend them. We need to replace it once
      * the back-end support them.
      *
-     * TODO: date has `text` as type, shouldn't it be date? What are the possible ENUM facet values?
      */
     def extend(facetSearchFields) {
         def MISSING_FACET_NAMES = ['signature', 'archieve_type', 'material', 'itemization_grade']

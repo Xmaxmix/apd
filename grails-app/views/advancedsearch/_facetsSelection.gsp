@@ -1,7 +1,9 @@
 <div class="span3">
 
   <!-- The JS version -->
-  <select class="facet facet-js" id="facet-js-${group}-${row}" name="facet-${group}-${row}" style="display: none" disabled="disabled">
+  <!-- TODO: remove inline style -->
+  <select class="facet facet-js" id="facet-js-${group}-${row}" name="facet-${group}-${row}"
+    style="display: none" disabled="disabled">
     <g:each in="${facetSearchfields}">
       <g:if test="${it.searchType?.equals(enumSearchType)}">
         <option value="${it.name}"
@@ -16,7 +18,8 @@
       </g:else>
     </g:each>
   </select>
-  
+
+  <!-- TODO: We don't need the non-JS version, remove it -->
   <!-- The non-JS version -->
   <select class="facet facet-simple" name="facet-${group}-${row}">
     <g:each in="${facetSearchfields}">
