@@ -1,4 +1,4 @@
-﻿// LargeCookie provides a way to store larger than normal cookies (~4k+)
+// LargeCookie provides a way to store larger than normal cookies (~4k+)
 // Long values are split and stored in multiple cookies
 LargeCookie = (function ($, defaultCookieService) {
 
