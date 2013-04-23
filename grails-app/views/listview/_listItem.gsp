@@ -1,8 +1,10 @@
 <g:each var="child" in="${ children }">
   <g:if test="${ child?.children}">
-    <li class="jstree-open" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
+    <li class="jstree-close" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
       <a href="${child.uri}" class=""> 
-        ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
+        ${ child?.name }
+        <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
+        <span>(${ child?.children.size() } <g:message code="apd.Object"/>)</span>
       </a>
       <ul>
         <g:render template="listItem" model="['children': child?.children]" />

@@ -16,18 +16,17 @@
 
 $(document).ready(function () {
   if(jsPageName == "structureview") {
-		
-	$('#institution-tree').jstree({ 
-		"themes" : {
-			"theme" : "classic",
-			"dots" : true,
-			"icons" : true
-		},
-		"plugins" : [ "themes", "html_data" ]
-	});	  
-	  
-    var apiWrapper = new InstitutionsApiWrapper();
-	  
+
+  $('#institution-tree').jstree({ 
+    "themes" : {
+      "theme" : "classic",
+      "dots" : true,
+      "icons" : true
+     },
+     "plugins" : [ "themes", "html_data" ]
+  });
+
+    var apiWrapper = new InstitutionsApiWrapper();  
 
     // Build the tree
     function printInstitutionsList(json){

@@ -35,6 +35,16 @@ class UrlMappings {
             action="index"
         }
 
+        "/struktur/item/$id" {
+            controller="structureview"
+            action="show"
+        }
+
+        "/liste" {
+            controller="listview"
+            action="index"
+        }
+
         "/institutions/full/$hashId?" {
             controller="structureview"
             action="getAjaxListFull"
@@ -43,11 +53,6 @@ class UrlMappings {
         "/institutions/outdated/$hashId?" {
             controller="structureview"
             action="isAjaxListFullOutdated"
-        }
-
-        "/liste" {
-            controller="listview"
-            action="show"
         }
 
         "/item/$id/$name?" {
