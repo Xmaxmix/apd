@@ -291,9 +291,11 @@ var page = {};
     function resetFields($fields) {
       $fields.each(function(index, item) {
         if ($(item).is('select')) {
+
           if (item.selectedIndex !== 0) {
             item.selectedIndex = 0;
           }
+
         } else if (item.value) {
           item.value = '';
         }
@@ -472,9 +474,10 @@ var page = {};
         });
 
         $(selectors.groupWidget, root)
-        .first().show()
-        .end()
-        .slice(1).hide();
+          .first().show()
+          .end()
+          .slice(1)
+          .hide();
 
         updateGroupButtons();
       });
