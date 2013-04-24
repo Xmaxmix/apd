@@ -311,7 +311,7 @@ var page = {};
       $allFacets.each(function(index, item) {
         var textOnlyFacet = $textOnlyFacets[index];
 
-        $(this)
+        $($(this))
         .attr('class', textOnlyFacet.className)
         .removeAttr('disabled')
         .show();
@@ -469,14 +469,16 @@ var page = {};
         searchStateCookie.del();
 
         $(selectors.group, root).each(function(index, item) {
-          resetFields($(selectors.globalOperator, root));
-          resetGroup(this);
+          if(index !== 0) {
+            resetGroup(this);
+          }
         });
 
+        // On reset, we show only the first and the second group
         $(selectors.groupWidget, root)
           .first().show()
           .end()
-          .slice(1)
+          .slice(2)
           .hide();
 
         updateGroupButtons();
