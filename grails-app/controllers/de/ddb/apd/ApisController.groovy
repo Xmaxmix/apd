@@ -16,6 +16,8 @@
 
 package de.ddb.apd
 
+import java.text.SimpleDateFormat;
+
 import net.sf.json.JSONNull;
 import de.ddb.apd.ApiConsumer
 import de.ddb.apd.exception.ItemNotFoundException
@@ -54,41 +56,41 @@ class ApisController {
                 title= titleMatch[0][3]
 
             def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
-                subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
+            subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
 
             def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
             if (thumbnailMatch){
                 thumbnail= thumbnailMatch[0][2]
             }
             def mediaMatch = it.preview.toString() =~ /(?m)<div (.*?)data-media="(.*?)"/
-				  if (mediaMatch){
-					mediaMatch[0][2].split (",").each{ media.add(it) }
-				  }
-				  tmpResult["id"] = it.id
-				  tmpResult["view"] = (it.view instanceof JSONNull)?"":it.view
-				  tmpResult["label"] = (it.label instanceof JSONNull)?"":it.label
-				  tmpResult["latitude"] = (it.latitude instanceof JSONNull)?"":it.latitude
-				  tmpResult["longitude"] = (it.longitude instanceof JSONNull)?"":it.longitude
-				  tmpResult["category"] = (it.category instanceof JSONNull)?"":it.category
-		
-				  def properties = [:]
-		
-				  tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
-				  tmpResult["properties"] = properties
-				  docs.add(tmpResult)
-				}
-				if(jsonResp.results["docs"].get(0).size()>0){
-				  apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() { obj, i ->
-				  docs[i].properties = obj
-				}
-			  }
-			  resultList["facets"] = jsonResp.facets
-			  resultList["highlightedTerms"] = jsonResp.highlightedTerms
-			  resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
-			  resultList["numberOfResults"] = jsonResp.numberOfResults
-			  resultList["randomSeed"] = jsonResp.randomSeed
-			  render (contentType:"text/json"){resultList}
-			}
+            if (mediaMatch){
+                mediaMatch[0][2].split (",").each{ media.add(it) }
+            }
+            tmpResult["id"] = it.id
+            tmpResult["view"] = (it.view instanceof JSONNull)?"":it.view
+            tmpResult["label"] = (it.label instanceof JSONNull)?"":it.label
+            tmpResult["latitude"] = (it.latitude instanceof JSONNull)?"":it.latitude
+            tmpResult["longitude"] = (it.longitude instanceof JSONNull)?"":it.longitude
+            tmpResult["category"] = (it.category instanceof JSONNull)?"":it.category
+
+            def properties = [:]
+
+            tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
+            tmpResult["properties"] = properties
+            docs.add(tmpResult)
+        }
+        if(jsonResp.results["docs"].get(0).size()>0){
+            apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() { obj, i ->
+                docs[i].properties = obj
+            }
+        }
+        resultList["facets"] = jsonResp.facets
+        resultList["highlightedTerms"] = jsonResp.highlightedTerms
+        resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
+        resultList["numberOfResults"] = jsonResp.numberOfResults
+        resultList["randomSeed"] = jsonResp.randomSeed
+        render (contentType:"text/json"){resultList}
+    }
     /**
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream
@@ -99,17 +101,34 @@ class ApisController {
             throw new ItemNotFoundException("binary(): A binary content was requested, but no filename was given in the url");
         }
 
-        def apiResponse = ApiConsumer.getBinary(configurationService.getBinaryBackendUrl(), params.filename)
+        def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBinaryBackendUrl(), params.filename, response.outputStream)
+
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
             apiResponse.throwException(request)
         }
+
         def responseObject = apiResponse.getResponse()
 
-        byte[] bytes = responseObject.get("bytes");
+        def cacheExpiryInDays = 1
+        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
+        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+        response.setHeader("Content-Disposition", "inline; filename=" + params.filename.tokenize('/')[-1])
         response.setContentType(responseObject.get("Content-Type"))
         response.setContentLength(responseObject.get("Content-Length").toInteger())
-        response.setHeader("Content-Disposition", "inline; filename=" + params.filename.tokenize('/')[-1])
-        response.outputStream << bytes
+    }
+
+    /**
+     * Format RFC 2822 date
+     * @parameters daysfromtoday, how many days from today do you want the date to be shifted
+     * @return date
+     */
+    private def formatDateForExpiresHeader(daysfromtoday=4){
+        def tomorrow= new Date()+daysfromtoday
+        String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
+        SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale());
+        String tomorrowString = String.format(SupportedLocales.EN.getLocale(), '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
+        Date date = format.parse(tomorrowString);
+        return date
     }
 }

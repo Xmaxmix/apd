@@ -24,6 +24,8 @@ import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import groovyx.net.http.HttpResponseDecorator.HeadersDecorator;
 
+import org.apache.catalina.connector.ClientAbortException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.LogFactory
 
 import de.ddb.apd.exception.BackendErrorException;
@@ -58,9 +60,9 @@ class ApiConsumer {
      */
     static def getText(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:], fixWrongContentTypeHeader = false) {
         if(fixWrongContentTypeHeader){
-            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, optionalHeaders, true)
+            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, optionalHeaders, true, null)
         }else{
-            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.TEXT, optionalHeaders)
+            return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.TEXT, optionalHeaders, false, null)
         }
     }
 
@@ -72,7 +74,7 @@ class ApiConsumer {
      * @return An ApiResponse object containing the server response
      */
     static def getJson(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, optionalHeaders)
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, optionalHeaders, false, null)
     }
 
     /**
@@ -83,18 +85,30 @@ class ApiConsumer {
      * @return An ApiResponse object containing the server response
      */
     static def getXml(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.XML, optionalHeaders)
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.XML, optionalHeaders, false, null)
     }
 
     /**
-     * Requests a BINARY ressource from the backend by calling GET
+     * Requests a BINARY ressource as a block WITHOUT STREAMING from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def getBinary(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, optionalHeaders)
+    static def getBinaryBlock(String baseUrl, String path, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, optionalHeaders, false, null)
+    }
+
+    /**
+     * Requests a BINARY ressource as a block WITH STREAMING from the backend by calling GET
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param streamingOutputStream The gsp OutputStream needed for streaming binary resources
+     * @param optionalHeaders Optional request headers to add to the request
+     * @return An ApiResponse object containing the server response
+     */
+    static def getBinaryStreaming(String baseUrl, String path, OutputStream streamingOutputStream, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, optionalHeaders, false, streamingOutputStream)
     }
 
     /**
@@ -108,9 +122,10 @@ class ApiConsumer {
      * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text, 
      *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set 
      *      to true, the json-parser is explicitly overwritten with the text-parser.  
+     * @param streamingOutputStream The gsp OutputStream needed for streaming binary resources
      * @return An ApiResponse object containing the server response
      */
-    private static def requestServer(baseUrl, path, query, method, content, optionalHeaders, fixWrongContentTypeHeader = false) {
+    private static def requestServer(baseUrl, path, query, method, content, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream) {
         def timestampStart = System.currentTimeMillis();
 
         try {
@@ -141,7 +156,25 @@ class ApiConsumer {
                         case ContentType.XML:
                             return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output)
                         case ContentType.BINARY:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
+                            if(streamingOutputStream != null){
+                                // We want to stream
+                                try{
+                                    IOUtils.copy(output, streamingOutputStream)
+                                }catch(ClientAbortException c){
+                                    log.warn "requestServer(): Client aborted binary request"
+                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Client aborted request -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
+                                }catch(SocketException s){
+                                    log.warn "requestServer(): Socket already closed in binary request"
+                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Sockets closed -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
+                                }catch(Throwable t){
+                                    log.error "requestServer(): Could not copy streams in binary request: ", t
+                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Could not copy streams -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
+                                }
+                                return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, ["Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
+                            }else{
+                                // We don't want to stream
+                                return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
+                            }
                         default:
                             return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output)
                     }
