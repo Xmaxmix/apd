@@ -1,0 +1,211 @@
+/*
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.list-container .results-list {
+  list-style: none;
+  margin: 0 0 10px 0;
+}
+
+.list-container .results-list .item {
+  padding: 15px 0 15px 0;
+}
+
+.list-container .results-list .title {
+  padding: 4px 10px 0 0;
+  margin: 0;
+  line-height: 1.1em;
+  overflow: hidden;
+  max-height: 2.2em;
+}
+
+.list-container .results-list .summary-main-wrapper .title{
+  max-height: 3.2em;
+}
+
+.list-container .results-list .summary-main-wrapper .title a{
+  font-weight: normal;
+  word-wrap: break-word;
+}
+
+.list-container .results-list .subtitle {
+  font-family: Calibri,Arial,sans-serif;
+  font-size: 1.063em;
+  line-height: 1em;
+  margin: 7px 0 0;
+  color: #3e3a37;
+  margin-top: 3px;
+  word-wrap: break-word;
+}
+
+.list-container .results-list .thumbnail {
+  margin-bottom: 15px;
+}
+
+.list-container .results-list .thumbnail .persist {
+  position: relative;
+  text-align: center;
+  margin: auto;
+  width: 140px;
+  height: 105px;
+  display: table-cell;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.list-container .results-list .thumbnail img {
+  max-width: 100%;
+  max-height: 105px;
+  display: block;
+  float: none;
+  border: 0;
+  margin: auto;
+}
+
+.list-container .results-list .matches {
+  font-size: 0.875em;
+  line-height: 1.2em;
+  color: #56524f;
+  padding: 0.5em 0 0 0;
+}
+
+.list-container .results-list .summary .extra .types li {
+  width: 19px;
+  height: 19px;
+  margin: 0 4px 0 0;
+  text-indent: -999em;
+  margin-top: 12px;
+  background: url("../images/icons/result_types.png") no-repeat center top;
+}
+
+.list-container .results-list .summary .extra .types .image {
+  background-position: 0 -38px;
+}
+
+.list-container .results-list .summary .extra .types .audio {
+  background-position: 0 -95px;
+}
+
+.list-container .results-list .summary .extra .types .text {
+  background-position: 0 -57px;
+}
+
+.list-container .results-list .summary .extra .types .video {
+  background-position: 0 -19px;
+}
+.list-container .results-list .summary .extra .types .Institution{
+  background-position: 0 -190px;
+}
+
+.list-container .results-list .summary-main {
+  min-height: 74px;
+}
+
+.list-container .results-list .summary .span2 {
+  position:relative;
+}
+
+.list-container .results-list .summary .information {
+  width: 19px;
+  height: 19px;
+  position: absolute;
+  right: 0;
+  background: url("../images/icons/search_actions.png") no-repeat 0 0;
+  margin-top: -32px;
+  cursor: pointer;
+}
+
+.list-container .results-list .summary .information:hover {
+  background-position: 0px -20px;
+}
+
+.search-noresults-content .noresults {
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.results-list .item .summary {
+  padding-bottom: 5px;
+}
+
+.results-list .thumbnail{
+  display: block;
+}
+
+.information:hover .hovercard-info-item{
+  display: block;
+}
+
+.information .hovercard-info-item {
+  background: #fff;
+  border: 1px solid #a7a7a6;
+  width: 523px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  color: #3e3a37;
+  font-size: 0.875em;
+  font-family: Calibri,Arial,sans-serif;
+  z-index: 1;
+  line-height: 1em;
+  text-align: left;
+  position: absolute;
+  right: 0;
+  top: 20px;
+  display: none;
+}
+
+.information .hovercard-info-item h4 {
+  background-color: #efebe8;
+  margin: 0;
+  padding: 6px 5px 5px 20px;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.information .hovercard-info-item .fieldName{
+  margin-left: 20px;
+  font-weight: bold;
+  width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.information .hovercard-info-item .fieldContent{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 25px;
+  margin: 0;
+  word-wrap: normal;
+  width: 340px;
+}
+.hovercard-info-item ul span {
+  display: block;
+  float: left;
+  line-height: 25px;
+}
+
+/*-------- general-rules ---------*/
+a {
+  color: green;
+}
+
+h2 {
+  font-size: 1.375em;
+}
+
+.bt {
+  border-top: solid 1px #efebe8;
+}

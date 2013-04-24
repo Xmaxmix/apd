@@ -25,7 +25,20 @@ No special configurations right now
 ### Developer Info 
 #### Development Environment 
 Developed with [Groovy/Grails Tool Suite](http://www.grails.org/products/ggts) ([download tool link](http://www.springsource.org/groovy-grails-tool-suite-download)). 
-The Grails Tool Suite is an Eclipse based application with built in support for Grails and [vFabric tc Server](http://www.vmware.com/products/application-platform/vfabric-tcserver/overview.html) a neat solution to help developers launch apps easily. 
+The Grails Tool Suite is an Eclipse based application with built in support for Grails and [vFabric tc Server](http://www.vmware.com/products/application-platform/vfabric-tcserver/overview.html) a neat solution to help developers launch apps easily.
+
+##### Grails Project does not show "controllers", "services" and other elements in IDE!?
+Open the .classpath file (Ctlr+Shift+R -> enter .classpath) and add the following: 
+hange the .classpath adding the paths for the entries we want.
+ 
+For everybody, the .classpath file should have the following:
+```<classpathentry kind="src" path="grails-app/conf"/>
+<classpathentry kind="src" path="grails-app/controllers"/>
+<classpathentry kind="src" path="grails-app/domain"/>
+<classpathentry kind="src" path="grails-app/services"/>
+<classpathentry kind="src" path="grails-app/taglib"/>
+<classpathentry kind="src" path="grails-app/utils"/>
+<classpathentry kind="src" path="test/unit"/>```
 
 #### Github 
 You are probably on Github, or you received this file from there
@@ -52,6 +65,6 @@ In development environment, proxies are read from $USER_HOME/.grails/ProxySettin
 ####Tomcat configuration
 The tomcat configuration in the server.xml must ensure, that the used Connector must contain a valid URIEncoding tag.
 
-	<Connector [...] URIEncoding="UTF-8" /> 
+  <Connector [...] URIEncoding="UTF-8" /> 
  
 

@@ -1,0 +1,140 @@
+#institution-tree {
+  height: 600px;
+  overflow: auto;
+  border: 1px solid #BBBBBB;
+  border-radius: 4px 4px 4px 4px;
+}
+
+.jstree a:hover {
+  text-decoration: underline;
+  color: green;
+}
+
+.search-widget-container {
+  width: 100%;
+  min-height: 100px;
+}
+
+.selector {
+  text-align: center;
+  width: 48%;
+  margin: 2px;
+  float: left;
+  cursor: pointer;
+  background-color: grey;
+  color: black;
+}
+
+.selector.active{
+  background-color: green;
+  color: white;
+}
+
+.jstree-open .jstree-icon, .jstree-closed .jstree-icon {
+  cursor: pointer;
+}
+
+.jstree-leaf .jstree-icon {
+  cursor: default;
+}
+
+.jstree-closed .icon-root {
+  background: url("../images/icons/list_arrow_plum.png") no-repeat 2px -3px;
+}
+
+.jstree-open .icon-root {
+  background: url("../images/icons/list_arrow_plum_down.png") no-repeat -1px 2px;
+}
+
+.border {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.off {
+  display: none;
+}
+
+/*structure page details*/
+
+.institution-item-details {
+  margin-top: 20px;
+}
+
+.location-container .location {
+  margin-bottom: 30px;
+}
+
+.location-container .location .count {
+  margin-bottom: 30px;
+}
+
+.location-container .space {
+  margin-right: 6px;
+}
+
+.institution .space-in-front {
+  margin-left: 6px;
+}
+
+.institution .count {
+  font-size: 13pt; 
+  color: #3e3a37;
+}
+
+.institution-item-details .institution {
+  border-color: #efebe8;
+  border-style: solid;
+  border-width: 0 0 5px 0;
+  padding: 0 0 18px 0;
+  overflow: hidden;
+}
+
+.institution-item-details .logo {
+  color: black; 
+  font-size: small;
+}
+
+.institution-list {
+  list-style: none;
+  margin-bottom: 6px;
+}
+.institution-listitem {
+  list-style: none;
+  margin-top: 6px;
+}
+
+.pagination-small ul > li > a,
+.pagination-small ul > li > span {
+  font-size: 1em;
+}
+
+h2 a.count:hover {
+  color: #A5003B;
+}
+
+#map {
+  height: 86%;
+  width: 96%;
+  padding: 0; 
+  margin: 0;
+}
+
+#content {
+  font-size: 1em;
+}
+
+#osm {
+  font-size: 0.7em;
+  font-style: italic;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+#divOSM img {
+  max-width: none !important;
+  vertical-align: initial !important;
+  border: none !important;
+  margin: 0 !important;
+}
+/*structure page details - end*/
