@@ -311,15 +311,15 @@ var page = {};
       $allFacets.each(function(index, item) {
         var textOnlyFacet = $textOnlyFacets[index];
 
-        $($(this))
-        .attr('class', textOnlyFacet.className)
-        .removeAttr('disabled')
-        .show();
+        $(this)
+          .attr('class', textOnlyFacet.className)
+          .removeAttr('disabled')
+          .show();
 
         // we don't need the text only facets anymore
         $(textOnlyFacet)
-        .attr('class', '')
-        .attr('disabled', 'disabled').hide();
+          .attr('class', '')
+          .attr('disabled', 'disabled').hide();
       });
     }
 
