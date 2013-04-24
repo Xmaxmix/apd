@@ -33,6 +33,7 @@ modules = {
         resource url:'/css/listview.css', bundle: 'screen'
         resource url:'/css/errors.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
+        resource url:'/third-party/map/css/style.css', bundle: 'screen'
     }
 
     cssprint {
@@ -51,7 +52,7 @@ modules = {
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/navbar-manager.js'
         resource url:'/js/institutionsApiWrapper.js'
-        resource url:'/js/structureview.js'
+        //resource url:'/js/structureview.js'
         resource url:'/js/tooltip.js'
         resource url:'/js/advanced-search.js'
     }
@@ -64,4 +65,10 @@ modules = {
          */
         resource url:'/js/advanced-search.js'
     }
+
+    structureview {
+        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
+    }
+
 }

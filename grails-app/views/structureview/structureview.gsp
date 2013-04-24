@@ -5,6 +5,8 @@
     <meta name="page" content="structureview" />
     <meta name="layout" content="main" />
     
+    <r:require module="structureview"/>
+    
   </head>
   <body>
     <div class="row">

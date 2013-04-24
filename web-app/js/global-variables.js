@@ -29,7 +29,13 @@ $(document).ready(function () {
             jsLanguage = jsVariablesDiv.attr('data-js-language');
         }
         if (jsVariablesDiv.attr('data-js-institutions-list-hash')) {
-        	jsInstitutionsListHash = jsVariablesDiv.attr('data-js-institutions-list-hash');
+            jsInstitutionsListHash = jsVariablesDiv.attr('data-js-institutions-list-hash');
+        }
+        if (jsVariablesDiv.attr('data-js-longitude')) {
+            jsLongitude = jsVariablesDiv.attr('data-js-longitude');
+        }
+        if (jsVariablesDiv.attr('data-js-latitude')) {
+            jsLatitude = jsVariablesDiv.attr('data-js-latitude');
         }
     }
     if (jsPageMeta) {
