@@ -8,14 +8,8 @@ var INSTITUTIONS_MAP_REF = '/apis/institutionsmap';
 //Directory where map-application is located
 var MAP_DIR = '/third-party/map/';
 
-//name of page where map with all institutions is written in
-var INSTITUTIONLIST_PAGE_NAME = 'institutionList';
-
 //name of page where map for 1 institution is written in
 var INSTITUTION_PAGE_NAME = 'structureview';
-
-//div where map with all institutions is written in
-var INSTITUTIONLIST_DIV = 'mapContainerDiv';
 
 //div where map for 1 institution is written in
 var INSTITUTION_DIV = 'divOSM';
@@ -152,16 +146,15 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
 })(jQuery);
 
-$(document).ready(function () {
+function mapSetup() {
     INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
     MAP_DIR = jsContextPath + MAP_DIR;
     GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + MAP_DIR;
     if (jsPageName == INSTITUTION_PAGE_NAME) {
+            jsLongitude = $("div.location").attr('data-lon');
+            jsLatitude = $("div.location").attr('data-lat');
         InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
     }
-    else if (jsPageName == INSTITUTIONLIST_PAGE_NAME) {
-    	InstitutionsMapAdapter.setupDom4MapDisplay();
-    }
     return;
-});
+};
 

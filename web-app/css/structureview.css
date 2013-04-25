@@ -57,7 +57,7 @@
 
 /*structure page details*/
 
-.institution-item-details {
+#details-container {
   margin-top: 20px;
 }
 
@@ -82,7 +82,7 @@
   color: #3e3a37;
 }
 
-.institution-item-details .institution {
+#details-container .institution {
   border-color: #efebe8;
   border-style: solid;
   border-width: 0 0 5px 0;
@@ -91,7 +91,7 @@
   margin-bottom: 20px;
 }
 
-.institution-item-details .logo {
+#details-container .logo {
   color: black; 
   font-size: small;
 }
