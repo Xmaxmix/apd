@@ -25,14 +25,17 @@ modules = {
     cssscreen {
         resource url:'/css/vendor/bootstrap/css/bootstrap.css', bundle: 'screen'
         resource url:'/css/apd.css', bundle: 'screen'
+        //resource url:'/css/vendor/fuelux/fuelux.css', bundle: 'screen'
+        //resource url:'/css/vendor/fuelux/fuelux-responsive.css', bundle: 'screen'
+        resource url:'/css/apd.css', bundle: 'screen'
         resource url:'/css/index.css', bundle: 'screen'
         resource url:'/css/binaries-viewer.css', bundle: 'screen'
-        resource url:'/css/apd.css', bundle: 'screen'
         resource url:'/css/detailview.css', bundle: 'screen'
         resource url:'/css/structureview.css', bundle: 'screen'
         resource url:'/css/listview.css', bundle: 'screen'
         resource url:'/css/errors.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
+        resource url:'/css/searchwidget.css', bundle: 'screen'
     }
 
     cssprint {
@@ -42,18 +45,24 @@ modules = {
     javascript {
         resource url:'/js/vendor/jquery.js'
         resource url:'/js/vendor/bootstrap.js'
+        resource url:'/js/vendor/fuelux/require.js'
+        resource url:'/js/vendor/fuelux/loader.min.js'
         resource url:'/js/vendor/jwplayer/jwplayer.js'
         resource url:'/js/vendor/jstree.js'
         resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
         resource url:'/js/vendor/large-cookie.js'
+        resource url:'/js/vendor/fuelux/pillbox.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/global-variables.js'
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/navbar-manager.js'
         resource url:'/js/institutionsApiWrapper.js'
+        resource url:'/js/searchwidget.js'
+        resource url:'/js/index.js'
         resource url:'/js/structureview.js'
         resource url:'/js/tooltip.js'
         resource url:'/js/advanced-search.js'
+        
     }
 
     // TODO use module to define the explicit dependencies.

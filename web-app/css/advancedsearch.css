@@ -189,19 +189,6 @@ form label {
   display: inline-block;
 }
 
-/* TODO: use class instead of tag */
-button, .button {
-  border: none;
-  font-family: Calibri, Arial, sans-serif;
-  font-size: 0.938em;
-  font-weight: bold;
-  height: 25px;
-  line-height: 25px;
-  padding: 0;
-  color: #fff;
-  cursor: pointer;
-}
-
 /* TODO: use semantic class name */
 .fl {
   float: left !important;

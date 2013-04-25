@@ -1,6 +1,10 @@
-#main-search-container{
+#home-search-container{
   text-align:center;
 }
 .form-search {
 margin-top: 80px;
+}
+#home-search-form {
+  border-bottom: #ddd 1px solid;
+  padding-bottom: 20px;
 }
