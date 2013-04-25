@@ -15,6 +15,7 @@
  */
 
 $(function() {
+  
   InstitutionsApiWrapper = function(){
     this.init();
   }
@@ -25,7 +26,6 @@ $(function() {
     },
 	
     getFullInstitutionsList: function(callback) {
-
       $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -51,6 +51,26 @@ $(function() {
           });			
         }
       });			
-    }
+    },
+    
+    getArchiveList: function(callback, searchQuery, facets) {
+      var fullUrl = jsContextPath + "/institutions/archives";
+      fullUrl += "?searchQuery=" + searchQuery;
+      fullUrl += "?facets=" + facets;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, // always no-cache this request!
+        url: fullUrl,
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        }
+      });
+    }  
+
+
+    
   });
 });

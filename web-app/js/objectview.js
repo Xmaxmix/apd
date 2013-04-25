@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 $(document).ready(function () {
-  if(jsPageName == "structureview") {
-
+  if(jsPageName == "objectview") {
+    console.log("is objectview")
+    
     $('#institution-tree').jstree({ 
       "themes" : {
         "theme" : "classic",
@@ -26,21 +26,23 @@ $(document).ready(function () {
       "plugins" : [ "themes", "html_data" ]
     });
 
-    var apiWrapper = new InstitutionsApiWrapper();  
+//    var apiWrapper = new InstitutionsApiWrapper();  
+//
+//    // Build the tree
+//    function printObjectList(json){
+//      console.log("printObjectList()")
+//      // TODO build actual tree
+//      $("#institution-tree").empty();
+//      $.each(json, function(i, field){
+//        $("#institution-tree").append(i + " / " + field.name + " <br />");
+//      });
+//    }
 
-    // Build the tree
-    function printInstitutionsList(json){
-      // TODO build actual tree
-      $("#institution-tree").empty();
-      $.each(json, function(i, field){
-        $("#institution-tree").append(i + " / " + field.name + " <br />");
-      });
-    }
-
-    // When page loads -> load the data and build tree
-//    apiWrapper.getFullInstitutionsList(function(json){
-//      printInstitutionsList(json);
-//    });		
+//    // When page loads -> load the data and build tree
+//    apiWrapper.getArchiveList(function(json){
+//      console.log("apiWrapper.getArchiveList()")
+//      printObjectList(json);
+//    });   
   
   }
 });

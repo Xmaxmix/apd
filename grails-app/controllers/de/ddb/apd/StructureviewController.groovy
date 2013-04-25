@@ -54,34 +54,11 @@ class StructureviewController {
 
         // TODO: move to service
         def index = []
-        institutionByFirstLetter.each {
-            index.add(it)
-        }
+        institutionByFirstLetter.each { index.add(it) }
 
         render (view: 'structureview',  model: [index: index, all: all, total: allInstitution?.total])
     }
 
-    def getAjaxListFull() {
-        def hash = params.hashId
-        def allInstitutions = institutionService.findAll()
-
-        response.setHeader("Cache-Control", "public, max-age=31536000")
-        render (contentType: ContentType.TEXT.toString(), text: allInstitutions.toString())
-    }
-
-    def isAjaxListFullOutdated() {
-        def hash = params.hashId
-        def hasChanged = institutionService.institutionsCache.hasChanged(hash)
-
-        def builder = new JsonBuilder()
-        def root = builder {
-            isOutdated hasChanged
-            hashId institutionService.institutionsCache.getHash()
-        }
-
-        response.setHeader("Cache-Control", "no-cache")
-        render (contentType: ContentType.JSON.toString()) { builder }
-    }
 
     def show() {
 
@@ -125,15 +102,15 @@ class StructureviewController {
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
                     countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-                } 
+                }
                 catch (NumberFormatException ex) {
                     countObjectsForProv = -1;
                 }
             }
             render(view: "structureview", model: [all: all, itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
-        } 
+        }
         else {
-           forward controller: 'error', action: "notfound"
+            forward controller: 'error', action: "notfound"
         }
 
     }

@@ -113,6 +113,69 @@ class InstitutionService {
     }
 
 
+    def searchArchives(String query) {
+        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
+        def backendUrl = configurationService.getBackendUrl()
+        def parameters = [:]
+        parameters["query"] = query
+        parameters["facet"] = ["sector_fct", "provider_fct"]
+        parameters["sector_fct"] = "sec_01"
+        def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
+
+        if(!searchWrapper.isOk()){
+            log.error "#################### 1 not ok"
+        }
+
+
+        //Getting result institutions for search
+        def searchResponse = searchWrapper.getResponse()
+        def responseFacets = searchResponse.facets
+        def foundProviders = []
+        for(int i=0; i<responseFacets.size(); i++) {
+            println "#################### 2 "+responseFacets.get(i).field
+            if(responseFacets.get(i).field == "provider_fct"){
+                println "#################### 3 found"
+                foundProviders = responseFacets.get(i).facetValues
+                break
+            }
+        }
+
+
+        def allInstitutions = findAll()
+
+        for(int i=0; i<foundProviders.size(); i++){
+            for(int j=0; j<allInstitutions.size(); j++){
+                if(allInstitutions[j].name == foundProviders[i].value){
+                    println "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
+                    foundProviders[i]["id"] = allInstitutions[j].id
+                    break
+                }
+            }
+        }
+
+        // Getting ID for institutions
+        println "#################### 6 "+foundProviders
+        for(int i=0; i<foundProviders.size(); i++){
+            println "#################### 7 "+foundProviders[i]
+
+        }
+
+        def resultList = []
+        foundProviders.each {
+            resultList.add(["id": it.id, "name": it.value, "count": it.count])
+        }
+
+        def resultObject = [:]
+        resultObject["count"] = searchResponse.numberOfResults
+        resultObject["institutions"] = resultList
+        println "#################### 7 "+searchResponse.numberOfResults
+
+
+        return resultObject
+
+    }
+
+
     private getTotal(rootList) {
         def total = rootList.size()
 

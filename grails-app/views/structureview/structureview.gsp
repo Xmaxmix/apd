@@ -14,10 +14,10 @@
       <div class="span4">
         <div class="row">
           <div class="span4">
-            <g:link controller="struktur">
+            <g:link controller="structureview">
               <div class="selector active"><g:message code="apd.Structure"/></div>
             </g:link>
-            <g:link controller="liste">
+            <g:link controller="objectview">
               <div class="selector"><g:message code="apd.Object"/></div>
             </g:link>
           </div>

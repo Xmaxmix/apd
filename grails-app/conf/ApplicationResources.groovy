@@ -52,6 +52,7 @@ modules = {
         resource url:'/js/navbar-manager.js'
         resource url:'/js/institutionsApiWrapper.js'
         resource url:'/js/structureview.js'
+        resource url:'/js/objectview.js'
         resource url:'/js/tooltip.js'
         resource url:'/js/advanced-search.js'
     }
@@ -61,7 +62,5 @@ modules = {
          resource url:'/js/vendor/jquery-1.9.1.js'
          resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
          resource url:'/js/vendor/large-cookie.js'
-         */
-        resource url:'/js/advanced-search.js'
-    }
+         */ resource url:'/js/advanced-search.js' }
 }

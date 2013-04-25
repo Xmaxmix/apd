@@ -41,19 +41,29 @@ class UrlMappings {
         }
 
         "/liste" {
-            controller="listview"
+            controller="objectview"
             action="index"
         }
 
         "/institutions/full/$hashId?" {
-            controller="structureview"
+            controller="institutions"
             action="getAjaxListFull"
         }
 
         "/institutions/outdated/$hashId?" {
-            controller="structureview"
+            controller="institutions"
             action="isAjaxListFullOutdated"
         }
+        //
+        //        "/institutions/archives" {
+        //            controller="institutions"
+        //            action="getAjaxListArchiveFull"
+        //        }
+
+        //        "/institutions/search" {
+        //            controller="institutions"
+        //            action="getAjaxSearch"
+        //        }
 
         "/item/$id/$name?" {
             controller="detailview"
