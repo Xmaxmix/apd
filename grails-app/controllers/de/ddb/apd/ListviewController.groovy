@@ -89,5 +89,9 @@ class ListviewController {
         response.setHeader("Cache-Control", "no-cache")
         render (contentType: ContentType.JSON.toString()) { builder }
     }
+    
+    def institutionhierarchy(){
+        render institutionService.getHierarchyChildren(params.id);
+    }
 
 }

@@ -16,10 +16,14 @@ package de.ddb.apd
  */
 
 
+import java.util.logging.Logger;
+
 import de.ddb.apd.institutions.InstitutionsCache;
+import groovy.json.JsonSlurper
 import groovyx.net.http.HTTPBuilder
+import net.sf.json.JSONObject
 
-
+import grails.converters.JSON
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
@@ -35,7 +39,8 @@ class InstitutionService {
     static InstitutionsCache institutionsCache = new InstitutionsCache()
 
     def grailsLinkGenerator
-
+    
+    def itemService
 
     def findAllAlphabetical(){
         def institutionList = findAll()
@@ -189,5 +194,70 @@ class InstitutionService {
 
     private def buildUri(id) {
         grailsLinkGenerator.link(url: [controller: 'structureview', action: 'show', id: id ])
+    }
+    
+    /**
+     * Return the tectonics and the hierarchy under a specific institution
+     * 
+     * @return
+     */
+    private def getHierarchyChildren(id){
+        def children=getInstitutionChildren(id);
+
+        //TODO throw exception if response if not JSON
+        assert children instanceof JSONObject
+        def objectResults = children.results.docs[0];
+        //IF we have some element in our institution
+        if (children.results.docs[0].size()>0){
+            //ITEM ID 
+            //log.info "FIRST ITEM ID " + objectResults[0].id;
+            //GET TECTONIC ROOT
+            def parent =itemService.getParent(objectResults[0].id).last()
+            
+            if (parent.leaf==false){
+                //log.info "Children's are "+itemService.getChildren(parent.id)
+                def hierarchyArray = [:]
+                hierarchyArray=getChildren(parent);
+                log.info "THIS IS IT"+ hierarchyArray
+                return itemService.getChildren(parent.id)
+            }
+            return parent
+            
+        }
+        return null
+    }
+    
+    
+    private def getChildren(parent){
+        def results = []
+        def children = itemService.getChildren(parent.id)
+        children.each {
+            log.info "#############################WHAT IS HERE" +it;
+            log.info (itemService.getChildren(it.id))
+            if (it.leaf=="false"){
+                
+                getChildren(it)
+            }
+            results.add([id:it.id,label:it.label]);
+            
+            
+            log.info "********************************* ID IS "+it.id + it.leaf
+            
+        }
+        results
+    }
+    /**
+     * Used in the getHierarchyChildren
+     * @return
+     */
+    private def getInstitutionChildren(id){
+        def query =[query:"*",facet:"provider_id",provider_id:id]
+        def searchPath = "/search"
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), searchPath,query)
+        if(!apiResponse.isOk()){
+            log.error "institutionService.getInstitutionChildren(): Server returned no parents -> " + id
+            
+        }
+        return apiResponse.getResponse()
     }
 }
