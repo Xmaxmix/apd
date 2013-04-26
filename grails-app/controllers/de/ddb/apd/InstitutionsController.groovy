@@ -125,4 +125,6 @@ class InstitutionsController {
     //        render (contentType: ContentType.JSON.toString()) { resultList }
     //
     //    }
+
+
 }

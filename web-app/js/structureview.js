@@ -17,14 +17,14 @@
 $(document).ready(function () {
   if(jsPageName == "structureview") {
 
-    $('#institution-tree').jstree({ 
-      "themes" : {
-        "theme" : "classic",
-        "dots" : true,
-        "icons" : true
-      },
-      "plugins" : [ "themes", "html_data" ]
-    });
+//    $('#institution-tree').jstree({ 
+//      "themes" : {
+//        "theme" : "classic",
+//        "dots" : true,
+//        "icons" : true
+//      },
+//      "plugins" : [ "themes", "html_data" ]
+//    });
 
     var apiWrapper = new InstitutionsApiWrapper();  
 

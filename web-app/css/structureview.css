@@ -1,6 +1,5 @@
 #institution-tree {
   height: 600px;
-  overflow: auto;
   border: 1px solid #BBBBBB;
   border-radius: 4px 4px 4px 4px;
 }

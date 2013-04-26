@@ -15,16 +15,19 @@
  */
 $(document).ready(function () {
   if(jsPageName == "objectview") {
-    console.log("is objectview")
     
-    $('#institution-tree').jstree({ 
-      "themes" : {
-        "theme" : "classic",
-        "dots" : true,
-        "icons" : true
-      },
-      "plugins" : [ "themes", "html_data" ]
-    });
+    var treeWrapper = new InstitutionsTreeWrapper();
+    
+    treeWrapper.buildInitialTree('#institution-tree', '.list-container');
+    
+//    $('#institution-tree').jstree({ 
+//      "themes" : {
+//        "theme" : "classic",
+//        "dots" : true,
+//        "icons" : true
+//      },
+//      "plugins" : [ "themes", "html_data" ]
+//    });
 
 //    var apiWrapper = new InstitutionsApiWrapper();  
 //

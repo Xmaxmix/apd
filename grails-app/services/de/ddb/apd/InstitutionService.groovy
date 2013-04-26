@@ -175,6 +175,41 @@ class InstitutionService {
 
     }
 
+    def searchArchive(String query, String institutionId, String offset, String pagesize) {
+        // http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?
+        // query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01&provider_fct=Landesarchiv+Baden-W%C3%BCrttemberg
+
+        def allInstitutions = findAll()
+
+        def institutionName = ""
+        for(int i=0; i<allInstitutions.size(); i++){
+            if(allInstitutions[i].id == institutionId){
+                institutionName = allInstitutions[i].name
+                break
+            }
+        }
+
+        println "#################### 9 "+institutionId+" -> "+institutionName
+
+        def backendUrl = configurationService.getBackendUrl()
+        def parameters = [:]
+        parameters["query"] = query
+        parameters["facet"] = ["sector_fct", "provider_fct"]
+        parameters["sector_fct"] = "sec_01"
+        parameters["provider_fct"] = institutionName
+        parameters["offset"] = offset
+        parameters["rows"] = pagesize
+        println "#################### 10 "+parameters
+        def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
+
+        if(!searchWrapper.isOk()){
+            log.error "#################### 8 not ok"
+        }
+        println "#################### 11 ok "
+
+        return searchWrapper.getResponse().results[0].docs
+    }
+
 
     private getTotal(rootList) {
         def total = rootList.size()

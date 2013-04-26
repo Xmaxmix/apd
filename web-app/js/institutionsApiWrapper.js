@@ -23,9 +23,11 @@ $(function() {
   $.extend(InstitutionsApiWrapper.prototype, {
 
     init: function() {
+      console.log("##############1 init ");
     },
 	
     getFullInstitutionsList: function(callback) {
+      console.log("##############1 getFullInstitutionsList ");
       $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -53,7 +55,8 @@ $(function() {
       });			
     },
     
-    getArchiveList: function(callback, searchQuery, facets) {
+    getArchiveList: function(searchQuery, facets, callback) {
+      console.log("##############1 getArchiveList ");
       var fullUrl = jsContextPath + "/institutions/archives";
       fullUrl += "?searchQuery=" + searchQuery;
       fullUrl += "?facets=" + facets;
@@ -61,15 +64,48 @@ $(function() {
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, // always no-cache this request!
+        cache: false, 
         url: fullUrl,
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
         }
       });
-    }  
-
+    },
+    
+    getObjectTreeNodeDetails: function(treeNodeId, query, offset, pagesize, callback) {
+      console.log("##############1 getObjectTreeNodeDetails "+treeNodeId);
+      var fullUrl = jsContextPath + "/liste/detail/"+treeNodeId;
+      fullUrl += "?query="+query;
+      fullUrl += "&offset="+offset;
+      fullUrl += "&pagesize="+pagesize;
+      $.ajax({
+        type: 'GET',
+        dataType: 'html',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          callback(data.responseText);
+        }
+      });
+    },
+    
+    getObjectTreeNodeChildren: function(treeNodeId, callback) {
+      console.log("##############1 getObjectTreeNodeChildren "+treeNodeId);
+      var fullUrl = jsContextPath + "/liste/children/"+treeNodeId;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        }
+      });
+    },
 
     
   });

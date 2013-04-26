@@ -15,6 +15,8 @@
  */
 package de.ddb.apd
 
+import groovyx.net.http.ContentType;
+
 
 class ObjectviewController {
 
@@ -24,10 +26,30 @@ class ObjectviewController {
 
     def index() {
 
-        def query = params.query
+        def query = params.search
+        println "##################### index: "+query
 
         def searchResult = institutionService.searchArchives(query)
 
         render(view: "objectview", model: ["searchResult":searchResult])
+    }
+
+    def getTreeNodeDetails() {
+        def id = params.id
+        def query = params.query
+        def offset = params.offset
+        def pagesize = params.pagesize
+        println "##################### getTreeNodeDetails: "+id+","+query
+
+        def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
+
+        render(template: "resultsList", model: ["results":searchResults, "offset": offset])
+    }
+
+    def getTreeNodeChildren() {
+        def id = params.id
+        println "##################### getTreeNodeChildren: "+id
+
+        render (contentType: ContentType.JSON.toString()) { [:]}
     }
 }

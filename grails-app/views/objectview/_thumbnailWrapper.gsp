@@ -1,4 +1,4 @@
-<%@page import="java.awt.event.ItemEvent"%>
+<%-- 
 <div class="thumbnail-wrapper span2">
   <div class="thumbnail">
     <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: item.id, hitNumber: hitNumber]">
@@ -42,3 +42,4 @@
     </div>
   </div>
 </div>
+--%>

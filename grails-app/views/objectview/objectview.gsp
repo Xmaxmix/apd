@@ -26,16 +26,18 @@
           <div class="span4">
             <div id="institution-tree">
               <ul>
-                <li rel="root" class="">
-                  <i class="icon-root"></i>
+                <li>
                   <span> ${searchResult.count } <g:message code="apd.Object"/></span>
                   <ul>
                     <g:each in="${ searchResult.institutions }">
-                      <li class="" data-institution-id="${ it.id }">
-                        <a href="" class="">
+                      <li id="${ it.id }" class="" <%-- data-institution-id="${ it.id }"--%>>
+                        <a id="a-${ it.id }" class="" href="#">
                           ${ it?.name } 
                           <span>(${ it?.count } <g:message code="apd.Object"/>)</span>
                         </a>
+                        <ul>
+                          <li></li>
+                        </ul>
                       </li>
                     </g:each>
                   </ul>
