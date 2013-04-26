@@ -56,6 +56,11 @@ class UrlMappings {
             action="getTreeNodeChildren"
         }
 
+        "/liste/root" {
+            controller="objectview"
+            action="getTreeRootItems"
+        }
+
         "/institutions/$action/$hashId?" {
             controller="institutions"
             action="getAjaxListFull"

@@ -25,13 +25,16 @@ class ObjectviewController {
     def configurationService
 
     def index() {
+        render(view: "objectview", model: [:])
+    }
 
-        def query = params.search
+    def getTreeRootItems() {
+        def query = params.query
         println "##################### index: "+query
 
         def searchResult = institutionService.searchArchives(query)
 
-        render(view: "objectview", model: ["searchResult":searchResult])
+        render (contentType: ContentType.JSON.toString()) { searchResult}
     }
 
     def getTreeNodeDetails() {

@@ -15,7 +15,7 @@
  */
  
 ul.dynatree-container li {
-  white-space: normal !important;  
+  /*white-space: normal !important;*/  
 }
 
 span.dynatree-node a {

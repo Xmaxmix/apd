@@ -19,33 +19,9 @@ $(document).ready(function () {
     var treeWrapper = new InstitutionsTreeWrapper();
     
     treeWrapper.buildInitialTree('#institution-tree', '.list-container');
+    treeWrapper.loadInitialTreeNodes('#institution-tree');
+
     
-//    $('#institution-tree').jstree({ 
-//      "themes" : {
-//        "theme" : "classic",
-//        "dots" : true,
-//        "icons" : true
-//      },
-//      "plugins" : [ "themes", "html_data" ]
-//    });
 
-//    var apiWrapper = new InstitutionsApiWrapper();  
-//
-//    // Build the tree
-//    function printObjectList(json){
-//      console.log("printObjectList()")
-//      // TODO build actual tree
-//      $("#institution-tree").empty();
-//      $.each(json, function(i, field){
-//        $("#institution-tree").append(i + " / " + field.name + " <br />");
-//      });
-//    }
-
-//    // When page loads -> load the data and build tree
-//    apiWrapper.getArchiveList(function(json){
-//      console.log("apiWrapper.getArchiveList()")
-//      printObjectList(json);
-//    });   
-  
   }
 });

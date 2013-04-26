@@ -42,53 +42,81 @@ $(function() {
 
       });
       
-      
-      // Open root node
-      var rootNodeTreeElement = $(treeDiv).dynatree("getTree").getNodeByKey("_2");
-      rootNodeTreeElement.expand(true);
-       
     },
     
-//    registerClickHandlers: function(rootElement, detailView) {
-//      var links = $(rootElement + " a");
-//      for(var i=0; i<links.size(); i++) {
-//        var linkElement = links.get(i);
-//        console.log("####################2 registerClickHandlers "+linkElement.id);
-//        var institutionId = linkElement.id;
-//        $(linkElement).click(function(event) {
-//          console.log(event);
-//          var institutionsTreeWrapper = new InstitutionsTreeWrapper();
-//          institutionsTreeWrapper.clickOnInstitution(event.target.id, detailView);
-//        });
-//        
-//      }
-//    },
-    
     clickOnInstitution: function(institutionId, detailView) {
+      console.log("####################2 clickOnInstitution: "+institutionId);
       this.showNodeDetails(institutionId, detailView);
       this.openTreeNode(institutionId, detailView);
     },
     
     openTreeNode: function(institutionId) {
-      var institutionsApiWrapper = new InstitutionsApiWrapper();
-      institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
-        console.log(data);
-      });
+      console.log("####################2 openTreeNode "+institutionId);
+      if(institutionId != "rootnode"){
+        var institutionsApiWrapper = new InstitutionsApiWrapper();
+        institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
+          console.log("####################2 child: "+data);
+        });
+      }
     },
 
     showNodeDetails: function(institutionId, detailView) {
       console.log("####################2 showNodeDetails "+institutionId);
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
-      var query = "gutenberg";
-      var offset = 0;
-      var pagesize = 20;
+      var query = this.getUrlParam("search");
+      var offset = this.getUrlParam("offset");
+      var pagesize = this.getUrlParam("pagesize");
       
+      console.log("####################2 showNodeDetails "+query+", "+offset+", "+pagesize);
       institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
         console.log("####################2 showNodeDetails append to "+detailView);
         $(detailView).empty();
         $(detailView).append(data);
       });
+    },
+    
+    loadInitialTreeNodes: function(treeDiv) {
+      console.log("####################2 loadInitialTreeNodes "+treeDiv);
+      
+      var query = this.getUrlParam("search");
+
+      var institutionsApiWrapper = new InstitutionsApiWrapper();
+      institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
+        
+        var childNodes = [];
+        for(var i=0; i<data.institutions.length; i++) {
+          childNodes.push(
+            {title: data.institutions[i].name+" ("+data.institutions[i].count+")", 
+              key: data.institutions[i].id, 
+              isFolder: true, 
+              isLazy: true, 
+              children: [{title:"", key: "empty"}] }
+            );
+        }
+        
+        var root = [{ title: data.count+" Objekte", 
+                      key: "rootnode", 
+                      isFolder: true, 
+                      isLazy: true, 
+                      children: childNodes}
+                    ];
+        
+        $(treeDiv).dynatree("getRoot").addChild(root);
+        
+        // Open root node
+        var rootNodeTreeElement = $(treeDiv).dynatree("getTree").getNodeByKey("rootnode");
+        rootNodeTreeElement.expand(true);
+        
+      });
+    },
+    
+    getUrlParam: function(name){
+      var results = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+      if(!results){
+        return ""
+      }
+      return results[1] || 0;
     },
   
   });

@@ -132,9 +132,9 @@ class InstitutionService {
         def responseFacets = searchResponse.facets
         def foundProviders = []
         for(int i=0; i<responseFacets.size(); i++) {
-            println "#################### 2 "+responseFacets.get(i).field
+            //            println "#################### 2 "+responseFacets.get(i).field
             if(responseFacets.get(i).field == "provider_fct"){
-                println "#################### 3 found"
+                //                println "#################### 3 found"
                 foundProviders = responseFacets.get(i).facetValues
                 break
             }
@@ -146,7 +146,7 @@ class InstitutionService {
         for(int i=0; i<foundProviders.size(); i++){
             for(int j=0; j<allInstitutions.size(); j++){
                 if(allInstitutions[j].name == foundProviders[i].value){
-                    println "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
+                    //                    println "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
                     foundProviders[i]["id"] = allInstitutions[j].id
                     break
                 }
@@ -154,7 +154,7 @@ class InstitutionService {
         }
 
         // Getting ID for institutions
-        println "#################### 6 "+foundProviders
+        //        println "#################### 6 "+foundProviders
         for(int i=0; i<foundProviders.size(); i++){
             println "#################### 7 "+foundProviders[i]
 
@@ -178,6 +178,13 @@ class InstitutionService {
     def searchArchive(String query, String institutionId, String offset, String pagesize) {
         // http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?
         // query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01&provider_fct=Landesarchiv+Baden-W%C3%BCrttemberg
+
+        if(!offset){
+            offset = "0"
+        }
+        if(!pagesize){
+            pagesize = "20"
+        }
 
         def allInstitutions = findAll()
 

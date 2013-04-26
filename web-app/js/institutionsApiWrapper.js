@@ -23,7 +23,6 @@ $(function() {
   $.extend(InstitutionsApiWrapper.prototype, {
 
     init: function() {
-      console.log("##############1 init ");
     },
 	
     getFullInstitutionsList: function(callback) {
@@ -55,11 +54,28 @@ $(function() {
       });			
     },
     
-    getArchiveList: function(searchQuery, facets, callback) {
-      console.log("##############1 getArchiveList ");
-      var fullUrl = jsContextPath + "/institutions/archives";
-      fullUrl += "?searchQuery=" + searchQuery;
-      fullUrl += "?facets=" + facets;
+//    getArchiveList: function(query, facets, callback) {
+//      console.log("##############1 getArchiveList ");
+//      var fullUrl = jsContextPath + "/institutions/archives";
+//      fullUrl += "?searchQuery=" + query;
+//      fullUrl += "?facets=" + facets;
+//      $.ajax({
+//        type: 'GET',
+//        dataType: 'json',
+//        async: true,
+//        cache: false, 
+//        url: fullUrl,
+//        complete: function(data){
+//          var jsonResponse = jQuery.parseJSON(data.responseText);
+//          callback(jsonResponse);
+//        }
+//      });
+//    },
+    
+    getObjectTreeRootNodes: function(query, callback) {
+      console.log("##############1 getObjectTreeRootNodes "+query);
+      var fullUrl = jsContextPath + "/liste/root";
+      fullUrl += "?query="+query;
       $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -72,10 +88,10 @@ $(function() {
         }
       });
     },
-    
-    getObjectTreeNodeDetails: function(treeNodeId, query, offset, pagesize, callback) {
-      console.log("##############1 getObjectTreeNodeDetails "+treeNodeId);
-      var fullUrl = jsContextPath + "/liste/detail/"+treeNodeId;
+
+    getObjectTreeNodeDetails: function(itemId, query, offset, pagesize, callback) {
+      console.log("##############1 getObjectTreeNodeDetails "+itemId);
+      var fullUrl = jsContextPath + "/liste/detail/"+itemId;
       fullUrl += "?query="+query;
       fullUrl += "&offset="+offset;
       fullUrl += "&pagesize="+pagesize;
@@ -91,9 +107,9 @@ $(function() {
       });
     },
     
-    getObjectTreeNodeChildren: function(treeNodeId, callback) {
-      console.log("##############1 getObjectTreeNodeChildren "+treeNodeId);
-      var fullUrl = jsContextPath + "/liste/children/"+treeNodeId;
+    getObjectTreeNodeChildren: function(itemId, callback) {
+      console.log("##############1 getObjectTreeNodeChildren "+itemId);
+      var fullUrl = jsContextPath + "/liste/children/"+itemId;
       $.ajax({
         type: 'GET',
         dataType: 'json',
