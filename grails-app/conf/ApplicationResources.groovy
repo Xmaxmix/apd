@@ -47,6 +47,7 @@ modules = {
         resource url:'/js/vendor/jstree.js'
         resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
         resource url:'/js/vendor/large-cookie.js'
+        resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/global-variables.js'
         resource url:'/js/binaries-viewer.js'

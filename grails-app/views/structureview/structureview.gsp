@@ -33,7 +33,8 @@
                 <g:each in="${ all }">
                   <g:if test="${ it?.children}">
                     <li class="jstree-open" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
-                      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:it.id]">
+                      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:it.id]"
+                        onComplete="mapSetup();">
                         ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
                       </g:remoteLink>
                       <ul>
@@ -43,7 +44,7 @@
                   </g:if>
                   <g:else>
                     <li class="jstree-leaf" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
-                      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:it.id]" 
+                      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:it.id]"
                         onComplete="mapSetup();">
                         ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
                       </g:remoteLink>
@@ -60,5 +61,8 @@
           <div id="details-container"><h1>Bitte wählen Sie ein Archiv</h1></div>
       </div>
     </div>
+    <script>
+        
+     </script>
   </body>
 </html>

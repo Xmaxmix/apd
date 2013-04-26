@@ -1,7 +1,8 @@
 <g:each var="child" in="${ children }">
   <g:if test="${ child?.children}">
     <li class="jstree-closed" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
-      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:child.id]">
+      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:child.id]"
+        onComplete="mapSetup();">
         ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
       </g:remoteLink>
       <ul>
@@ -11,7 +12,8 @@
   </g:if>
   <g:else>
     <li class="jstree-leaf" data-sector="${ child?.sector }" data-institution-id="${ child.id }">
-      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:child.id]">
+      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:child.id]"
+        onComplete="mapSetup();">
         ${ child?.name } <span>(<g:message code="${ child?.sectorLabelKey }" />)</span>
       </g:remoteLink>
     </li>

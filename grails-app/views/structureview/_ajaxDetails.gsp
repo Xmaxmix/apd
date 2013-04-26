@@ -5,7 +5,7 @@
         <div>
           <g:message code="apd.${selectedOrgXML.sector}"/>
         </div>
-        <div>
+        <div id="institution-name" data-id="${selectedItemId}">
           <h2>${selectedOrgXML.name}
             <g:if test="${(countObjcs > 0)}">
               <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>

@@ -148,13 +148,26 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
 function mapSetup() {
     INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
-    MAP_DIR = jsContextPath + MAP_DIR;
-    GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + MAP_DIR;
-    if (jsPageName == INSTITUTION_PAGE_NAME) {
-            jsLongitude = $("div.location").attr('data-lon');
-            jsLatitude = $("div.location").attr('data-lat');
-        InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
-    }
+    GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + jsContextPath + MAP_DIR;
+    jsLongitude = $("div.location").attr('data-lon');
+    jsLatitude = $("div.location").attr('data-lat');
+    InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+    $(function() {
+        // Prepare
+        var History = window.History; // Note: We are using a capital H instead of a lower h
+        if ( !History.enabled ) {
+             // History.js is disabled for this browser.
+             // This is because we can optionally choose to support HTML4 browsers or not.
+            return false;
+        }
+    
+        // Bind to StateChange Event
+        History.Adapter.bind(window,'statechange',function() { // Note: We are using statechange instead of popstate
+            var State = History.getState();
+        });
+
+        History.pushState(null, $('#institution-name').attr('data-id'), "/struktur/item/"+$('#institution-name').attr('data-id'));
+    });
     return;
 };
 
