@@ -67,11 +67,11 @@ class ErrorController {
         if ( Environment.PRODUCTION == Environment.getCurrent() ) {
 
             // Production: show a nice error message
-            log.error "serverError(): Return view '505_production'"
+            log.error "serverError(): Return view '500_production'"
             return render(view:'500_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
         } else {
             // Not it production? show an ugly, developer-focused error message
-            log.error "serverError(): Return view '505_development'"
+            log.error "serverError(): Return view '500_development'"
             return render(view:'500_development', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
         }
     }
@@ -112,7 +112,7 @@ class ErrorController {
         } else {
 
             // Not it production? show an ugly, developer-focused error message
-            log.error "serverError(): Return view '505_development'"
+            log.error "notFound(): Return view '404_development'"
             return render(view:'404_development', model: ["message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
 
         }

@@ -291,9 +291,11 @@ var page = {};
     function resetFields($fields) {
       $fields.each(function(index, item) {
         if ($(item).is('select')) {
+
           if (item.selectedIndex !== 0) {
             item.selectedIndex = 0;
           }
+
         } else if (item.value) {
           item.value = '';
         }
@@ -310,14 +312,14 @@ var page = {};
         var textOnlyFacet = $textOnlyFacets[index];
 
         $(this)
-        .attr('class', textOnlyFacet.className)
-        .removeAttr('disabled')
-        .show();
+          .attr('class', textOnlyFacet.className)
+          .removeAttr('disabled')
+          .show();
 
         // we don't need the text only facets anymore
         $(textOnlyFacet)
-        .attr('class', '')
-        .attr('disabled', 'disabled').hide();
+          .attr('class', '')
+          .attr('disabled', 'disabled').hide();
       });
     }
 
@@ -467,14 +469,17 @@ var page = {};
         searchStateCookie.del();
 
         $(selectors.group, root).each(function(index, item) {
-          resetFields($(selectors.globalOperator, root));
-          resetGroup(this);
+          if(index !== 0) {
+            resetGroup(this);
+          }
         });
 
+        // On reset, we show only the first and the second group
         $(selectors.groupWidget, root)
-        .first().show()
-        .end()
-        .slice(1).hide();
+          .first().show()
+          .end()
+          .slice(2)
+          .hide();
 
         updateGroupButtons();
       });

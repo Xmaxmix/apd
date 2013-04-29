@@ -39,6 +39,10 @@ public enum SupportedLocales {
         this.locale = locale;
     }
 
+    public Locale getLocale() {
+        return this.locale
+    }
+
     /**
      * Returns the default locale for the project. For APD it is "DE"
      * @return The "DE" locale
