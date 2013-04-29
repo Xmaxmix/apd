@@ -28,7 +28,7 @@ class SearchWidgetService {
     
     def getFilterList(){
         
-        def sparte = [
+        def sector = [
             "Staatliche Archive",
             "Kommunale Archive",
             "Kirchliche Archive",
@@ -41,7 +41,7 @@ class SearchWidgetService {
             "Sonstige Archive"
         ];
     
-        def bundesland = [
+        def state = [
             "Baden-Württemberg",
             "Bayern",
             "Berlin",
@@ -61,7 +61,7 @@ class SearchWidgetService {
         ]
         
         def alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-        return [sparte:sparte, bundesland: bundesland, alphabet:alphabet]
+        return [sector:sector, state: state, alphabet:alphabet]
     }
 
 }

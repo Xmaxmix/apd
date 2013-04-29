@@ -5,7 +5,7 @@
         <option value="default" selected>
           <g:message code="apd.filter_sector" />
         </option>
-        <g:each in="${filters.sparte}">
+        <g:each in="${filters.sector}">
           <g:if test="${ it instanceof List}">
             <g:each in="${it}" var="subfilter">
               <option value="${subfilter}">- ${subfilter}</option>
@@ -22,7 +22,7 @@
         <option value="default" selected>
           <g:message code="apd.filter_region" />
         </option>
-        <g:each in="${filters.bundesland}">
+        <g:each in="${filters.state}">
           <g:if test="${ it instanceof List}">
             <g:each in="${it}" var="subfilter">
               <option value="${subfilter}">- ${subfilter}</option>
