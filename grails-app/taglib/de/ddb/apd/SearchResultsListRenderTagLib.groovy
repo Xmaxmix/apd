@@ -16,20 +16,27 @@
 package de.ddb.apd
 
 class SearchResultsListRenderTagLib {
+
     /**
      * Renders the item results.
      *
      * @attr results REQUIRED organizations list
      */
     def searchService
+
     def itemResultsRender = { attrs, body ->
-        out << render(template:"/listview/resultsList", model:[results: attrs.results, urlParams: attrs.urlParams, confBinary: request.getContextPath()])
+        out << render(template:"/listview/resultsList", model:[results: attrs.results,
+                                                               urlParams: attrs.urlParams,
+                                                               confBinary: request.getContextPath()])
     }
 
     def truncateItemTitle = { attrs, body ->
         out << searchService.trimTitle(attrs.title.toString(), attrs.length)
     }
+
     def truncateHovercardTitle = { attrs, body ->
-        out << searchService.trimString(attrs.title.toString().replaceAll("<match>", "").replaceAll("</match>", ""), attrs.length)
+        out << searchService
+                .trimString(attrs.title.toString().replaceAll("<match>", "")
+                .replaceAll("</match>", ""), attrs.length)
     }
 }

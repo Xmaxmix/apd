@@ -1,10 +1,10 @@
 <html>
   <head>
     <title><g:message code="apd.List"/> - <g:message code="apd.ArchivportalD"/></title>
-    
+
     <meta name="page" content="structureview" />
     <meta name="layout" content="main" />
-    
+
   </head>
   <body>
     <div class="row">
@@ -34,7 +34,7 @@
                       <g:if test="${ it?.children}">
                         <li class="jstree-close" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
                           <a href="${it.uri}" class="">
-                            ${ it?.name } 
+                            ${ it?.name }
                             <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
                             <span>(${ it?.children.size() } <g:message code="apd.Object"/>)</span>
                           </a>
