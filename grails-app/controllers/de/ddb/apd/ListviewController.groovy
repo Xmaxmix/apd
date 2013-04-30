@@ -89,9 +89,10 @@ class ListviewController {
         response.setHeader("Cache-Control", "no-cache")
         render (contentType: ContentType.JSON.toString()) { builder }
     }
-    
+    //The method can be used in ajax requests to retrieve elements on second level
     def institutionhierarchy(){
-        render institutionService.getHierarchyChildren(params.id);
+        assert params.id!=null, "this method should not be called without an ID"
+        render institutionService.getTechtonicFirstLvlHierarchyChildren(params.id);
     }
 
 }

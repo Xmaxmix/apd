@@ -19,6 +19,7 @@ package de.ddb.apd
 import java.util.logging.Logger;
 
 import de.ddb.apd.institutions.InstitutionsCache;
+import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import groovyx.net.http.HTTPBuilder
 import net.sf.json.JSONObject
@@ -197,58 +198,44 @@ class InstitutionService {
     }
     
     /**
-     * Return the tectonics and the hierarchy under a specific institution
-     * 
-     * @return
+     * Return one level information below this institution
+     * 1. Get some item-object from an institution
+     * 2. Find the Root Tectonic for this item / we assume that there is only one tectonic per institute
+     * 3. Get all children for our institution and return a hierarchy if succesfull 
+     * @return JSONObject
      */
-    private def getHierarchyChildren(id){
+    private def getTechtonicFirstLvlHierarchyChildren(id){
+        def JSONObject hierarchy = [:]
         def children=getInstitutionChildren(id);
-
         //TODO throw exception if response if not JSON
         assert children instanceof JSONObject
         def objectResults = children.results.docs[0];
-        //IF we have some element in our institution
-        if (children.results.docs[0].size()>0){
-            //ITEM ID 
-            //log.info "FIRST ITEM ID " + objectResults[0].id;
-            //GET TECTONIC ROOT
+
+        if (objectResults.size()>0){
             def parent =itemService.getParent(objectResults[0].id).last()
-            
+            hierarchy<< [id: parent.id, label: parent.label, children: getChildren(id).getAt("children")];
+            log.info hierarchy
             if (parent.leaf==false){
-                //log.info "Children's are "+itemService.getChildren(parent.id)
-                def hierarchyArray = [:]
-                hierarchyArray=getChildren(parent);
-                log.info "THIS IS IT"+ hierarchyArray
-                return itemService.getChildren(parent.id)
+                hierarchy <<["tectonics": getChildren(id).getAt("children")];
+                return hierarchy
             }
-            return parent
-            
         }
         return null
     }
     
     
-    private def getChildren(parent){
-        def results = []
-        def children = itemService.getChildren(parent.id)
-        children.each {
-            log.info "#############################WHAT IS HERE" +it;
-            log.info (itemService.getChildren(it.id))
-            if (it.leaf=="false"){
-                
-                getChildren(it)
-            }
-            results.add([id:it.id,label:it.label]);
-            
-            
-            log.info "********************************* ID IS "+it.id + it.leaf
+    private def getChildren(id){
+        def children = itemService.getChildren(id)
+        HashMap jsonMap = new HashMap()
+        jsonMap.children = children.collect {child ->
+            return ["id": child.id, label: child.label, parent:child.parent, leaf: child.leaf, aggregationEntity:child.aggregationEntity,institute:false]
             
         }
-        results
+        return jsonMap 
     }
     /**
-     * Used in the getHierarchyChildren
-     * @return
+     * Used in the getTechtonicFirstLvlHierarchyChildren
+     * @return JSONObject
      */
     private def getInstitutionChildren(id){
         def query =[query:"*",facet:"provider_id",provider_id:id]
