@@ -16,10 +16,10 @@
 $(document).ready(function () {
   if(jsPageName == "objectview") {
     
-    var treeWrapper = new InstitutionsTreeWrapper();
+    var objectTreeWrapper = new ObjectTreeWrapper();
     
-    treeWrapper.buildInitialTree('#institution-tree', '.list-container');
-    treeWrapper.loadInitialTreeNodes('#institution-tree');
+    objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
+    objectTreeWrapper.loadInitialTreeNodes('#institution-tree');
 
     
 

@@ -26,17 +26,23 @@ $(document).ready(function () {
 //      "plugins" : [ "themes", "html_data" ]
 //    });
 
-    var apiWrapper = new InstitutionsApiWrapper();  
+//    var apiWrapper = new InstitutionsApiWrapper();  
+//
+//    // Build the tree
+//    function printInstitutionsList(json){
+//      // TODO build actual tree
+//      $("#institution-tree").empty();
+//      $.each(json, function(i, field){
+//        $("#institution-tree").append(i + " / " + field.name + " <br />");
+//      });
+//    }
 
-    // Build the tree
-    function printInstitutionsList(json){
-      // TODO build actual tree
-      $("#institution-tree").empty();
-      $.each(json, function(i, field){
-        $("#institution-tree").append(i + " / " + field.name + " <br />");
-      });
-    }
-
+    var structureTreeWrapper = new StructureTreeWrapper();
+    
+    structureTreeWrapper.buildInitialTree('#institution-tree', '.institution-item-details');
+    structureTreeWrapper.loadInitialTreeNodes('#institution-tree');
+    
+    
     // When page loads -> load the data and build tree
 //    apiWrapper.getFullInstitutionsList(function(json){
 //      printInstitutionsList(json);

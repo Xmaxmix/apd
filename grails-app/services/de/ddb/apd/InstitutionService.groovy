@@ -217,6 +217,26 @@ class InstitutionService {
         return searchWrapper.getResponse().results[0].docs
     }
 
+    //    def findInstitutionForId(String id){
+    //        def fullInstitutionsList = this.findAll()
+    //        return findInstitutionForIdRecursion(id, fullInstitutionsList)
+    //    }
+    //
+    //    private def findInstitutionForIdRecursion(String id, List institutions){
+    //        for(int i=0; i<institutions.size(); i++){
+    //            if(institutions[i].id == id){
+    //                return institutions[i]
+    //            }
+    //            if(institutions[i].children){
+    //                def foundInstitution = findInstitutionForIdRecursion(id, institutions[i].children)
+    //                if(foundInstitution) {
+    //                    return foundInstitution
+    //                }
+    //            }
+    //        }
+    //        return null
+    //    }
+
 
     private getTotal(rootList) {
         def total = rootList.size()

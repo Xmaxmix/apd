@@ -72,6 +72,7 @@ $(function() {
 //      });
 //    },
     
+    
     getObjectTreeRootNodes: function(query, callback) {
       console.log("##############1 getObjectTreeRootNodes "+query);
       var fullUrl = jsContextPath + "/liste/root";
@@ -122,7 +123,58 @@ $(function() {
         }
       });
     },
+    
+    
 
+    getStructureTreeRootNodes: function(query, callback) {
+      console.log("##############1 getStructureTreeRootNodes "+query);
+      var fullUrl = jsContextPath + "/struktur/root";
+      fullUrl += "?query="+query;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        }
+      });
+    },
+
+    getStructureTreeNodeDetails: function(itemId, query, callback) {
+      console.log("##############1 getStructureTreeNodeDetails "+itemId);
+      var fullUrl = jsContextPath + "/struktur/detail/"+itemId;
+      fullUrl += "?query="+query;
+      $.ajax({
+        type: 'GET',
+        dataType: 'html',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          callback(data.responseText);
+        }
+      });
+    },
+    
+    getStructureTreeNodeChildren: function(itemId, callback) {
+      console.log("##############1 getStructureTreeNodeChildren "+itemId);
+      var fullUrl = jsContextPath + "/struktur/children/"+itemId;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        }
+      });
+    },
+    
     
   });
 });

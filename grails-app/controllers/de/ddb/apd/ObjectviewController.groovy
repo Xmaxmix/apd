@@ -30,7 +30,7 @@ class ObjectviewController {
 
     def getTreeRootItems() {
         def query = params.query
-        println "##################### index: "+query
+        println "##################### ObjectviewController getTreeRootItems: "+query
 
         def searchResult = institutionService.searchArchives(query)
 
@@ -42,7 +42,7 @@ class ObjectviewController {
         def query = params.query
         def offset = params.offset
         def pagesize = params.pagesize
-        println "##################### getTreeNodeDetails: "+id+","+query
+        println "##################### ObjectviewController getTreeNodeDetails: "+id+","+query
 
         def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
 
@@ -51,7 +51,7 @@ class ObjectviewController {
 
     def getTreeNodeChildren() {
         def id = params.id
-        println "##################### getTreeNodeChildren: "+id
+        println "##################### ObjectviewController getTreeNodeChildren: "+id
 
         render (contentType: ContentType.JSON.toString()) { [:]}
     }

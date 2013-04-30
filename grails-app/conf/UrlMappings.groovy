@@ -41,6 +41,21 @@ class UrlMappings {
             action="show"
         }
 
+        "/struktur/detail/$id" {
+            controller="structureview"
+            action="getTreeNodeDetails"
+        }
+
+        "/struktur/children/$id" {
+            controller="structureview"
+            action="getTreeNodeChildren"
+        }
+
+        "/struktur/root" {
+            controller="structureview"
+            action="getTreeRootItems"
+        }
+
         "/liste" {
             controller="objectview"
             action="index"

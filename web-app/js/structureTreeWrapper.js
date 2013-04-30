@@ -16,11 +16,11 @@
 
 $(function() {
   
-  InstitutionsTreeWrapper = function(){
+  StructureTreeWrapper = function(){
     this.init();
   }
 
-  $.extend(InstitutionsTreeWrapper.prototype, {
+  $.extend(StructureTreeWrapper.prototype, {
 
     init: function() {
     },
@@ -45,49 +45,48 @@ $(function() {
     },
     
     clickOnInstitution: function(institutionId, detailView) {
-      console.log("####################2 clickOnInstitution: "+institutionId);
+      console.log("####################4 clickOnInstitution: "+institutionId);
       this.showNodeDetails(institutionId, detailView);
       this.openTreeNode(institutionId, detailView);
     },
     
     openTreeNode: function(institutionId) {
-      console.log("####################2 openTreeNode "+institutionId);
+      console.log("####################4 openTreeNode "+institutionId);
       if(institutionId != "rootnode"){
         var institutionsApiWrapper = new InstitutionsApiWrapper();
-        institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
-          console.log("####################2 child: "+data);
+        institutionsApiWrapper.getStructureTreeNodeChildren(institutionId, function(data) {
+          console.log("####################4 child: "+data);
         });
       }
     },
 
     showNodeDetails: function(institutionId, detailView) {
-      console.log("####################2 showNodeDetails "+institutionId);
+      console.log("####################4 showNodeDetails "+institutionId);
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
       var query = this.getUrlParam("search");
-      var offset = this.getUrlParam("offset");
-      var pagesize = this.getUrlParam("pagesize");
       
-      console.log("####################2 showNodeDetails "+query+", "+offset+", "+pagesize);
-      institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
-        console.log("####################2 showNodeDetails append to "+detailView);
+      console.log("####################4 showNodeDetails "+query);
+      institutionsApiWrapper.getStructureTreeNodeDetails(institutionId, query, function(data) {
+        console.log("####################4 showNodeDetails append to "+detailView);
+        console.log(data);
         $(detailView).empty();
         $(detailView).append(data);
       });
     },
     
     loadInitialTreeNodes: function(treeDiv) {
-      console.log("####################2 loadInitialTreeNodes "+treeDiv);
+      console.log("####################4 loadInitialTreeNodes "+treeDiv);
       
       var query = this.getUrlParam("search");
 
       var institutionsApiWrapper = new InstitutionsApiWrapper();
-      institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
+      institutionsApiWrapper.getStructureTreeRootNodes(query, function(data){
         
-        var childNodes = [];
+        var rootNodes = [];
         for(var i=0; i<data.institutions.length; i++) {
-          childNodes.push(
-            {title: data.institutions[i].name+" ("+data.institutions[i].count+")", 
+          rootNodes.push(
+            {title: data.institutions[i].name, 
               key: data.institutions[i].id, 
               isFolder: true, 
               isLazy: true, 
@@ -95,18 +94,12 @@ $(function() {
             );
         }
         
-        var root = [{ title: data.count+" Objekte", 
-                      key: "rootnode", 
-                      isFolder: true, 
-                      isLazy: true, 
-                      children: childNodes}
-                    ];
         
-        $(treeDiv).dynatree("getRoot").addChild(root);
+        $(treeDiv).dynatree("getRoot").addChild(rootNodes);
         
         // Open root node
-        var rootNodeTreeElement = $(treeDiv).dynatree("getTree").getNodeByKey("rootnode");
-        rootNodeTreeElement.expand(true);
+        //var rootNodeTreeElement = $(treeDiv).dynatree("getTree").getNodeByKey("rootnode");
+        //rootNodeTreeElement.expand(true);
         
       });
     },
