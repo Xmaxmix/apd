@@ -214,13 +214,14 @@ class InstitutionService {
         if (objectResults.size()>0){
             def parent =itemService.getParent(objectResults[0].id).last()
             hierarchy<< [id: parent.id, label: parent.label, children: getChildren(id).getAt("children")];
-            log.info hierarchy
             if (parent.leaf==false){
                 hierarchy <<["tectonics": getChildren(parent.id).getAt("children")];
-                return hierarchy
+                
             }
+        }else{
+            hierarchy << hierarchy<< [id: id, "tectonics": getChildren(id).getAt("children")];
         }
-        return null
+       return hierarchy
     }
     
     
