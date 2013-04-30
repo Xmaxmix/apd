@@ -216,7 +216,7 @@ class InstitutionService {
             hierarchy<< [id: parent.id, label: parent.label, children: getChildren(id).getAt("children")];
             log.info hierarchy
             if (parent.leaf==false){
-                hierarchy <<["tectonics": getChildren(id).getAt("children")];
+                hierarchy <<["tectonics": getChildren(parent.id).getAt("children")];
                 return hierarchy
             }
         }

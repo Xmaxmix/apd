@@ -90,7 +90,7 @@ class ListviewController {
         render (contentType: ContentType.JSON.toString()) { builder }
     }
     //The method can be used in ajax requests to retrieve elements on second level
-    def institutionhierarchy(){
+    def getSecondLevelNodes(){
         assert params.id!=null, "this method should not be called without an ID"
         render institutionService.getTechtonicFirstLvlHierarchyChildren(params.id);
     }
