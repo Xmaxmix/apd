@@ -151,7 +151,7 @@ function mapSetup() {
     GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + jsContextPath + MAP_DIR;
     jsLongitude = $("div.location").attr('data-lon');
     jsLatitude = $("div.location").attr('data-lat');
-    InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+    InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude); 
     $(function() {
         // Prepare
         var History = window.History; // Note: We are using a capital H instead of a lower h
@@ -160,14 +160,23 @@ function mapSetup() {
              // This is because we can optionally choose to support HTML4 browsers or not.
             return false;
         }
-    
         // Bind to StateChange Event
         History.Adapter.bind(window,'statechange',function() { // Note: We are using statechange instead of popstate
             var State = History.getState();
         });
 
-        History.pushState(null, $('#institution-name').attr('data-id'), "/struktur/item/"+$('#institution-name').attr('data-id'));
+        History.pushState({state:1}, $('#institution-name').attr('data-id'), "/apd/struktur/item/"+$('#institution-name').attr('data-id'));
     });
     return;
 };
 
+$(document).ready(function() {
+    INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
+    GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + jsContextPath + MAP_DIR;
+    jsLongitude = $("div.location").attr('data-lon');
+    jsLatitude = $("div.location").attr('data-lat');
+    if ($("#divOSM").length > 0){
+      InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+    }
+    return;
+});

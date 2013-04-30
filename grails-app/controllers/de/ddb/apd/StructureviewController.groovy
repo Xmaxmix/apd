@@ -39,18 +39,8 @@ class StructureviewController {
         def allInstitution = institutionService.findAllAlphabetical()
         def institutionByFirstLetter = allInstitution.data
 
-        // TODO: make this more idiomatic Groovy
         def all = []
         institutionByFirstLetter?.each { all.addAll(it.value) }
-
-        // no institutions
-        institutionByFirstLetter.each { k,v ->
-            if(institutionByFirstLetter[k]?.size() == 0) {
-                institutionByFirstLetter[k] = true
-            } else {
-                institutionByFirstLetter[k] = false
-            }
-        }
 
         // TODO: move to service
         def index = []

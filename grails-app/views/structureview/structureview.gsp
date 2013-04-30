@@ -58,11 +58,15 @@
         </div>
       </div>
       <div class="span8">
-          <div id="details-container"><h1>Bitte wählen Sie ein Archiv</h1></div>
+          <div id="details-container">
+            <g:if test="${selectedItemId}">
+              <g:render template="ajaxDetails" />
+            </g:if>
+            <g:else>
+              <h1>Bitte wählen Sie ein Archiv</h1>
+            </g:else>
+          </div>
       </div>
     </div>
-    <script>
-        
-     </script>
   </body>
 </html>
