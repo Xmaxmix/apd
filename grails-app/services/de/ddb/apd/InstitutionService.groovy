@@ -214,7 +214,7 @@ class InstitutionService {
         }
         println "#################### 11 ok "
 
-        return searchWrapper.getResponse().results[0].docs
+        return searchWrapper.getResponse()?.results[0]?.docs
     }
 
     //    def findInstitutionForId(String id){

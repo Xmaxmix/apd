@@ -15,7 +15,6 @@
  */
 
 
-/*
 .list-container .results-list {
   list-style: none;
   margin: 0 0 10px 0;
@@ -201,16 +200,14 @@
 }
 
 
-a {
+.results-list a {
   color: green;
 }
 
-h2 {
+.results-list h2 {
   font-size: 1.375em;
 }
 
-.bt {
+.results-list .bt {
   border-top: solid 1px #efebe8;
 }
-
-*/

@@ -15,6 +15,7 @@
  */
 package de.ddb.apd
 
+import net.sf.json.JSONNull;
 import groovyx.net.http.ContentType;
 
 
@@ -44,9 +45,42 @@ class ObjectviewController {
         def pagesize = params.pagesize
         println "##################### ObjectviewController getTreeNodeDetails: "+id+","+query
 
-        def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
+        //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
+        def resultsItems = institutionService.searchArchive(query, id, offset, pagesize)
 
-        render(template: "resultsList", model: ["results":searchResults, "offset": offset])
+        resultsItems.each {
+
+            def title
+            def subtitle
+            def thumbnail
+            def media = []
+
+            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
+            if (titleMatch)
+                title= titleMatch[0][3]
+
+            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
+            subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
+
+            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
+            if (thumbnailMatch){
+                thumbnail= thumbnailMatch[0][2]
+            }
+            def mediaMatch = it.preview.toString() =~ /(?m)<div (.*?)data-media="(.*?)"/
+            if (mediaMatch){
+                mediaMatch[0][2].split (",").each{ media.add(it) }
+            }
+
+            it["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
+        }
+
+
+        render(
+                template: "resultsListContainer",
+                model: [
+                    "results":resultsItems,
+                    "offset": offset
+                ])
     }
 
     def getTreeNodeChildren() {

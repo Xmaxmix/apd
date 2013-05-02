@@ -61,16 +61,27 @@ $(function() {
     },
 
     showNodeDetails: function(institutionId, detailView) {
-      console.log("####################2 showNodeDetails "+institutionId);
+
+      console.log("####################2 showNodeDetails '"+institutionId+"'");
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
-      var query = this.getUrlParam("search");
+      var query = this.getUrlParam("query");
+      if(query == ""){
+        query = "*"
+      }
       var offset = this.getUrlParam("offset");
+      if(offset == ""){
+        offset = "0"
+      }
       var pagesize = this.getUrlParam("pagesize");
+      if(pagesize == ""){
+        pagesize = "20"
+      }
       
-      console.log("####################2 showNodeDetails "+query+", "+offset+", "+pagesize);
+      var History = window.History;
+      History.pushState("", encodeURI(document.title), "?query="+encodeURI(query)+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId);
+      
       institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
-        console.log("####################2 showNodeDetails append to "+detailView);
         $(detailView).empty();
         $(detailView).append(data);
       });
