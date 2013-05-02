@@ -29,22 +29,7 @@ class StructureviewController {
 
         render (view: 'structureview',  model: [:])
 
-//        def allInstitution = institutionService.findAllAlphabetical()
-//        def institutionByFirstLetter = allInstitution.data
-//
-//        def all = []
-//        institutionByFirstLetter?.each { all.addAll(it.value) }
-//
-//        // TODO: move to service
-//        def index = []
-//        institutionByFirstLetter.each {
-//            index.add(it)
-//        }
-//
-//        render (view: 'structureview',  model: [index: index, all: all, total: allInstitution?.total])
-
     }
-
 
     //    def show() {
     //
@@ -103,8 +88,6 @@ class StructureviewController {
 
     def getTreeRootItems() {
         def query = params.query
-        println "##################### StructureviewController getTreeRootItems: "+query
-
         def searchResult = institutionService.searchArchives(query)
 
         render (contentType: ContentType.JSON.toString()) { searchResult}
@@ -113,7 +96,6 @@ class StructureviewController {
     def getTreeNodeDetails() {
         def id = params.id
         def query = params.query
-        println "##################### StructureviewController getTreeNodeDetails: "+id
 
         //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
 
@@ -123,7 +105,7 @@ class StructureviewController {
         def vApiInstitution = new ApiInstitution();
         log.debug("read insitution by item id: ${id}");
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
-        println "##################### StructureviewController getTreeNodeDetails: selectedOrgXML="+selectedOrgXML
+
         if (selectedOrgXML) {
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
@@ -149,7 +131,7 @@ class StructureviewController {
                     countObjectsForProv = -1;
                 }
             }
-            println "##################### StructureviewController getTreeNodeDetails: render="+countObjectsForProv
+
             render(
                     template: "detailView",
                     model: [
@@ -170,7 +152,6 @@ class StructureviewController {
 
     def getTreeNodeChildren() {
         def id = params.id
-        println "##################### StructureviewController getTreeNodeChildren: "+id
 
         render (contentType: ContentType.JSON.toString()) { [:]}
     }

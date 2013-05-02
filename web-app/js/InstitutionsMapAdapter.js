@@ -151,7 +151,8 @@ function mapSetup() {
     GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + jsContextPath + MAP_DIR;
     jsLongitude = $("div.location").attr('data-lon');
     jsLatitude = $("div.location").attr('data-lat');
-    InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude); 
+    InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+    //TODO move this function from here to the onclick event for the tree elements
     $(function() {
         // Prepare
         var History = window.History; // Note: We are using a capital H instead of a lower h
