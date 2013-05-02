@@ -36,6 +36,7 @@ class InstitutionService {
     static InstitutionsCache institutionsCache = new InstitutionsCache()
 
     def grailsLinkGenerator
+    def itemService
 
 
     def findAllAlphabetical(){
@@ -333,7 +334,7 @@ class InstitutionService {
 
         if (objectResults.size()>0){
             def parent =itemService.getParent(objectResults[0].id).last()
-            hierarchy<< [id: parent.id, label: parent.label, children: getChildren(id).getAt("children")];
+            hierarchy<< [id: id, children: getChildren(id).getAt("children")];
             if (parent.leaf==false){
                 hierarchy <<["tectonics": getChildren(parent.id).getAt("children")];
 
