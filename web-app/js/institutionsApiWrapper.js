@@ -15,6 +15,7 @@
  */
 
 $(function() {
+  
   InstitutionsApiWrapper = function(){
     this.init();
   }
@@ -25,7 +26,7 @@ $(function() {
     },
 	
     getFullInstitutionsList: function(callback) {
-
+      console.log("##############1 getFullInstitutionsList ");
       $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -51,6 +52,129 @@ $(function() {
           });			
         }
       });			
-    }
+    },
+    
+//    getArchiveList: function(query, facets, callback) {
+//      console.log("##############1 getArchiveList ");
+//      var fullUrl = jsContextPath + "/institutions/archives";
+//      fullUrl += "?searchQuery=" + query;
+//      fullUrl += "?facets=" + facets;
+//      $.ajax({
+//        type: 'GET',
+//        dataType: 'json',
+//        async: true,
+//        cache: false, 
+//        url: fullUrl,
+//        complete: function(data){
+//          var jsonResponse = jQuery.parseJSON(data.responseText);
+//          callback(jsonResponse);
+//        }
+//      });
+//    },
+    
+    
+    getObjectTreeRootNodes: function(query, callback) {
+      console.log("##############1 getObjectTreeRootNodes "+query);
+      var fullUrl = jsContextPath + "/liste/root";
+      fullUrl += "?query="+query;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        }
+      });
+    },
+
+    getObjectTreeNodeDetails: function(itemId, query, offset, pagesize, callback) {
+      console.log("##############1 getObjectTreeNodeDetails "+itemId);
+      var fullUrl = jsContextPath + "/liste/detail/"+itemId;
+      fullUrl += "?query="+query;
+      fullUrl += "&offset="+offset;
+      fullUrl += "&pagesize="+pagesize;
+      $.ajax({
+        type: 'GET',
+        dataType: 'html',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          callback(data.responseText);
+        }
+      });
+    },
+    
+    getObjectTreeNodeChildren: function(itemId, callback) {
+      console.log("##############1 getObjectTreeNodeChildren "+itemId);
+      var fullUrl = jsContextPath + "/liste/children/"+itemId;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        }
+      });
+    },
+    
+    
+
+    getStructureTreeRootNodes: function(query, callback) {
+      console.log("##############1 getStructureTreeRootNodes "+query);
+      var fullUrl = jsContextPath + "/struktur/root";
+      fullUrl += "?query="+query;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        }
+      });
+    },
+
+    getStructureTreeNodeDetails: function(itemId, query, callback) {
+      console.log("##############1 getStructureTreeNodeDetails "+itemId);
+      var fullUrl = jsContextPath + "/struktur/detail/"+itemId;
+      fullUrl += "?query="+query;
+      $.ajax({
+        type: 'GET',
+        dataType: 'html',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          callback(data.responseText);
+        }
+      });
+    },
+    
+    getStructureTreeNodeChildren: function(itemId, callback) {
+      console.log("##############1 getStructureTreeNodeChildren "+itemId);
+      var fullUrl = jsContextPath + "/struktur/children/"+itemId;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false, 
+        url: fullUrl,
+        complete: function(data){
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        }
+      });
+    },
+    
+    
   });
 });
