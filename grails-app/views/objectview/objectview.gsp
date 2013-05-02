@@ -8,7 +8,9 @@
   </head>
   <body>
     <div class="row">
-      <div class="span12 search-widget-container border">search-widget</div>
+      <div class="span12 search-widget-container border">
+        <g:searchWidgetRender></g:searchWidgetRender>
+      </div>
     </div>
     <div class="row">
       <div class="span4">

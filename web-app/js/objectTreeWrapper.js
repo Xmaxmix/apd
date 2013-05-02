@@ -37,25 +37,39 @@ $(function() {
           $self.showNodeDetails(node.data.key, detailView);
         },
         onExpand: function(expand, node) {
-          $self.openTreeNode(node.data.key);
+          $self.openTreeNode(node.data.key, treeDiv);
         },
 
       });
       
     },
     
-    clickOnInstitution: function(institutionId, detailView) {
-      console.log("####################2 clickOnInstitution: "+institutionId);
-      this.showNodeDetails(institutionId, detailView);
-      this.openTreeNode(institutionId, detailView);
-    },
-    
-    openTreeNode: function(institutionId) {
+    openTreeNode: function(institutionId, treeDiv) {
       console.log("####################2 openTreeNode "+institutionId);
+      var $self = this;
+
       if(institutionId != "rootnode"){
         var institutionsApiWrapper = new InstitutionsApiWrapper();
         institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
           console.log("####################2 child: "+data);
+
+          var childNodes = [];
+          for(var i=0; i<data.length; i++) {
+            childNodes.push(
+              {title: data[i].label, 
+                key: data[i].id, 
+                isFolder: true, 
+                isLazy: true }
+              );
+          }
+          console.log("####################4 showNodeDetails "+ $(treeDiv).dynatree("getTree").getNodeByKey(institutionId));
+          $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
+          $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
+          
+          for(var i=0; i<data.length; i++) {
+            $self.openTreeNode(data[i].id, treeDiv);
+          }
+        
         });
       }
     },
@@ -90,7 +104,10 @@ $(function() {
     loadInitialTreeNodes: function(treeDiv) {
       console.log("####################2 loadInitialTreeNodes "+treeDiv);
       
-      var query = this.getUrlParam("search");
+      var query = this.getUrlParam("query");
+      if(query == ""){
+        query = "*"
+      }
 
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){

@@ -86,10 +86,11 @@ class ObjectviewController {
     def getTreeNodeChildren() {
         def id = params.id
         println "##################### ObjectviewController getTreeNodeChildren: "+id
+        def children = institutionService.getTechtonicFirstLvlHierarchyChildren(params.id).children
 
-        render (contentType: ContentType.JSON.toString()) { [:]}
+        render (contentType: ContentType.JSON.toString()) { children }
     }
-    
+
     //The method can be used in ajax requests to retrieve elements on second level
     def getSecondLevelNodes(){
         assert params.id!=null, "this method should not be called without an ID"

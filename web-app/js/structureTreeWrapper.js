@@ -34,25 +34,22 @@ $(function() {
       $(treeDiv).dynatree({
         onClick: function(node, event) {
           console.log(node);
-          $self.clickOnInstitution(node.data.key, treeDiv, detailView);
+          $self.showNodeDetails(node.data.key, detailView);
         },
         onExpand: function(expand, node) {
-          $self.openTreeNode(node.data.key);
+          $self.openTreeNode(node.data.key, treeDiv);
         },
 
       });
       
     },
     
-    clickOnInstitution: function(institutionId, treeDiv, detailView) {
-      console.log("####################4 clickOnInstitution: "+institutionId);
-      this.showNodeDetails(institutionId, detailView);
-      this.openTreeNode(institutionId, treeDiv, detailView);
-    },
-    
-    openTreeNode: function(institutionId, treeDiv, detailView) {
+    openTreeNode: function(institutionId, treeDiv) {
       console.log("####################4 openTreeNode "+institutionId);
+      var $self = this;
+      
       if(institutionId != "rootnode"){
+
         var institutionsApiWrapper = new InstitutionsApiWrapper();
         institutionsApiWrapper.getStructureTreeNodeChildren(institutionId, function(data) {
           console.log("####################4 child: "+data);
@@ -62,12 +59,16 @@ $(function() {
               {title: data[i].label, 
                 key: data[i].id, 
                 isFolder: true, 
-                isLazy: true, 
-                children: null }
+                isLazy: true }
               );
           }
           console.log("####################4 showNodeDetails "+ $(treeDiv).dynatree("getTree").getNodeByKey(institutionId));
+          $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
+          
+          for(var i=0; i<data.length; i++) {
+            $self.openTreeNode(data[i].id, treeDiv);
+          }
           
         });
       }
@@ -78,11 +79,13 @@ $(function() {
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
       var query = this.getUrlParam("search");
-      
+
+      var History = window.History;
+      History.pushState("", encodeURI(document.title), "?query="+encodeURI(query)+"&id="+institutionId);
+
       console.log("####################4 showNodeDetails "+query);
       institutionsApiWrapper.getStructureTreeNodeDetails(institutionId, query, function(data) {
         console.log("####################4 showNodeDetails append to "+detailView);
-        console.log(data);
         $(detailView).empty();
         $(detailView).append(data);
         mapSetup();
@@ -91,6 +94,7 @@ $(function() {
     
     loadInitialTreeNodes: function(treeDiv) {
       console.log("####################4 loadInitialTreeNodes "+treeDiv);
+
       
       var query = this.getUrlParam("search");
 
@@ -103,8 +107,8 @@ $(function() {
             {title: data.institutions[i].name, 
               key: data.institutions[i].id, 
               isFolder: true, 
-              isLazy: true, 
-              children: [{title:"", key: "empty"}] }
+              isLazy: true,
+              children: [{title:"", key: "empty"}]}
             );
         }
         

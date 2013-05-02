@@ -29,19 +29,19 @@ class StructureviewController {
 
         render (view: 'structureview',  model: [:])
 
-//        def allInstitution = institutionService.findAllAlphabetical()
-//        def institutionByFirstLetter = allInstitution.data
-//
-//        def all = []
-//        institutionByFirstLetter?.each { all.addAll(it.value) }
-//
-//        // TODO: move to service
-//        def index = []
-//        institutionByFirstLetter.each {
-//            index.add(it)
-//        }
-//
-//        render (view: 'structureview',  model: [index: index, all: all, total: allInstitution?.total])
+        //        def allInstitution = institutionService.findAllAlphabetical()
+        //        def institutionByFirstLetter = allInstitution.data
+        //
+        //        def all = []
+        //        institutionByFirstLetter?.each { all.addAll(it.value) }
+        //
+        //        // TODO: move to service
+        //        def index = []
+        //        institutionByFirstLetter.each {
+        //            index.add(it)
+        //        }
+        //
+        //        render (view: 'structureview',  model: [index: index, all: all, total: allInstitution?.total])
 
     }
 
@@ -170,8 +170,6 @@ class StructureviewController {
 
     def getTreeNodeChildren() {
         def id = params.id
-        println "##################### StructureviewController getTreeNodeChildren: "+id
-        println "children: ----->"+institutionService.getTechtonicFirstLvlHierarchyChildren(params.id)
         def children = institutionService.getTechtonicFirstLvlHierarchyChildren(params.id).children
 
         render (contentType: ContentType.JSON.toString()) { children }
@@ -198,15 +196,15 @@ class StructureviewController {
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
                     countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-                } 
+                }
                 catch (NumberFormatException ex) {
                     countObjectsForProv = -1;
                 }
             }
             render(template: "ajaxDetails", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
-        } 
+        }
         else {
-           forward controller: 'error', action: "notfound"
+            forward controller: 'error', action: "notfound"
         }
     }
 }

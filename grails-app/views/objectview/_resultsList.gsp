@@ -19,7 +19,7 @@ limitations under the License.
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <g:set var="hitNumber" value="${offset + pageHitCounter}"/>
     <g:set var="controller" value="item" />
-    <g:set var="action" value="findById" />
+    <g:set var="action" value="${it.id}" />
     <g:if test="${it.category == 'Institution'}">
         <g:set var="controller" value="institution" />
         <g:set var="action" value="showInstitutionsTreeByItemId" />
