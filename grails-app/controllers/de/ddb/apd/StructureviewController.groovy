@@ -171,8 +171,10 @@ class StructureviewController {
     def getTreeNodeChildren() {
         def id = params.id
         println "##################### StructureviewController getTreeNodeChildren: "+id
+        println "children: ----->"+institutionService.getTechtonicFirstLvlHierarchyChildren(params.id)
+        def children = institutionService.getTechtonicFirstLvlHierarchyChildren(params.id).children
 
-        render (contentType: ContentType.JSON.toString()) { [:]}
+        render (contentType: ContentType.JSON.toString()) { children }
     }
 
     def ajaxDetails() {
