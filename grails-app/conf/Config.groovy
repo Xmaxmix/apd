@@ -201,3 +201,8 @@ jawr {
     locale { // Define resolver so ?lang= Grails functionality works with controllers.
         resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
+
+jquery {
+    sources = 'vendor/jquery' // Holds the value where to store jQuery-js files /web-app/js/
+    version = '1.9.1' // The jQuery version in use
+}

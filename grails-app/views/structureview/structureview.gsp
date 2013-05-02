@@ -5,6 +5,9 @@
     <meta name="page" content="structureview" />
     <meta name="layout" content="main" />
     
+    <r:require module="structureview"/>
+    <g:javascript library="jquery" />
+    
   </head>
   <body>
     <div class="row">
@@ -31,9 +34,10 @@
                 <g:each in="${ all }">
                   <g:if test="${ it?.children}">
                     <li class="jstree-open" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
-                      <a href="${it.uri}" class="">
+                      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:it.id]"
+                        onComplete="mapSetup();">
                         ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
-                      </a>
+                      </g:remoteLink>
                       <ul>
                         <g:render template="listItem" model="['children': it?.children]" />
                       </ul>
@@ -41,9 +45,10 @@
                   </g:if>
                   <g:else>
                     <li class="jstree-leaf" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
-                      <a href="${it.uri}" class="">
+                      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:it.id]"
+                        onComplete="mapSetup();">
                         ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
-                      </a>
+                      </g:remoteLink>
                     </li>
                   </g:else>
                 </g:each>
@@ -55,18 +60,19 @@
         </div>
       </div>
       <div class="span8">
-        <%-- 
-        <g:if test="${!selectedOrgXML}">
-          <div class="details-container">details</div>
-        </g:if>
-        <g:else>
-          <div class="institution-item-details">
 
-          </div>
-        </g:else>
-        --%>
         <div class="institution-item-details">
-
+        <%-- 
+          <div id="details-container">
+            <g:if test="${selectedItemId}">
+              <g:render template="ajaxDetails" />  
+            </g:if>
+            <g:else>
+              <h1>Bitte wählen Sie ein Archiv</h1>
+            </g:else>
+          </div>
+          --%>
+          <h1>Bitte wählen Sie ein Archiv</h1>
         </div>
       </div>
     </div>

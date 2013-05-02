@@ -72,6 +72,7 @@ $(function() {
         console.log(data);
         $(detailView).empty();
         $(detailView).append(data);
+        mapSetup();
       });
     },
     

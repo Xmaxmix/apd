@@ -42,7 +42,7 @@
 }
 
 
-.institution-item-details {
+#details-container {
   margin-top: 20px;
 }
 
@@ -67,15 +67,16 @@
   color: #3e3a37;
 }
 
-.institution-item-details .institution {
+#details-container .institution {
   border-color: #efebe8;
   border-style: solid;
   border-width: 0 0 5px 0;
   padding: 0 0 18px 0;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
-.institution-item-details .logo {
+#details-container .logo {
   color: black; 
   font-size: small;
 }
@@ -117,10 +118,23 @@
   position: relative;
 }
 
-.institution-item-details #divOSM img {
+.institution-item-details #divOSM {
+  position: relative;
+  float: right;
+  clear: right;
+  width: 476px;
+  height: 300px;
+  margin-left: 8px;
+  background-color: #efebe8;
+  overflow: hidden;
+  line-height: 0;
+  font-size: 0.938em;
+  font-style: italic;
+}
+
+.institution-item-details #divOSM img { 
   max-width: none !important;
   vertical-align: initial !important;
   border: none !important;
   margin: 0 !important;
 }
-
