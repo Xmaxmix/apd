@@ -17,7 +17,8 @@
 class UrlMappings {
 
     static mappings = {
-        "/$controller/$action?/$id?"{ constraints { // apply constraints here
+        "/$controller/$action?/$id?"{ constraints {
+                // apply constraints here
             } }
 
         "/" {
@@ -40,20 +41,60 @@ class UrlMappings {
             action="show"
         }
 
+        "/struktur/detail/$id" {
+            controller="structureview"
+            action="getTreeNodeDetails"
+        }
+
+        "/struktur/children/$id" {
+            controller="structureview"
+            action="getTreeNodeChildren"
+        }
+
+        "/struktur/root" {
+            controller="structureview"
+            action="getTreeRootItems"
+        }
+
         "/liste" {
-            controller="listview"
+            controller="objectview"
             action="index"
         }
 
-        "/institutions/full/$hashId?" {
-            controller="structureview"
+        "/liste/detail/$id" {
+            controller="objectview"
+            action="getTreeNodeDetails"
+        }
+
+        "/liste/children/$id" {
+            controller="objectview"
+            action="getTreeNodeChildren"
+        }
+
+        "/liste/root" {
+            controller="objectview"
+            action="getTreeRootItems"
+        }
+
+        "/institutions/$action/$hashId?" {
+            controller="institutions"
             action="getAjaxListFull"
         }
 
         "/institutions/outdated/$hashId?" {
-            controller="structureview"
+            controller="institutions"
             action="isAjaxListFullOutdated"
         }
+        //
+        //        "/institutions/archives" {
+        //            controller="institutions"
+        //            action="getAjaxListArchiveFull"
+        //        }
+
+        //        "/institutions/search" {
+        //            controller="institutions"
+        //            action="getAjaxSearch"
+        //        }
 
         "/item/$id/$name?" {
             controller="detailview"

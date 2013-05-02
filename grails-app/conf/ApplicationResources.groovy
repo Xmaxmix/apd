@@ -32,7 +32,9 @@ modules = {
         resource url:'/css/binaries-viewer.css', bundle: 'screen'
         resource url:'/css/detailview.css', bundle: 'screen'
         resource url:'/css/structureview.css', bundle: 'screen'
-        resource url:'/css/listview.css', bundle: 'screen'
+        resource url:'/css/objectview.css', bundle: 'screen'
+        resource url:'/css/dynatree-apd.css', bundle: 'screen'
+        resource url:'/css/vendor/dynatree/skin/ui.dynatree.css', bundle: 'screen'
         resource url:'/css/errors.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
         resource url:'/css/searchwidget.css', bundle: 'screen'
@@ -44,33 +46,35 @@ modules = {
 
     javascript {
         resource url:'/js/vendor/jquery.js'
+        resource url:'/js/vendor/jquery.ui.js'
         resource url:'/js/vendor/bootstrap.js'
         resource url:'/js/vendor/fuelux/require.js'
         resource url:'/js/vendor/fuelux/loader.min.js'
+        resource url:'/js/vendor/fuelux/pillbox.js'
         resource url:'/js/vendor/jwplayer/jwplayer.js'
-        resource url:'/js/vendor/jstree.js'
         resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
         resource url:'/js/vendor/large-cookie.js'
-        resource url:'/js/vendor/fuelux/pillbox.js'
+        resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/native.history.js'
+        resource url:'/js/vendor/dynatree.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/global-variables.js'
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/navbar-manager.js'
         resource url:'/js/institutionsApiWrapper.js'
+        resource url:'/js/objectTreeWrapper.js'
+        resource url:'/js/structureTreeWrapper.js'
         resource url:'/js/searchwidget.js'
         resource url:'/js/index.js'
         resource url:'/js/structureview.js'
+        resource url:'/js/objectview.js'
         resource url:'/js/tooltip.js'
         resource url:'/js/advanced-search.js'
-        
     }
 
-    // TODO use module to define the explicit dependencies.
-    advancedsearch { /*
-         resource url:'/js/vendor/jquery-1.9.1.js'
-         resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
-         resource url:'/js/vendor/large-cookie.js'
-         */
-        resource url:'/js/advanced-search.js'
-    }
+    //    // TODO use module to define the explicit dependencies.
+    //    advancedsearch { /*
+    //         resource url:'/js/vendor/jquery-1.9.1.js'
+    //         resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
+    //         resource url:'/js/vendor/large-cookie.js'
+    //         */ resource url:'/js/advanced-search.js' }
 }

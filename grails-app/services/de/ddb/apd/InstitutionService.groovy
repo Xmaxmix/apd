@@ -113,6 +113,131 @@ class InstitutionService {
     }
 
 
+    def searchArchives(String query) {
+        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
+        def backendUrl = configurationService.getBackendUrl()
+        def parameters = [:]
+        parameters["query"] = query
+        parameters["facet"] = ["sector_fct", "provider_fct"]
+        parameters["sector_fct"] = "sec_01"
+        def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
+
+        if(!searchWrapper.isOk()){
+            log.error "#################### 1 not ok"
+        }
+
+
+        //Getting result institutions for search
+        def searchResponse = searchWrapper.getResponse()
+        def responseFacets = searchResponse.facets
+        def foundProviders = []
+        for(int i=0; i<responseFacets.size(); i++) {
+            //            println "#################### 2 "+responseFacets.get(i).field
+            if(responseFacets.get(i).field == "provider_fct"){
+                //                println "#################### 3 found"
+                foundProviders = responseFacets.get(i).facetValues
+                break
+            }
+        }
+
+
+        def allInstitutions = findAll()
+
+        for(int i=0; i<foundProviders.size(); i++){
+            for(int j=0; j<allInstitutions.size(); j++){
+                if(allInstitutions[j].name == foundProviders[i].value){
+                    //                    println "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
+                    foundProviders[i]["id"] = allInstitutions[j].id
+                    break
+                }
+            }
+        }
+
+        // Getting ID for institutions
+        //        println "#################### 6 "+foundProviders
+        for(int i=0; i<foundProviders.size(); i++){
+            println "#################### 7 "+foundProviders[i]
+
+        }
+
+        def resultList = []
+        foundProviders.each {
+            resultList.add(["id": it.id, "name": it.value, "count": it.count])
+        }
+
+        def resultObject = [:]
+        resultObject["count"] = searchResponse.numberOfResults
+        resultObject["institutions"] = resultList
+        println "#################### 7 "+searchResponse.numberOfResults
+
+
+        return resultObject
+
+    }
+
+    def searchArchive(String query, String institutionId, String offset, String pagesize) {
+        // http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?
+        // query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01&provider_fct=Landesarchiv+Baden-W%C3%BCrttemberg
+
+        if(!offset){
+            offset = "0"
+        }
+        if(!pagesize){
+            pagesize = "20"
+        }
+
+        def allInstitutions = findAll()
+
+        def institutionName = ""
+        for(int i=0; i<allInstitutions.size(); i++){
+            if(allInstitutions[i].id == institutionId){
+                institutionName = allInstitutions[i].name
+                break
+            }
+        }
+
+        println "#################### 9 "+institutionId+" -> "+institutionName
+
+        def backendUrl = configurationService.getBackendUrl()
+        def parameters = [:]
+        parameters["query"] = query
+        parameters["facet"] = ["sector_fct", "provider_fct"]
+        parameters["sector_fct"] = "sec_01"
+        parameters["provider_fct"] = institutionName
+        parameters["offset"] = offset
+        parameters["rows"] = pagesize
+        println "#################### 10 "+parameters
+        def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
+
+        if(!searchWrapper.isOk()){
+            log.error "#################### 8 not ok"
+        }
+        println "#################### 11 ok "
+
+        return searchWrapper.getResponse()?.results[0]?.docs
+    }
+
+    //    def findInstitutionForId(String id){
+    //        def fullInstitutionsList = this.findAll()
+    //        return findInstitutionForIdRecursion(id, fullInstitutionsList)
+    //    }
+    //
+    //    private def findInstitutionForIdRecursion(String id, List institutions){
+    //        for(int i=0; i<institutions.size(); i++){
+    //            if(institutions[i].id == id){
+    //                return institutions[i]
+    //            }
+    //            if(institutions[i].children){
+    //                def foundInstitution = findInstitutionForIdRecursion(id, institutions[i].children)
+    //                if(foundInstitution) {
+    //                    return foundInstitution
+    //                }
+    //            }
+    //        }
+    //        return null
+    //    }
+
+
     private getTotal(rootList) {
         def total = rootList.size()
 

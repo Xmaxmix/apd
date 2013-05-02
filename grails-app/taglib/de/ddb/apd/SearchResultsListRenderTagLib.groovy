@@ -25,9 +25,8 @@ class SearchResultsListRenderTagLib {
     def searchService
 
     def itemResultsRender = { attrs, body ->
-        out << render(template:"/listview/resultsList", model:[results: attrs.results,
-                                                               urlParams: attrs.urlParams,
-                                                               confBinary: request.getContextPath()])
+        out << render(template:"/objectview/resultsList", model:[results: attrs.results,
+                                                                 confBinary: request.getContextPath()])
     }
 
     def truncateItemTitle = { attrs, body ->
