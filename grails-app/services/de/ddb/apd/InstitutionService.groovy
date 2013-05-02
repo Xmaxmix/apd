@@ -30,7 +30,7 @@ class InstitutionService {
     private static final def NUMBER_KEY = '0-9'
 
     def transactional = false
-
+    def itemService
     def configurationService
 
     static InstitutionsCache institutionsCache = new InstitutionsCache()
@@ -333,7 +333,7 @@ class InstitutionService {
 
         if (objectResults.size()>0){
             def parent =itemService.getParent(objectResults[0].id).last()
-            hierarchy<< [id: parent.id, label: parent.label, children: getChildren(id).getAt("children")];
+            hierarchy<< [id: parent.id.toString(), label: parent.label.toString(), children: getChildren(id).getAt("children")];
             if (parent.leaf==false){
                 hierarchy <<["tectonics": getChildren(parent.id).getAt("children")];
 
