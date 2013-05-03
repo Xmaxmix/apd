@@ -1,4 +1,3 @@
-
 <div class="summary-main-wrapper span6">
   <div class="summary-main">
     <h2 class="title">
