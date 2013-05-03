@@ -1,10 +1,10 @@
 <html>
   <head>
     <title><g:message code="apd.List"/> - <g:message code="apd.ArchivportalD"/></title>
-    
+
     <meta name="page" content="objectview" />
     <meta name="layout" content="main" />
-    
+
   </head>
   <body>
     <div class="row">

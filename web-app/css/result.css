@@ -1,0 +1,9 @@
+.page-filter,.sort-results-switch {
+  line-height: 42px;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.page-filter label,.sort-results-switch label {
+  display: inline;
+}

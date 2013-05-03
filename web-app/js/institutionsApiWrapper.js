@@ -123,8 +123,6 @@ $(function() {
         }
       });
     },
-    
-    
 
     getStructureTreeRootNodes: function(query, callback) {
       console.log("##############1 getStructureTreeRootNodes "+query);
@@ -174,7 +172,6 @@ $(function() {
         }
       });
     },
-    
     
   });
 });
