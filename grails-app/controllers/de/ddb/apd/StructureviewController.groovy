@@ -27,38 +27,22 @@ class StructureviewController {
 
     def index() {
 
-        //        //def allInstitution = institutionService.findAll()
-        //        //        def institutionsListHash = institutionService.institutionsCache.getHash()
-        //        //        render (
-        //        //                view: 'structureview',
-        //        //                model: [
-        //        //                    //'all': allInstitution,
-        //        //                    'institutionsListHash' : institutionsListHash
-        //        //                ])
-        //
-        //        def allInstitution = institutionService.findAllAlphabetical()
-        //        def institutionByFirstLetter = allInstitution.data
-        //
-        //        // TODO: make this more idiomatic Groovy
-        //        def all = []
-        //        institutionByFirstLetter?.each { all.addAll(it.value) }
-        //
-        //        // no institutions
-        //        institutionByFirstLetter.each { k,v ->
-        //            if(institutionByFirstLetter[k]?.size() == 0) {
-        //                institutionByFirstLetter[k] = true
-        //            } else {
-        //                institutionByFirstLetter[k] = false
-        //            }
-        //        }
-        //
-        //        // TODO: move to service
-        //        def index = []
-        //        institutionByFirstLetter.each { index.add(it) }
-        //
-        //        render (view: 'structureview',  model: [index: index, all: all, total: allInstitution?.total])
-
         render (view: 'structureview',  model: [:])
+
+//        def allInstitution = institutionService.findAllAlphabetical()
+//        def institutionByFirstLetter = allInstitution.data
+//
+//        def all = []
+//        institutionByFirstLetter?.each { all.addAll(it.value) }
+//
+//        // TODO: move to service
+//        def index = []
+//        institutionByFirstLetter.each {
+//            index.add(it)
+//        }
+//
+//        render (view: 'structureview',  model: [index: index, all: all, total: allInstitution?.total])
+
     }
 
 
@@ -187,8 +171,42 @@ class StructureviewController {
     def getTreeNodeChildren() {
         def id = params.id
         println "##################### StructureviewController getTreeNodeChildren: "+id
+        println "children: ----->"+institutionService.getTechtonicFirstLvlHierarchyChildren(params.id)
+        def children = institutionService.getTechtonicFirstLvlHierarchyChildren(params.id).children
 
-        render (contentType: ContentType.JSON.toString()) { [:]}
+        render (contentType: ContentType.JSON.toString()) { children }
     }
 
+    def ajaxDetails() {
+        def id = params.id;
+        def itemId = id;
+        def vApiInstitution = new ApiInstitution();
+        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
+        if (selectedOrgXML) {
+            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
+            if (jsonOrgParentHierarchy.size() == 1) {
+                if (jsonOrgParentHierarchy[0].id != id) {
+                    forward controller: 'error', action: "ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}"
+                }
+            }
+            else if (jsonOrgParentHierarchy.size() > 1) {
+                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
+            }
+            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
+            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
+            int countObjectsForProv = 0;
+            if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
+                try {
+                    countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
+                } 
+                catch (NumberFormatException ex) {
+                    countObjectsForProv = -1;
+                }
+            }
+            render(template: "ajaxDetails", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
+        } 
+        else {
+           forward controller: 'error', action: "notfound"
+        }
+    }
 }

@@ -38,6 +38,8 @@ modules = {
         resource url:'/css/errors.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
         resource url:'/css/searchwidget.css', bundle: 'screen'
+        resource url:'/third-party/map/css/style.css', bundle: 'screen'
+
     }
 
     cssprint {
@@ -54,8 +56,8 @@ modules = {
         resource url:'/js/vendor/jwplayer/jwplayer.js'
         resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
         resource url:'/js/vendor/large-cookie.js'
-        resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/native.history.js'
         resource url:'/js/vendor/dynatree.js'
+        resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/global-variables.js'
         resource url:'/js/binaries-viewer.js'
@@ -77,4 +79,10 @@ modules = {
     //         resource url:'/js/vendor/jquery.cookies.2.2.0.min.js'
     //         resource url:'/js/vendor/large-cookie.js'
     //         */ resource url:'/js/advanced-search.js' }
+
+    structureview {
+        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
+    }
+
 }

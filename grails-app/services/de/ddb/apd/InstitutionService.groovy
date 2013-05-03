@@ -18,6 +18,7 @@ package de.ddb.apd
 
 import de.ddb.apd.institutions.InstitutionsCache;
 import groovyx.net.http.HTTPBuilder
+import net.sf.json.JSONObject
 
 
 class InstitutionService {
@@ -29,12 +30,12 @@ class InstitutionService {
     private static final def NUMBER_KEY = '0-9'
 
     def transactional = false
-
     def configurationService
 
     static InstitutionsCache institutionsCache = new InstitutionsCache()
 
     def grailsLinkGenerator
+    def itemService
 
 
     def findAllAlphabetical(){
@@ -314,5 +315,57 @@ class InstitutionService {
 
     private def buildUri(id) {
         grailsLinkGenerator.link(url: [controller: 'structureview', action: 'show', id: id ])
+    }
+
+    /**
+     * Return one level information below this institution
+     * 1. Get some item-object from an institution
+     * 2. Find the Root Tectonic for this item / we assume that there is only one tectonic per institute
+     * 3. Get all children for our institution and return a hierarchy if succesfull
+     * @return JSONObject
+     */
+    private def getTechtonicFirstLvlHierarchyChildren(id){
+        def JSONObject hierarchy = [:]
+        def children=getInstitutionChildren(id);
+        //TODO throw exception if response if not JSON
+        assert children instanceof JSONObject
+        def objectResults = children.results.docs[0];
+
+        if (objectResults.size()>0){
+            def parent =itemService.getParent(objectResults[0].id).last()
+            hierarchy<< [id: parent.id.toString(), label: parent.label.toString(), children: getChildren(id).getAt("children")];
+            if (parent.leaf==false){
+                hierarchy <<["tectonics": getChildren(parent.id).getAt("children")];
+
+            }
+        }else{
+            hierarchy << hierarchy<< [id: id, "tectonics": getChildren(id).getAt("children")];
+        }
+        return hierarchy
+    }
+
+
+    private def getChildren(id){
+        def children = itemService.getChildren(id)
+        HashMap jsonMap = new HashMap()
+        jsonMap.children = children.collect {child ->
+            return ["id": child.id, label: child.label, parent:child.parent, leaf: child.leaf, aggregationEntity:child.aggregationEntity,institute:false]
+
+        }
+        return jsonMap
+    }
+    /**
+     * Used in the getTechtonicFirstLvlHierarchyChildren
+     * @return JSONObject
+     */
+    private def getInstitutionChildren(id){
+        def query =[query:"*",facet:"provider_id",provider_id:id]
+        def searchPath = "/search"
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), searchPath,query)
+        if(!apiResponse.isOk()){
+            log.error "institutionService.getInstitutionChildren(): Server returned no parents -> " + id
+
+        }
+        return apiResponse.getResponse()
     }
 }

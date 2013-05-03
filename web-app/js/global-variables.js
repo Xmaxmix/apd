@@ -29,7 +29,7 @@ $(document).ready(function () {
             jsLanguage = jsVariablesDiv.attr('data-js-language');
         }
         if (jsVariablesDiv.attr('data-js-institutions-list-hash')) {
-        	jsInstitutionsListHash = jsVariablesDiv.attr('data-js-institutions-list-hash');
+            jsInstitutionsListHash = jsVariablesDiv.attr('data-js-institutions-list-hash');
         }
     }
     if (jsPageMeta) {
