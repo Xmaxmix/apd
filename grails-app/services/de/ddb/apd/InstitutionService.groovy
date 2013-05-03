@@ -124,7 +124,7 @@ class InstitutionService {
         def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
 
         if(!searchWrapper.isOk()){
-            log.error "#################### 1 not ok"
+            log.error "searchArchives(): search returned an error"
         }
 
 
@@ -133,9 +133,7 @@ class InstitutionService {
         def responseFacets = searchResponse.facets
         def foundProviders = []
         for(int i=0; i<responseFacets.size(); i++) {
-            //            println "#################### 2 "+responseFacets.get(i).field
             if(responseFacets.get(i).field == "provider_fct"){
-                //                println "#################### 3 found"
                 foundProviders = responseFacets.get(i).facetValues
                 break
             }
@@ -147,7 +145,6 @@ class InstitutionService {
         for(int i=0; i<foundProviders.size(); i++){
             for(int j=0; j<allInstitutions.size(); j++){
                 if(allInstitutions[j].name == foundProviders[i].value){
-                    //                    println "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
                     foundProviders[i]["id"] = allInstitutions[j].id
                     break
                 }
@@ -155,11 +152,6 @@ class InstitutionService {
         }
 
         // Getting ID for institutions
-        //        println "#################### 6 "+foundProviders
-        for(int i=0; i<foundProviders.size(); i++){
-            println "#################### 7 "+foundProviders[i]
-
-        }
 
         def resultList = []
         foundProviders.each {
@@ -169,8 +161,6 @@ class InstitutionService {
         def resultObject = [:]
         resultObject["count"] = searchResponse.numberOfResults
         resultObject["institutions"] = resultList
-        println "#################### 7 "+searchResponse.numberOfResults
-
 
         return resultObject
 
@@ -197,8 +187,6 @@ class InstitutionService {
             }
         }
 
-        println "#################### 9 "+institutionId+" -> "+institutionName
-
         def backendUrl = configurationService.getBackendUrl()
         def parameters = [:]
         parameters["query"] = query
@@ -213,13 +201,11 @@ class InstitutionService {
         }
         parameters["offset"] = offset
         parameters["rows"] = pagesize
-        println "#################### 10 "+parameters
         def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
 
         if(!searchWrapper.isOk()){
-            log.error "#################### 8 not ok"
+            log.error "searchArchive(): search returned an error"
         }
-        println "#################### 11 ok "
 
         return searchWrapper.getResponse()?.results[0]?.docs
     }
@@ -336,16 +322,24 @@ class InstitutionService {
         //TODO throw exception if response if not JSON
         assert children instanceof JSONObject
         def objectResults = children.results.docs[0];
+        if(!hierarchy.children){
+            hierarchy.children = []
+        }
 
         if (objectResults.size()>0){
             def parent =itemService.getParent(objectResults[0].id).last()
-            hierarchy<< [id: parent.id.toString(), label: parent.label.toString(), children: getChildren(id).getAt("children")];
+            hierarchy << [id: parent.id.toString(), label: parent.label.toString(), children: getChildren(id).getAt("children")];
+            if(!hierarchy.children){
+                hierarchy.children = []
+            }
             if (parent.leaf==false){
-                hierarchy <<["tectonics": getChildren(parent.id).getAt("children")];
-
+                //hierarchy << ["tectonics": getChildren(parent.id).getAt("children")];
+                hierarchy.children.addAll(getChildren(parent.id).getAt("children"));
             }
         }else{
-            hierarchy << hierarchy<< [id: id, "tectonics": getChildren(id).getAt("children")];
+            //hierarchy << [id: id, "tectonics": getChildren(id).getAt("children")];
+            hierarchy.id = id
+            hierarchy.children.addAll(getChildren(id).getAt("children"));
         }
         return hierarchy
     }

@@ -79,9 +79,6 @@ class InstitutionsController {
     //        parameters["sector_fct"] = "sec_01"
     //        def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
     //
-    //        if(!searchWrapper.isOk()){
-    //            log.error "#################### 1 not ok"
-    //        }
     //
     //
     //        //Getting result institutions for search
@@ -89,9 +86,7 @@ class InstitutionsController {
     //        def responseFacets = searchResponse.facets
     //        def foundProviders = []
     //        for(int i=0; i<responseFacets.size(); i++) {
-    //            println "#################### 2 "+responseFacets.get(i).field
     //            if(responseFacets.get(i).field == "provider_fct"){
-    //                println "#################### 3 found"
     //                foundProviders = responseFacets.get(i).facetValues
     //                break
     //            }
@@ -103,19 +98,12 @@ class InstitutionsController {
     //        for(int i=0; i<foundProviders.size(); i++){
     //            for(int j=0; j<allInstitutions.size(); j++){
     //                if(allInstitutions[j].name == foundProviders[i].value){
-    //                    println "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
     //                    foundProviders[i]["id"] = allInstitutions[j].id
     //                    break
     //                }
     //            }
     //        }
     //
-    //        // Getting ID for institutions
-    //        println "#################### 6 "+foundProviders
-    //        for(int i=0; i<foundProviders.size(); i++){
-    //            println "#################### 7 "+foundProviders[i]
-    //
-    //        }
     //
     //        def resultList = []
     //        foundProviders.each {

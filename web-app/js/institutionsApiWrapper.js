@@ -26,7 +26,6 @@ $(function() {
     },
 	
     getFullInstitutionsList: function(callback) {
-      console.log("#################### -> InstitutionsApiWrapper getFullInstitutionsList ");
       $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -55,7 +54,6 @@ $(function() {
     },
     
 //    getArchiveList: function(query, facets, callback) {
-//      console.log("##############1 getArchiveList ");
 //      var fullUrl = jsContextPath + "/institutions/archives";
 //      fullUrl += "?searchQuery=" + query;
 //      fullUrl += "?facets=" + facets;
@@ -74,7 +72,6 @@ $(function() {
     
     
     getObjectTreeRootNodes: function(query, callback) {
-      console.log("#################### -> InstitutionsApiWrapper getObjectTreeRootNodes "+query);
       var fullUrl = jsContextPath + "/liste/root";
       fullUrl += "?query="+query;
       $.ajax({
@@ -91,7 +88,6 @@ $(function() {
     },
 
     getObjectTreeNodeDetails: function(itemId, query, offset, pagesize, callback) {
-      console.log("#################### -> InstitutionsApiWrapper getObjectTreeNodeDetails "+itemId);
       var fullUrl = jsContextPath + "/liste/detail/"+itemId;
       fullUrl += "?query="+query;
       fullUrl += "&offset="+offset;
@@ -109,7 +105,6 @@ $(function() {
     },
 
     getObjectTreeNodeObjectCount: function(itemId, itemName, query, callback) {
-      console.log("#################### -> InstitutionsApiWrapper getObjectTreeNodeObjectCount "+itemId+", "+itemName);
       var fullUrl = jsContextPath + "/liste/objectcount/"+itemId;
       fullUrl += "?query="+query;
       fullUrl += "&itemName="+itemName;
@@ -127,7 +122,6 @@ $(function() {
     },
 
     getObjectTreeNodeChildren: function(itemId, callback) {
-      console.log("#################### -> InstitutionsApiWrapper getObjectTreeNodeChildren "+itemId);
       var fullUrl = jsContextPath + "/liste/children/"+itemId;
       $.ajax({
         type: 'GET',
@@ -145,7 +139,6 @@ $(function() {
     
 
     getStructureTreeRootNodes: function(query, callback) {
-      console.log("#################### -> InstitutionsApiWrapper getStructureTreeRootNodes "+query);
       var fullUrl = jsContextPath + "/struktur/root";
       fullUrl += "?query="+query;
       $.ajax({
@@ -162,7 +155,6 @@ $(function() {
     },
 
     getStructureTreeNodeDetails: function(itemId, query, callback) {
-      console.log("#################### -> InstitutionsApiWrapper getStructureTreeNodeDetails "+itemId);
       var fullUrl = jsContextPath + "/struktur/detail/"+itemId;
       fullUrl += "?query="+query;
       $.ajax({
@@ -178,7 +170,6 @@ $(function() {
     },
     
     getStructureTreeNodeChildren: function(itemId, callback) {
-      console.log("#################### -> InstitutionsApiWrapper getStructureTreeNodeChildren "+itemId);
       var fullUrl = jsContextPath + "/struktur/children/"+itemId;
       $.ajax({
         type: 'GET',

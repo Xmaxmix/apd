@@ -26,12 +26,12 @@ class ObjectviewController {
     def configurationService
 
     def index() {
+
         render(view: "objectview", model: [:])
     }
 
     def getTreeRootItems() {
         def query = params.query
-        println "##################### ObjectviewController getTreeRootItems: "+query
 
         def searchResult = institutionService.searchArchives(query)
 
@@ -43,7 +43,6 @@ class ObjectviewController {
         def query = params.query
         def offset = params.offset
         def pagesize = params.pagesize
-        println "##################### ObjectviewController getTreeNodeDetails: "+id+","+query
 
         def resultsItems = institutionService.searchArchive(query, id, offset, pagesize)
 
@@ -84,12 +83,7 @@ class ObjectviewController {
 
     def getTreeNodeChildren() {
         def id = params.id
-        println "##################### ObjectviewController getTreeNodeChildren: "+id
         def children = institutionService.getTechtonicFirstLvlHierarchyChildren(params.id).children
-
-        if(!children){
-            children = []
-        }
 
         render (contentType: ContentType.JSON.toString()) { children }
     }
@@ -98,15 +92,7 @@ class ObjectviewController {
         def id = params.id
         def name = params.name
         def query = params.query
-        println "##################### ObjectviewController getTreeNodeObjectCount: "+id+", "+name
 
-
-        render (contentType: ContentType.JSON.toString()) { ["id": id, "count": "?"] }
-    }
-
-    //The method can be used in ajax requests to retrieve elements on second level
-    def getSecondLevelNodes(){
-        assert params.id!=null, "this method should not be called without an ID"
-        render institutionService.getTechtonicFirstLvlHierarchyChildren(params.id);
+        render (contentType: ContentType.JSON.toString()) { ["id": id, "count": "-"] }
     }
 }

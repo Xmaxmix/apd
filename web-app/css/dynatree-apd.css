@@ -19,5 +19,11 @@ ul.dynatree-container li {
 }
 
 span.dynatree-node a {
-  display: inline !important;
+  display: block !important;
+}
+
+.dynatree-apd-title {
+  display: block;
+  margin-left: 40px;
+  margin-top: -23px;
 }

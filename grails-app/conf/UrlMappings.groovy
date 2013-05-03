@@ -17,7 +17,8 @@
 class UrlMappings {
 
     static mappings = {
-        "/$controller/$action?/$id?"{ constraints { // apply constraints here
+        "/$controller/$action?/$id?"{ constraints {
+                // apply constraints here
             } }
 
         "/" {
@@ -89,16 +90,6 @@ class UrlMappings {
             controller="institutions"
             action="isAjaxListFullOutdated"
         }
-        //
-        //        "/institutions/archives" {
-        //            controller="institutions"
-        //            action="getAjaxListArchiveFull"
-        //        }
-
-        //        "/institutions/search" {
-        //            controller="institutions"
-        //            action="getAjaxSearch"
-        //        }
 
         "/item/$id/$name?" {
             controller="detailview"

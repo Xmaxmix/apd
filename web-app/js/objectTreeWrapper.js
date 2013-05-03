@@ -33,11 +33,12 @@ $(function() {
       var $self = this;
       $(treeDiv).dynatree({
         onClick: function(node, event) {
-          //console.log(node);
+          if(!node.bExpanded){
+            $self.openTreeNode(node.data.key, treeDiv);
+          }
+          $self.showNodeDetails(node.data.key, detailView);
         },
         onExpand: function(expand, node) {
-          $self.showNodeDetails(node.data.key, detailView);
-          $self.openTreeNode(node.data.key, treeDiv);
         },
 
       });
@@ -45,7 +46,6 @@ $(function() {
     },
     
     openTreeNode: function(institutionId, treeDiv) {
-      console.log("#################### ObjectTreeWrapper openTreeNode "+institutionId);
       var $self = this;
 
       var query = this.getUrlParam("query");
@@ -60,23 +60,27 @@ $(function() {
           var childNodes = [];
           for(var i=0; i<data.length; i++) {
 
+            var nodeTitle = "<div class='dynatree-apd-title'>" + data[i].label + " (?)</div>";
+            //var nodeTitle = data[i].label;
+            
             childNodes.push(
-              {title: data[i].label, 
+              {title: nodeTitle, 
                 key: data[i].id, 
                 isFolder: true, 
-                isLazy: true }
+                isLazy: true,
+                children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}]}
               );
           }
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
           
           for(var i=0; i<data.length; i++) {
-            institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(data){
-              var node = $(treeDiv).dynatree("getTree").getNodeByKey(data.id);
-              node.setTitle(node.data.title + " (" + data.count + ")");
+            institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(response){
+              var node = $(treeDiv).dynatree("getTree").getNodeByKey(response.id);
+              node.setTitle(node.data.title.replace("(?)", "("+response.count+")"));
             });
            
-            $self.openTreeNode(data[i].id, treeDiv);
+            //$self.openTreeNode(data[i].id, treeDiv);
           }
         
         });
@@ -85,7 +89,6 @@ $(function() {
 
     showNodeDetails: function(institutionId, detailView) {
 
-      console.log("#################### ObjectTreeWrapper showNodeDetails '"+institutionId+"'");
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
       var query = this.getUrlParam("query");
@@ -102,7 +105,8 @@ $(function() {
       }
       
       var History = window.History;
-      History.pushState("", encodeURI(document.title), "?query="+encodeURI(query)+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId);
+      var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId;
+      History.pushState("", document.title, decodeURI(urlParameters));
       
       institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
         $(detailView).empty();
@@ -111,7 +115,6 @@ $(function() {
     },
     
     loadInitialTreeNodes: function(treeDiv) {
-      console.log("#################### ObjectTreeWrapper loadInitialTreeNodes "+treeDiv);
       
       var query = this.getUrlParam("query");
       if(query == ""){
@@ -123,16 +126,21 @@ $(function() {
         
         var childNodes = [];
         for(var i=0; i<data.institutions.length; i++) {
+          
+          var nodeTitle = "<div class='dynatree-apd-title'>" + data.institutions[i].name+" ("+data.institutions[i].count+")" + "</div>";
+          //var nodeTitle = data.institutions[i].name+" ("+data.institutions[i].count+")";
+          
           childNodes.push(
-            {title: data.institutions[i].name+" ("+data.institutions[i].count+")", 
+            {title: nodeTitle, 
               key: data.institutions[i].id, 
               isFolder: true, 
               isLazy: true, 
-              children: [{title:"", key: "empty"}] }
+              children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}] }
             );
         }
         
-        var root = [{ title: data.count+" Objekte", 
+        var nodeTitle = "<div class='dynatree-apd-title'>" + data.count+" Objekte" + "</div>";
+        var root = [{ title: nodeTitle, 
                       key: "rootnode", 
                       isFolder: true, 
                       isLazy: true, 

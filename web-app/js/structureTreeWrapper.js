@@ -33,11 +33,12 @@ $(function() {
       var $self = this;
       $(treeDiv).dynatree({
         onClick: function(node, event) {
-          console.log(node);
+          if(!node.bExpanded){
+            $self.openTreeNode(node.data.key, treeDiv);
+          }
           $self.showNodeDetails(node.data.key, detailView);
         },
         onExpand: function(expand, node) {
-          $self.openTreeNode(node.data.key, treeDiv);
         },
 
       });
@@ -45,7 +46,6 @@ $(function() {
     },
     
     openTreeNode: function(institutionId, treeDiv) {
-      console.log("#################### StructureTreeWrapper openTreeNode "+institutionId);
       var $self = this;
       
       if(institutionId != "rootnode"){
@@ -54,32 +54,36 @@ $(function() {
         institutionsApiWrapper.getStructureTreeNodeChildren(institutionId, function(data) {
           var childNodes = [];
           for(var i=0; i<data.length; i++) {
+            
+            var nodeTitle = "<div class='dynatree-apd-title'>" + data[i].label + "</div>";
+            
             childNodes.push(
-              {title: data[i].label, 
+              {title: nodeTitle, 
                 key: data[i].id, 
                 isFolder: true, 
-                isLazy: true }
+                isLazy: true,
+                children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}]}
               );
           }
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
           
-          for(var i=0; i<data.length; i++) {
-            $self.openTreeNode(data[i].id, treeDiv);
-          }
+//          for(var i=0; i<data.length; i++) {
+//            $self.openTreeNode(data[i].id, treeDiv);
+//          }
           
         });
       }
     },
 
     showNodeDetails: function(institutionId, detailView) {
-      console.log("#################### StructureTreeWrapper showNodeDetails "+institutionId);
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
       var query = this.getUrlParam("search");
 
       var History = window.History;
-      History.pushState("", encodeURI(document.title), "?query="+encodeURI(query)+"&id="+institutionId);
+      var urlParameters = "?query="+query+"&id="+institutionId;
+      History.pushState("", document.title, decodeURI(urlParameters));
 
       institutionsApiWrapper.getStructureTreeNodeDetails(institutionId, query, function(data) {
         $(detailView).empty();
@@ -89,8 +93,6 @@ $(function() {
     },
     
     loadInitialTreeNodes: function(treeDiv) {
-      console.log("#################### StructureTreeWrapper loadInitialTreeNodes "+treeDiv);
-
       
       var query = "*"
 
@@ -99,12 +101,15 @@ $(function() {
         
         var rootNodes = [];
         for(var i=0; i<data.institutions.length; i++) {
+          
+          var nodeTitle = "<div class='dynatree-apd-title'>" + data.institutions[i].name + "</div>";
+          
           rootNodes.push(
-            {title: data.institutions[i].name, 
+            {title: nodeTitle, 
               key: data.institutions[i].id, 
               isFolder: true, 
               isLazy: true,
-              children: [{title:"", key: "empty"}]}
+              children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}]}
             );
         }
         

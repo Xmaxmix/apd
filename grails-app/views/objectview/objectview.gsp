@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title><g:message code="apd.List"/> - <g:message code="apd.ArchivportalD"/></title>
+    <title><g:message code="apd.Object"/> - <g:message code="apd.ArchivportalD"/></title>
     
     <meta name="page" content="objectview" />
     <meta name="layout" content="main" />
@@ -14,7 +14,7 @@
           <div class="input-append">
             <input type="text" id="query" name="query"
               class="input-xlarge search-query"
-              placeholder="<g:message code="apd.Search_Placeholder"/>">
+              placeholder="<g:message code="apd.Search_Placeholder"/>" value="${query}">
             <button type="submit" class="btn">
               <i class="icon-search"></i>
             </button>

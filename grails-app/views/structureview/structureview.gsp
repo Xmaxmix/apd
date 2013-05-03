@@ -17,7 +17,7 @@
           <div class="input-append">
             <input type="text" id="query" name="query"
               class="input-xlarge search-query"
-              placeholder="<g:message code="apd.Search_Placeholder"/>">
+              placeholder="<g:message code="apd.Search_Placeholder"/>" value="${query}">
             <button type="submit" class="btn">
               <i class="icon-search"></i>
             </button>
