@@ -12,7 +12,20 @@
   <body>
     <div class="row">
       <div class="span12 search-widget-container border">
-        <g:searchWidgetRender></g:searchWidgetRender>
+        <g:form id="home-search-form" url="[controller:'liste', action:'']"
+          class="form-search" method="GET">
+          <div class="input-append">
+            <input type="text" id="query" name="query"
+              class="input-xlarge search-query"
+              placeholder="<g:message code="apd.Search_Placeholder"/>">
+            <button type="submit" class="btn">
+              <i class="icon-search"></i>
+            </button>
+          </div>
+        </g:form>
+        <div>
+          <g:searchWidgetRender></g:searchWidgetRender>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -31,31 +44,6 @@
           <div class="span4">
 
             <div id="institution-tree">
-              <%-- 
-              <ul>
-                <g:each in="${ all }">
-                  <g:if test="${ it?.children}">
-                    <li class="jstree-open" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
-                      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:it.id]"
-                        onComplete="mapSetup();">
-                        ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
-                      </g:remoteLink>
-                      <ul>
-                        <g:render template="listItem" model="['children': it?.children]" />
-                      </ul>
-                    </li>
-                  </g:if>
-                  <g:else>
-                    <li class="jstree-leaf" data-sector="${ it?.sector }" data-institution-id="${ it.id }">
-                      <g:remoteLink action="ajaxDetails" update="details-container" params="[id:it.id]"
-                        onComplete="mapSetup();">
-                        ${ it?.name } <span>(<g:message code="${ it?.sectorLabelKey }" />)</span>
-                      </g:remoteLink>
-                    </li>
-                  </g:else>
-                </g:each>
-              </ul>
-              --%>
             </div>
 
           </div>
@@ -64,16 +52,6 @@
       <div class="span8">
 
         <div class="institution-item-details">
-        <%-- 
-          <div id="details-container">
-            <g:if test="${selectedItemId}">
-              <g:render template="ajaxDetails" />  
-            </g:if>
-            <g:else>
-              <h1>Bitte wählen Sie ein Archiv</h1>
-            </g:else>
-          </div>
-          --%>
           <h1>Bitte wählen Sie ein Archiv</h1>
         </div>
       </div>

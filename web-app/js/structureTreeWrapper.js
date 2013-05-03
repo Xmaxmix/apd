@@ -45,14 +45,13 @@ $(function() {
     },
     
     openTreeNode: function(institutionId, treeDiv) {
-      console.log("####################4 openTreeNode "+institutionId);
+      console.log("#################### StructureTreeWrapper openTreeNode "+institutionId);
       var $self = this;
       
       if(institutionId != "rootnode"){
 
         var institutionsApiWrapper = new InstitutionsApiWrapper();
         institutionsApiWrapper.getStructureTreeNodeChildren(institutionId, function(data) {
-          console.log("####################4 child: "+data);
           var childNodes = [];
           for(var i=0; i<data.length; i++) {
             childNodes.push(
@@ -62,7 +61,6 @@ $(function() {
                 isLazy: true }
               );
           }
-          console.log("####################4 showNodeDetails "+ $(treeDiv).dynatree("getTree").getNodeByKey(institutionId));
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
           
@@ -75,7 +73,7 @@ $(function() {
     },
 
     showNodeDetails: function(institutionId, detailView) {
-      console.log("####################4 showNodeDetails "+institutionId);
+      console.log("#################### StructureTreeWrapper showNodeDetails "+institutionId);
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
       var query = this.getUrlParam("search");
@@ -83,9 +81,7 @@ $(function() {
       var History = window.History;
       History.pushState("", encodeURI(document.title), "?query="+encodeURI(query)+"&id="+institutionId);
 
-      console.log("####################4 showNodeDetails "+query);
       institutionsApiWrapper.getStructureTreeNodeDetails(institutionId, query, function(data) {
-        console.log("####################4 showNodeDetails append to "+detailView);
         $(detailView).empty();
         $(detailView).append(data);
         mapSetup();
@@ -93,10 +89,10 @@ $(function() {
     },
     
     loadInitialTreeNodes: function(treeDiv) {
-      console.log("####################4 loadInitialTreeNodes "+treeDiv);
+      console.log("#################### StructureTreeWrapper loadInitialTreeNodes "+treeDiv);
 
       
-      var query = this.getUrlParam("search");
+      var query = "*"
 
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       institutionsApiWrapper.getStructureTreeRootNodes(query, function(data){

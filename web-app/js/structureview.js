@@ -17,25 +17,10 @@
 $(document).ready(function () {
   if(jsPageName == "structureview") {
 
-//    $('#institution-tree').jstree({ 
-//      "themes" : {
-//        "theme" : "classic",
-//        "dots" : true,
-//        "icons" : true
-//      },
-//      "plugins" : [ "themes", "html_data" ]
-//    });
-
-//    var apiWrapper = new InstitutionsApiWrapper();  
-//
-//    // Build the tree
-//    function printInstitutionsList(json){
-//      // TODO build actual tree
-//      $("#institution-tree").empty();
-//      $.each(json, function(i, field){
-//        $("#institution-tree").append(i + " / " + field.name + " <br />");
-//      });
-//    }
+    if ($('.search-widget-container').length > 0) {
+      var searchWidgetContainer = $('#search-widget');
+      searchWidget = new SearchWidget($('#search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
+    }
 
     var structureTreeWrapper = new StructureTreeWrapper();
     

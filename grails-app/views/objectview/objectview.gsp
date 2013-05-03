@@ -9,7 +9,20 @@
   <body>
     <div class="row">
       <div class="span12 search-widget-container border">
-        <g:searchWidgetRender></g:searchWidgetRender>
+        <g:form id="home-search-form" url="[controller:'liste', action:'']"
+          class="form-search" method="GET">
+          <div class="input-append">
+            <input type="text" id="query" name="query"
+              class="input-xlarge search-query"
+              placeholder="<g:message code="apd.Search_Placeholder"/>">
+            <button type="submit" class="btn">
+              <i class="icon-search"></i>
+            </button>
+          </div>
+        </g:form>
+        <div>
+          <g:searchWidgetRender></g:searchWidgetRender>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -27,37 +40,12 @@
         <div class="row">
           <div class="span4">
             <div id="institution-tree">
-              <%-- 
-              <ul>
-                <li>
-                  <span> ${searchResult.count } <g:message code="apd.Object"/></span>
-                  <ul>
-                    <g:each in="${ searchResult.institutions }">
-                      <li id="${ it.id }" class="" >
-                        <a id="a-${ it.id }" class="" href="#">
-                          ${ it?.name } 
-                          <span>(${ it?.count } <g:message code="apd.Object"/>)</span>
-                        </a>
-                        <ul>
-                          <li></li>
-                        </ul>
-                      </li>
-                    </g:each>
-                  </ul>
-                </li>
-              </ul>
-              --%>
             </div>
           </div>
         </div>
       </div>
       <div class="span8">
         <div class="list-container">
-          <%-- 
-          <g:if test="${results}">
-            <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
-          </g:if>
-          --%>
         </div>
       </div>
     </div>

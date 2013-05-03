@@ -17,8 +17,7 @@
 class UrlMappings {
 
     static mappings = {
-        "/$controller/$action?/$id?"{ constraints {
-                // apply constraints here
+        "/$controller/$action?/$id?"{ constraints { // apply constraints here
             } }
 
         "/" {
@@ -74,6 +73,11 @@ class UrlMappings {
         "/liste/root" {
             controller="objectview"
             action="getTreeRootItems"
+        }
+
+        "/liste/objectcount/$id" {
+            controller="objectview"
+            action="getTreeNodeObjectCount"
         }
 
         "/institutions/$action/$hashId?" {

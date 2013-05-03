@@ -45,7 +45,6 @@ class ObjectviewController {
         def pagesize = params.pagesize
         println "##################### ObjectviewController getTreeNodeDetails: "+id+","+query
 
-        //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
         def resultsItems = institutionService.searchArchive(query, id, offset, pagesize)
 
         resultsItems.each {
@@ -88,7 +87,21 @@ class ObjectviewController {
         println "##################### ObjectviewController getTreeNodeChildren: "+id
         def children = institutionService.getTechtonicFirstLvlHierarchyChildren(params.id).children
 
+        if(!children){
+            children = []
+        }
+
         render (contentType: ContentType.JSON.toString()) { children }
+    }
+
+    def getTreeNodeObjectCount() {
+        def id = params.id
+        def name = params.name
+        def query = params.query
+        println "##################### ObjectviewController getTreeNodeObjectCount: "+id+", "+name
+
+
+        render (contentType: ContentType.JSON.toString()) { ["id": id, "count": "?"] }
     }
 
     //The method can be used in ajax requests to retrieve elements on second level

@@ -202,9 +202,15 @@ class InstitutionService {
         def backendUrl = configurationService.getBackendUrl()
         def parameters = [:]
         parameters["query"] = query
-        parameters["facet"] = ["sector_fct", "provider_fct"]
+        //parameters["facet"] = ["sector_fct", "provider_fct"]
+        parameters["facet"] = ["sector_fct"]
+        if(institutionName.length() > 0){
+            parameters["facet"].add("provider_fct")
+        }
         parameters["sector_fct"] = "sec_01"
-        parameters["provider_fct"] = institutionName
+        if(institutionName.length() > 0){
+            parameters["provider_fct"] = institutionName
+        }
         parameters["offset"] = offset
         parameters["rows"] = pagesize
         println "#################### 10 "+parameters

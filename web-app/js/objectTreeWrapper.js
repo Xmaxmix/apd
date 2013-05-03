@@ -33,10 +33,10 @@ $(function() {
       var $self = this;
       $(treeDiv).dynatree({
         onClick: function(node, event) {
-          console.log(node);
-          $self.showNodeDetails(node.data.key, detailView);
+          //console.log(node);
         },
         onExpand: function(expand, node) {
+          $self.showNodeDetails(node.data.key, detailView);
           $self.openTreeNode(node.data.key, treeDiv);
         },
 
@@ -45,16 +45,21 @@ $(function() {
     },
     
     openTreeNode: function(institutionId, treeDiv) {
-      console.log("####################2 openTreeNode "+institutionId);
+      console.log("#################### ObjectTreeWrapper openTreeNode "+institutionId);
       var $self = this;
 
+      var query = this.getUrlParam("query");
+      if(query == ""){
+        query = "*"
+      }
+      
       if(institutionId != "rootnode"){
         var institutionsApiWrapper = new InstitutionsApiWrapper();
         institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
-          console.log("####################2 child: "+data);
 
           var childNodes = [];
           for(var i=0; i<data.length; i++) {
+
             childNodes.push(
               {title: data[i].label, 
                 key: data[i].id, 
@@ -62,11 +67,15 @@ $(function() {
                 isLazy: true }
               );
           }
-          console.log("####################4 showNodeDetails "+ $(treeDiv).dynatree("getTree").getNodeByKey(institutionId));
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
           $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
           
           for(var i=0; i<data.length; i++) {
+            institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(data){
+              var node = $(treeDiv).dynatree("getTree").getNodeByKey(data.id);
+              node.setTitle(node.data.title + " (" + data.count + ")");
+            });
+           
             $self.openTreeNode(data[i].id, treeDiv);
           }
         
@@ -76,7 +85,7 @@ $(function() {
 
     showNodeDetails: function(institutionId, detailView) {
 
-      console.log("####################2 showNodeDetails '"+institutionId+"'");
+      console.log("#################### ObjectTreeWrapper showNodeDetails '"+institutionId+"'");
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
       var query = this.getUrlParam("query");
@@ -102,7 +111,7 @@ $(function() {
     },
     
     loadInitialTreeNodes: function(treeDiv) {
-      console.log("####################2 loadInitialTreeNodes "+treeDiv);
+      console.log("#################### ObjectTreeWrapper loadInitialTreeNodes "+treeDiv);
       
       var query = this.getUrlParam("query");
       if(query == ""){
