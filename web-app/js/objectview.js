@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function () {
-  if(jsPageName == "objectview") {
-    
+$(function() {
+  'use strict';
+
+  if (jsPageName == 'objectview') {
+
     var objectTreeWrapper = new ObjectTreeWrapper();
-    
+
     objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
     objectTreeWrapper.loadInitialTreeNodes('#institution-tree');
-
-    
-
   }
 });
