@@ -51,7 +51,7 @@
         </p>
       </div>
       <g:if test="${((subOrg)&&(subOrg.size() > 0)&&(!(parentOrg[parentOrg.size() - 1].aggregationEntity)))}">
-        <div class="hierarchy">
+        <div class="hierarchy span8">
           <span class="title"><g:message code="apd.InstitutionItem_OtherLocations" /></span>
           <ol class="institution-list">
             <li class="institution-listitem">

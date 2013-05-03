@@ -152,22 +152,6 @@ function mapSetup() {
     jsLongitude = $("div.location").attr('data-lon');
     jsLatitude = $("div.location").attr('data-lat');
     InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
-    //TODO move this function from here to the onclick event for the tree elements
-    $(function() {
-        // Prepare
-        var History = window.History; // Note: We are using a capital H instead of a lower h
-        if ( !History.enabled ) {
-             // History.js is disabled for this browser.
-             // This is because we can optionally choose to support HTML4 browsers or not.
-            return false;
-        }
-        // Bind to StateChange Event
-        History.Adapter.bind(window,'statechange',function() { // Note: We are using statechange instead of popstate
-            var State = History.getState();
-        });
-
-        History.pushState({state:1}, $('#institution-name').attr('data-id'), "/apd/struktur/item/"+$('#institution-name').attr('data-id'));
-    });
     return;
 };
 

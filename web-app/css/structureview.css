@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-#institution-tree {
-  min-height: 600px;
-  border: 1px solid #BBBBBB;
-  border-radius: 4px 4px 4px 4px;
+.search-widget-container {
+  width: 100%;
+  min-height: 100px;
 }
 
 .selector {
@@ -35,14 +34,28 @@
   color: white;
 }
 
+.border {
+  border-style: solid;
+  border-width: 1px;
+}
+
+/*structure page tree*/
+
+#institution-tree {
+  min-height: 600px;
+  border: 1px solid #BBBBBB;
+  border-radius: 4px 4px 4px 4px;
+}
+
 #institution-tree .dynatree-container {
   border: none;
   overflow: hidden;
-  
 }
+/*structure page tree - end*/
 
+/*structure page details*/
 
-#details-container {
+.institution-item-details {
   margin-top: 20px;
 }
 
@@ -67,7 +80,7 @@
   color: #3e3a37;
 }
 
-#details-container .institution {
+.institution-item-details .institution {
   border-color: #efebe8;
   border-style: solid;
   border-width: 0 0 5px 0;
@@ -76,7 +89,7 @@
   margin-bottom: 20px;
 }
 
-#details-container .logo {
+.institution-item-details .logo {
   color: black; 
   font-size: small;
 }
@@ -138,3 +151,5 @@
   border: none !important;
   margin: 0 !important;
 }
+
+/*structure page details - end*/
