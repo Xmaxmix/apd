@@ -15,16 +15,16 @@
  */
 
 $(function() {
-  
+
   InstitutionsApiWrapper = function(){
     this.init();
-  }
+  };
 
   $.extend(InstitutionsApiWrapper.prototype, {
 
     init: function() {
     },
-	
+
     getFullInstitutionsList: function(callback) {
       console.log("##############1 getFullInstitutionsList ");
       $.ajax({
@@ -49,11 +49,11 @@ $(function() {
               var jsonResponse = jQuery.parseJSON(data.responseText);
               callback(jsonResponse);
             }
-          });			
+          });
         }
-      });			
+      });
     },
-    
+
 //    getArchiveList: function(query, facets, callback) {
 //      console.log("##############1 getArchiveList ");
 //      var fullUrl = jsContextPath + "/institutions/archives";
@@ -63,7 +63,7 @@ $(function() {
 //        type: 'GET',
 //        dataType: 'json',
 //        async: true,
-//        cache: false, 
+//        cache: false,
 //        url: fullUrl,
 //        complete: function(data){
 //          var jsonResponse = jQuery.parseJSON(data.responseText);
@@ -71,8 +71,8 @@ $(function() {
 //        }
 //      });
 //    },
-    
-    
+
+
     getObjectTreeRootNodes: function(query, callback) {
       console.log("##############1 getObjectTreeRootNodes "+query);
       var fullUrl = jsContextPath + "/liste/root";
@@ -81,7 +81,7 @@ $(function() {
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
@@ -100,14 +100,14 @@ $(function() {
         type: 'GET',
         dataType: 'html',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
         complete: function(data){
           callback(data.responseText);
         }
       });
     },
-    
+
     getObjectTreeNodeChildren: function(itemId, callback) {
       console.log("##############1 getObjectTreeNodeChildren "+itemId);
       var fullUrl = jsContextPath + "/liste/children/"+itemId;
@@ -115,7 +115,7 @@ $(function() {
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
@@ -132,7 +132,7 @@ $(function() {
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
@@ -149,14 +149,14 @@ $(function() {
         type: 'GET',
         dataType: 'html',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
         complete: function(data){
           callback(data.responseText);
         }
       });
     },
-    
+
     getStructureTreeNodeChildren: function(itemId, callback) {
       console.log("##############1 getStructureTreeNodeChildren "+itemId);
       var fullUrl = jsContextPath + "/struktur/children/"+itemId;
@@ -164,14 +164,14 @@ $(function() {
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
         }
       });
-    },
-    
+    }
+
   });
 });

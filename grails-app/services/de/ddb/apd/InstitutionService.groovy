@@ -16,7 +16,7 @@ package de.ddb.apd
  */
 
 
-import de.ddb.apd.institutions.InstitutionsCache;
+import de.ddb.apd.institutions.InstitutionsCache
 import groovyx.net.http.HTTPBuilder
 import net.sf.json.JSONObject
 
@@ -52,26 +52,6 @@ class InstitutionService {
             def firstChar = it?.name[0]?.toUpperCase()
             it.firstChar = firstChar
 
-            //                def firstChar = it?.name[0]?.toUpperCase()
-            //                it.firstChar = firstChar
-            //
-            //                /*
-            //                 * mark an institution as the first one that start with the
-            //                 * character. We will use it for assigning the id in the HTML.
-            //                 * See: views/institutions/_listItem.gsp
-            //                 * */
-            //                if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
-            //                    it.isFirst = true
-            //                }
-            //
-            //                it.sectorLabelKey = 'apd.' + it.sector
-            //                buildChildren(it, totalInstitution)
-            //                institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
-            /*
-             * mark an institution as the first one that start with the
-             * character. We will use it for assigning the id in the HTML.
-             * See: views/institutions/_listItem.gsp
-             * */
             if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
                 it.isFirst = true
             }
@@ -133,9 +113,9 @@ class InstitutionService {
         def responseFacets = searchResponse.facets
         def foundProviders = []
         for(int i=0; i<responseFacets.size(); i++) {
-            //            println "#################### 2 "+responseFacets.get(i).field
+            //            log.debug "#################### 2 "+responseFacets.get(i).field
             if(responseFacets.get(i).field == "provider_fct"){
-                //                println "#################### 3 found"
+                //                log.debug "#################### 3 found"
                 foundProviders = responseFacets.get(i).facetValues
                 break
             }
@@ -147,7 +127,7 @@ class InstitutionService {
         for(int i=0; i<foundProviders.size(); i++){
             for(int j=0; j<allInstitutions.size(); j++){
                 if(allInstitutions[j].name == foundProviders[i].value){
-                    //                    println "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
+                    //                    log.debug "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
                     foundProviders[i]["id"] = allInstitutions[j].id
                     break
                 }
@@ -155,9 +135,9 @@ class InstitutionService {
         }
 
         // Getting ID for institutions
-        //        println "#################### 6 "+foundProviders
+        //        log.debug "#################### 6 "+foundProviders
         for(int i=0; i<foundProviders.size(); i++){
-            println "#################### 7 "+foundProviders[i]
+            log.debug "#################### 7 "+foundProviders[i]
 
         }
 
@@ -169,7 +149,7 @@ class InstitutionService {
         def resultObject = [:]
         resultObject["count"] = searchResponse.numberOfResults
         resultObject["institutions"] = resultList
-        println "#################### 7 "+searchResponse.numberOfResults
+        log.debug "#################### 7 "+searchResponse.numberOfResults
 
 
         return resultObject
@@ -177,9 +157,6 @@ class InstitutionService {
     }
 
     def searchArchive(String query, String institutionId, String offset, String pagesize) {
-        // http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?
-        // query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01&provider_fct=Landesarchiv+Baden-W%C3%BCrttemberg
-
         if(!offset){
             offset = "0"
         }
@@ -197,7 +174,7 @@ class InstitutionService {
             }
         }
 
-        println "#################### 9 "+institutionId+" -> "+institutionName
+        log.debug "#################### 9 "+institutionId+" -> "+institutionName
 
         def backendUrl = configurationService.getBackendUrl()
         def parameters = [:]
@@ -207,37 +184,16 @@ class InstitutionService {
         parameters["provider_fct"] = institutionName
         parameters["offset"] = offset
         parameters["rows"] = pagesize
-        println "#################### 10 "+parameters
+        log.debug "#################### 10 "+parameters
         def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
 
         if(!searchWrapper.isOk()){
             log.error "#################### 8 not ok"
         }
-        println "#################### 11 ok "
+        log.debug "#################### 11 ok "
 
         return searchWrapper.getResponse()?.results[0]?.docs
     }
-
-    //    def findInstitutionForId(String id){
-    //        def fullInstitutionsList = this.findAll()
-    //        return findInstitutionForIdRecursion(id, fullInstitutionsList)
-    //    }
-    //
-    //    private def findInstitutionForIdRecursion(String id, List institutions){
-    //        for(int i=0; i<institutions.size(); i++){
-    //            if(institutions[i].id == id){
-    //                return institutions[i]
-    //            }
-    //            if(institutions[i].children){
-    //                def foundInstitution = findInstitutionForIdRecursion(id, institutions[i].children)
-    //                if(foundInstitution) {
-    //                    return foundInstitution
-    //                }
-    //            }
-    //        }
-    //        return null
-    //    }
-
 
     private getTotal(rootList) {
         def total = rootList.size()
@@ -326,20 +282,20 @@ class InstitutionService {
      */
     private def getTechtonicFirstLvlHierarchyChildren(id){
         def JSONObject hierarchy = [:]
-        def children=getInstitutionChildren(id);
+        def children=getInstitutionChildren(id)
         //TODO throw exception if response if not JSON
         assert children instanceof JSONObject
-        def objectResults = children.results.docs[0];
+        def objectResults = children.results.docs[0]
 
         if (objectResults.size()>0){
             def parent =itemService.getParent(objectResults[0].id).last()
-            hierarchy<< [id: parent.id.toString(), label: parent.label.toString(), children: getChildren(id).getAt("children")];
+            hierarchy<< [id: parent.id.toString(), label: parent.label.toString(), children: getChildren(id).getAt("children")]
             if (parent.leaf==false){
-                hierarchy <<["tectonics": getChildren(parent.id).getAt("children")];
+                hierarchy <<["tectonics": getChildren(parent.id).getAt("children")]
 
             }
         }else{
-            hierarchy << hierarchy<< [id: id, "tectonics": getChildren(id).getAt("children")];
+            hierarchy << hierarchy<< [id: id, "tectonics": getChildren(id).getAt("children")]
         }
         return hierarchy
     }
@@ -364,7 +320,6 @@ class InstitutionService {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), searchPath,query)
         if(!apiResponse.isOk()){
             log.error "institutionService.getInstitutionChildren(): Server returned no parents -> " + id
-
         }
         return apiResponse.getResponse()
     }

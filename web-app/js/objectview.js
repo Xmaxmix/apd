@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 $(function() {
-  'use strict';
 
   if (jsPageName == 'objectview') {
 
-    var objectTreeWrapper = new ObjectTreeWrapper();
+    objectTreeWrapper = new ObjectTreeWrapper();
 
     objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
     objectTreeWrapper.loadInitialTreeNodes('#institution-tree');

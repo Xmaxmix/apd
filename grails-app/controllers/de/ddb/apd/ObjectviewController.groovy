@@ -15,8 +15,8 @@
  */
 package de.ddb.apd
 
-import net.sf.json.JSONNull;
-import groovyx.net.http.ContentType;
+import net.sf.json.JSONNull
+import groovyx.net.http.ContentType
 
 
 class ObjectviewController {
@@ -26,12 +26,13 @@ class ObjectviewController {
     def configurationService
 
     def index() {
+        log.info('index...')
         render(view: "objectview", model: [:])
     }
 
     def getTreeRootItems() {
         def query = params.query
-        println "##################### ObjectviewController getTreeRootItems: "+query
+        log.debug "##################### ObjectviewController getTreeRootItems: "+query
 
         def searchResult = institutionService.searchArchives(query)
 
@@ -43,9 +44,8 @@ class ObjectviewController {
         def query = params.query
         def offset = params.offset
         def pagesize = params.pagesize
-        println "##################### ObjectviewController getTreeNodeDetails: "+id+","+query
+        log.debug "##################### ObjectviewController getTreeNodeDetails: "+id+","+query
 
-        //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
         def resultsItems = institutionService.searchArchive(query, id, offset, pagesize)
 
         resultsItems.each {
@@ -74,7 +74,6 @@ class ObjectviewController {
             it["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
         }
 
-
         render(
                 template: "resultsListContainer",
                 model: [
@@ -85,14 +84,14 @@ class ObjectviewController {
 
     def getTreeNodeChildren() {
         def id = params.id
-        println "##################### ObjectviewController getTreeNodeChildren: "+id
+        log.debug "##################### ObjectviewController getTreeNodeChildren: "+id
 
         render (contentType: ContentType.JSON.toString()) { [:]}
     }
-    
+
     //The method can be used in ajax requests to retrieve elements on second level
     def getSecondLevelNodes(){
         assert params.id!=null, "this method should not be called without an ID"
-        render institutionService.getTechtonicFirstLvlHierarchyChildren(params.id);
+        render institutionService.getTechtonicFirstLvlHierarchyChildren(params.id)
     }
 }

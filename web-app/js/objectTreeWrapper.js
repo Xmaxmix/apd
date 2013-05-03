@@ -15,11 +15,10 @@
  */
 
 $(function() {
-  'use strict';
 
   ObjectTreeWrapper = function() {
     this.init();
-  }
+  };
 
   $.extend(ObjectTreeWrapper.prototype, {
 
