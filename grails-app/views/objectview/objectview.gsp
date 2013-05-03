@@ -50,12 +50,11 @@
         </div>
       </div>
       <div class="span8">
+        <g:render template="pagination" />
         <div class="list-container">
-          <%-- 
           <g:if test="${results}">
             <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
           </g:if>
-          --%>
         </div>
       </div>
     </div>
