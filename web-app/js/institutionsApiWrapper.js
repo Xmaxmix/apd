@@ -90,12 +90,12 @@ $(function() {
       });
     },
 
-    getObjectTreeNodeDetails: function(itemId, query, offset, pagesize, callback) {
-      console.log('##############1 getObjectTreeNodeDetails ' + itemId);
+    getObjectTreeNodeDetails: function(itemId, query, offset, pagesize, sortBy, callback) {
       var fullUrl = jsContextPath + '/liste/detail/' + itemId;
       fullUrl += '?query=' + query;
       fullUrl += '&offset=' + offset;
       fullUrl += '&pagesize=' + pagesize;
+      fullUrl += '&sort=' + sortBy;
       $.ajax({
         type: 'GET',
         dataType: 'html',

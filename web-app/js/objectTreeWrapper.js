@@ -61,8 +61,6 @@ $(function() {
     },
 
     showNodeDetails: function(institutionId, detailView) {
-
-      console.log("####################2 showNodeDetails '" + institutionId + "'");
       var institutionsApiWrapper = new InstitutionsApiWrapper();
 
       var query = this.getUrlParam('query');
@@ -78,10 +76,20 @@ $(function() {
         pagesize = '20';
       }
 
-      var History = window.History;
-      History.pushState('', encodeURI(document.title), '?query=' + encodeURI(query) + '&offset=' + offset + '&pagesize=' + pagesize + '&id=' + institutionId);
+      var sortBy = this.getUrlParam('sort');
+      if (sortBy === '') {
+        sortBy = 'RELEVANCE';
+      }
 
-      institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
+      var History = window.History;
+      History.pushState('', encodeURI(document.title), '?query=' + encodeURI(query) +
+                                                       '&offset=' + offset +
+                                                       '&pagesize=' + pagesize +
+                                                       '&sort=' + sortBy +
+                                                       '&id=' + institutionId);
+
+      // TODO: too many parameters, refactor to use hash
+      institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
         $(detailView).empty();
         $(detailView).append(data);
       });

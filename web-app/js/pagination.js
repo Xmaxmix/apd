@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var paginationModule = (function() {
+var paginationModule = (function(History) {
   'use strict';
 
   //TODO: refactor this function to a utility module.
@@ -69,21 +69,27 @@ var paginationModule = (function() {
       });
     },
     updateHistory: function(pageSize, sortBy) {
-      var History = window.History;
+      if (History) {
       var newUri = '?query=' + encodeURI(query) + '&offset=' + offset + '&pagesize=' +
         pageSize + '&id=' + institutionId + '&sort=' + sortBy;
       History.pushState('', encodeURI(document.title), newUri);
-    }
+      } else {
+        // TODO: use History.js, when the History API is not available.
+      }
+    },
+    getParameterByName: getParameterByName
   };
-}());
+}(History));
 
 $(function() {
   if (jsPageName == 'objectview') {
     var $resultPerPage = $('#result-per-page'),
         $resultSortBy = $('#result-sort-by'),
-        // TODO: get from Web Browser's URI's Query String Values.
-        pageSize = 20,
-        sortBy = 'RELEVANCE';
+        pageSize = paginationModule.getParameterByName('pagesize') || 20,
+        sortBy = paginationModule.getParameterByName('sort') || 'RELEVANCE';
+
+    $resultPerPage.val(pageSize);
+    $resultSortBy.val(sortBy);
 
     /* When the user change the result per page, we execute a new search using
      * the new parameter. On success we replace the content on the right side
