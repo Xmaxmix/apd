@@ -14,7 +14,7 @@
   </div>
   <div class="sort-results-switch">
     <label><g:message code="apd.SearchResultsPagination_Sort_By" />
-      <select class="select input-medium">
+      <select id="result-sort-by" class="select input-medium">
         <!-- TODO: get the selected options from the server. -->
         <option value="RELEVANCE"><g:message code="apd.Sort_RELEVANCE" /></option>
         <option value="ALPHA_ASC"><g:message code="apd.Sort_ALPHA_ASC" /></option>

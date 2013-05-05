@@ -16,9 +16,8 @@ package de.ddb.apd
  */
 
 
-import de.ddb.apd.institutions.InstitutionsCache
-import groovyx.net.http.HTTPBuilder
 import net.sf.json.JSONObject
+import de.ddb.apd.institutions.InstitutionsCache
 
 
 class InstitutionService {
@@ -127,7 +126,7 @@ class InstitutionService {
         for(int i=0; i<foundProviders.size(); i++){
             for(int j=0; j<allInstitutions.size(); j++){
                 if(allInstitutions[j].name == foundProviders[i].value){
-                    //                    log.debug "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
+                    //log.debug "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
                     foundProviders[i]["id"] = allInstitutions[j].id
                     break
                 }
@@ -135,10 +134,9 @@ class InstitutionService {
         }
 
         // Getting ID for institutions
-        //        log.debug "#################### 6 "+foundProviders
+        // log.debug "#################### 6 "+foundProviders
         for(int i=0; i<foundProviders.size(); i++){
             log.debug "#################### 7 "+foundProviders[i]
-
         }
 
         def resultList = []
@@ -151,9 +149,7 @@ class InstitutionService {
         resultObject["institutions"] = resultList
         log.debug "#################### 7 "+searchResponse.numberOfResults
 
-
         return resultObject
-
     }
 
     def searchArchive(String query, String institutionId, String offset, String pagesize) {

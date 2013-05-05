@@ -13,78 +13,92 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+var paginationModule = (function() {
+  'use strict';
 
-  var paginationModule = (function() {
+  //TODO: refactor this function to a utility module.
+  var getParameterByName = function getParameterByName(name) {
+    var copy = name;
+    // TODO: linter says bad escaping. Fix it.
+    var temp = copy.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+    var regexS = '[\\?&]' + temp + '=([^&#]*)';
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.search);
+    if (results === null) {
+      return '';
+    } else {
+      return decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+  };
 
-    //TODO: refactor this function to a utility module.
-    var getParameterByName = function getParameterByName(name) {
-      var copy = name;
-      // TODO: linter says bad escaping. Fix it.
-      var temp = copy.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
-      var regexS = '[\\?&]' + temp + '=([^&#]*)';
-      var regex = new RegExp(regexS);
-      var results = regex.exec(window.location.search);
-      if (results === null) {
-        return '';
-      } else{
-        return decodeURIComponent(results[1].replace(/\+/g, ' '));
+  // TODO: duplicate method from InstitutionApiWrapper.
+  var getObjectTreeNodeDetails = function getObjectTreeNodeDetails(itemId, query, offset, pagesize, callback) {
+    var fullUrl = jsContextPath + '/liste/detail/' + itemId;
+    fullUrl += '?query=' + query;
+    fullUrl += '&offset=' + offset;
+    fullUrl += '&pagesize=' + pagesize;
+    $.ajax({
+      type: 'GET',
+      dataType: 'html',
+      async: true,
+      cache: false,
+      url: fullUrl,
+      complete: function(data) {
+        callback(data.responseText);
       }
-    };
+    });
+  };
 
-    // TODO: duplicate method from InstitutionApiWrapper.
-    var getObjectTreeNodeDetails = function getObjectTreeNodeDetails(itemId, query, offset, pagesize, callback) {
-      var fullUrl = jsContextPath + '/liste/detail/' + itemId;
-      fullUrl += '?query=' + query;
-      fullUrl += '&offset=' + offset;
-      fullUrl += '&pagesize=' + pagesize;
-      $.ajax({
-        type: 'GET',
-        dataType: 'html',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          callback(data.responseText);
-        }
+  var institutionId,
+    query,
+    offset,
+    pagesize,
+    $detailView;
+
+  institutionId = getParameterByName('id');
+  query = getParameterByName('query');
+  offset = getParameterByName('offset');
+  $detailView = $('.list-container');
+
+  return {
+    showResults: function(pageSize) {
+      getObjectTreeNodeDetails(institutionId, query, offset, pageSize, function(data) {
+        $detailView.empty();
+        $detailView.append(data);
       });
-    };
-
-    var institutionId,
-      query,
-      offset,
-      pagesize,
-      $detailView;
-
-    institutionId = getParameterByName('id');
-    query = getParameterByName('query');
-    offset = getParameterByName('offset');
-    $detailView = $('.list-container');
-
-    return {
-      showResults: function(pageSize) {
-        getObjectTreeNodeDetails(institutionId, query, offset, pageSize, function(data) {
-          $detailView.empty();
-          $detailView.append(data);
-        });
-      },
-      updateHistory: function(pageSize) {
-        var History = window.History;
-        var newUri = '?query=' + encodeURI(query) + '&offset=' + offset + '&pagesize=' +
-          pageSize + '&id=' + institutionId;
-        History.pushState('', encodeURI(document.title), newUri);
-      }
-    };
-  }());
-
-  $('#result-per-page').change(function(event) {
-    event.preventDefault();
-    var pageSize = $('#result-per-page')
-      .find(':selected')
-      .text();
-
-    paginationModule.showResults(pageSize);
-    paginationModule.updateHistory(pageSize);
-  });
-
+    },
+    updateHistory: function(pageSize) {
+      var History = window.History;
+      var newUri = '?query=' + encodeURI(query) + '&offset=' + offset + '&pagesize=' +
+        pageSize + '&id=' + institutionId;
+      History.pushState('', encodeURI(document.title), newUri);
+    }
+  };
 }());
+
+$(function() {
+  if (jsPageName == 'objectview') {
+    $resultPerPage = $('#result-per-page');
+    $resultSortBy = $('#result-sort-by');
+
+    $resultPerPage.change(function(event) {
+      event.preventDefault();
+      var pageSize = $resultPerPage
+        .find(':selected')
+        .text();
+
+      paginationModule.showResults(pageSize);
+      paginationModule.updateHistory(pageSize);
+    });
+
+    $resultSortBy.change(function(event) {
+      event.preventDefault();
+      var sortBy = $resultSortBy
+        .find(':selected')
+        .text();
+      console.log('sort by: ' + sortBy);
+
+      paginationModule.sortResultsBy(sortBy);
+    });
+  }
+});

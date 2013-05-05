@@ -15,7 +15,6 @@
  */
 package de.ddb.apd
 
-import net.sf.json.JSONNull
 import groovyx.net.http.ContentType
 
 
@@ -57,7 +56,7 @@ class ObjectviewController {
         log.info """Get tree node details for item with \n
                 the ID: ${id},\n
                 query: ${query}, \n
-                pagesize: ${pagesize}, \n
+                page size: ${pagesize}, \n
                 offset: ${offset}"""
 
         def resultsItems = institutionService.searchArchive(query, id, offset, pagesize)
