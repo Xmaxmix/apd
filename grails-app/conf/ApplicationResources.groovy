@@ -63,6 +63,7 @@ modules = {
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/navbar-manager.js'
         resource url:'/js/institutionsApiWrapper.js'
+        resource url:'/js/pagination.js'
         resource url:'/js/objectTreeWrapper.js'
         resource url:'/js/structureTreeWrapper.js'
         resource url:'/js/searchwidget.js'

@@ -2,7 +2,7 @@
   <div class="page-filter">
     <label>
       <g:message code="apd.SearchResultsPagination_Display" />
-      <select class="select input-mini">
+      <select id="result-per-page" class="select input-mini">
        <!-- TODO: get the option values from the server. -->
        <option selected>20</option>
        <option>40</option>

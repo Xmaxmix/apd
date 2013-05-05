@@ -30,44 +30,58 @@ class ObjectviewController {
         render(view: "objectview", model: [:])
     }
 
+    /**
+     * TODO: what does this method do? Who call it? JavaScript client?
+     * */
     def getTreeRootItems() {
         def query = params.query
-        log.debug "##################### ObjectviewController getTreeRootItems: "+query
+        log.info "Query: ${query}"
 
         def searchResult = institutionService.searchArchives(query)
 
         render (contentType: ContentType.JSON.toString()) { searchResult}
     }
 
+    /**
+     * When the user clicks a node in the object tree, then the JavaScipt
+     * client send a HTTP GET Request via AJAX to get the tree node details.
+     *
+     * Tree Node Details is the view on the right side of the application.
+     * It lists items that matched the query.
+     */
     def getTreeNodeDetails() {
         def id = params.id
         def query = params.query
         def offset = params.offset
         def pagesize = params.pagesize
-        log.debug "##################### ObjectviewController getTreeNodeDetails: "+id+","+query
+        log.info """Get tree node details for item with \n
+                the ID: ${id},\n
+                query: ${query}, \n
+                pagesize: ${pagesize}, \n
+                offset: ${offset}"""
 
         def resultsItems = institutionService.searchArchive(query, id, offset, pagesize)
-
         resultsItems.each {
-
             def title
             def subtitle
             def thumbnail
             def media = []
 
             def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
-            if (titleMatch)
+            if (titleMatch) {
                 title= titleMatch[0][3]
+            }
 
             def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
             subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
 
             def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
-            if (thumbnailMatch){
+            if (thumbnailMatch) {
                 thumbnail= thumbnailMatch[0][2]
             }
+
             def mediaMatch = it.preview.toString() =~ /(?m)<div (.*?)data-media="(.*?)"/
-            if (mediaMatch){
+            if (mediaMatch) {
                 mediaMatch[0][2].split (",").each{ media.add(it) }
             }
 
@@ -77,7 +91,7 @@ class ObjectviewController {
         render(
                 template: "resultsListContainer",
                 model: [
-                    "results":resultsItems,
+                    "results": resultsItems,
                     "offset": offset
                 ])
     }
