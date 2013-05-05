@@ -47,19 +47,23 @@ class ObjectviewController {
      *
      * Tree Node Details is the view on the right side of the application.
      * It lists items that matched the query.
+     *
+     * TODO: why we name it treeNodeDetails? Suggestion: findItemsById
      */
     def getTreeNodeDetails() {
         def id = params.id
         def query = params.query
         def offset = params.offset
         def pagesize = params.pagesize
+        def sort = params.sort
         log.info """Get tree node details for item with \n
                 the ID: ${id},\n
                 query: ${query}, \n
                 page size: ${pagesize}, \n
-                offset: ${offset}"""
+                offset: ${offset}
+                sort: ${sort}"""
 
-        def resultsItems = institutionService.searchArchive(query, id, offset, pagesize)
+        def resultsItems = institutionService.searchArchive(query, id, offset, pagesize, sort)
         resultsItems.each {
             def title
             def subtitle

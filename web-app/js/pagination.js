@@ -32,11 +32,12 @@ var paginationModule = (function() {
   };
 
   // TODO: duplicate method from InstitutionApiWrapper.
-  var getObjectTreeNodeDetails = function getObjectTreeNodeDetails(itemId, query, offset, pagesize, callback) {
+  var getObjectTreeNodeDetails = function getObjectTreeNodeDetails(itemId, query, offset, pagesize, sortBy, callback) {
     var fullUrl = jsContextPath + '/liste/detail/' + itemId;
     fullUrl += '?query=' + query;
     fullUrl += '&offset=' + offset;
     fullUrl += '&pagesize=' + pagesize;
+    fullUrl += '&sort=' + sortBy;
     $.ajax({
       type: 'GET',
       dataType: 'html',
@@ -61,16 +62,16 @@ var paginationModule = (function() {
   $detailView = $('.list-container');
 
   return {
-    showResults: function(pageSize) {
-      getObjectTreeNodeDetails(institutionId, query, offset, pageSize, function(data) {
+    showResults: function(pageSize, sortBy) {
+      getObjectTreeNodeDetails(institutionId, query, offset, pageSize, sortBy, function(data) {
         $detailView.empty();
         $detailView.append(data);
       });
     },
-    updateHistory: function(pageSize) {
+    updateHistory: function(pageSize, sortBy) {
       var History = window.History;
       var newUri = '?query=' + encodeURI(query) + '&offset=' + offset + '&pagesize=' +
-        pageSize + '&id=' + institutionId;
+        pageSize + '&id=' + institutionId + '&sort=' + sortBy;
       History.pushState('', encodeURI(document.title), newUri);
     }
   };
@@ -78,27 +79,31 @@ var paginationModule = (function() {
 
 $(function() {
   if (jsPageName == 'objectview') {
-    $resultPerPage = $('#result-per-page');
-    $resultSortBy = $('#result-sort-by');
+    var $resultPerPage = $('#result-per-page'),
+        $resultSortBy = $('#result-sort-by'),
+        // TODO: get from Web Browser's URI's Query String Values.
+        pageSize = 20,
+        sortBy = 'RELEVANCE';
 
+    /* When the user change the result per page, we execute a new search using
+     * the new parameter. On success we replace the content on the right side
+     * using the response.
+     */
     $resultPerPage.change(function(event) {
       event.preventDefault();
-      var pageSize = $resultPerPage
-        .find(':selected')
-        .text();
+      pageSize = $(this).val();
 
-      paginationModule.showResults(pageSize);
-      paginationModule.updateHistory(pageSize);
+      paginationModule.showResults(pageSize, sortBy);
+      paginationModule.updateHistory(pageSize, sortBy);
     });
 
     $resultSortBy.change(function(event) {
       event.preventDefault();
-      var sortBy = $resultSortBy
-        .find(':selected')
-        .text();
-      console.log('sort by: ' + sortBy);
+      sortBy = $(this).val();
 
-      paginationModule.sortResultsBy(sortBy);
+      // TODO: don't repeat your self.
+      paginationModule.showResults(pageSize, sortBy);
+      paginationModule.updateHistory(pageSize, sortBy);
     });
   }
 });

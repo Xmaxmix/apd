@@ -44,7 +44,8 @@ class InstitutionService {
         def allInstitutions = [data: [:], total: totalInstitution]
         def institutionByFirstChar = buildIndex()
 
-        institutionList.each { it ->
+        institutionList.each {
+            it ->
 
             totalInstitution++
 
@@ -126,7 +127,9 @@ class InstitutionService {
         for(int i=0; i<foundProviders.size(); i++){
             for(int j=0; j<allInstitutions.size(); j++){
                 if(allInstitutions[j].name == foundProviders[i].value){
-                    //log.debug "#################### 5 match: "+allInstitutions[j].name +"=="+ foundProviders[i].value+" -> "+allInstitutions[j].id
+                    //log.debug "#################### 5 match:
+                    //"+allInstitutions[j].name +"=="+ foundProviders[i].value+"
+                    //-> "+allInstitutions[j].id
                     foundProviders[i]["id"] = allInstitutions[j].id
                     break
                 }
@@ -152,12 +155,18 @@ class InstitutionService {
         return resultObject
     }
 
-    def searchArchive(String query, String institutionId, String offset, String pagesize) {
-        if(!offset){
+    // TODO: who are the client of this method?
+    def searchArchive(query, institutionId, offset, pagesize, sort) {
+        if(!offset) {
             offset = "0"
         }
-        if(!pagesize){
+
+        if(!pagesize) {
             pagesize = "20"
+        }
+
+        if(!sort) {
+            sort = 'RELEVANCE'
         }
 
         def allInstitutions = findAll()
@@ -173,14 +182,18 @@ class InstitutionService {
         log.debug "#################### 9 "+institutionId+" -> "+institutionName
 
         def backendUrl = configurationService.getBackendUrl()
-        def parameters = [:]
-        parameters["query"] = query
-        parameters["facet"] = ["sector_fct", "provider_fct"]
-        parameters["sector_fct"] = "sec_01"
-        parameters["provider_fct"] = institutionName
-        parameters["offset"] = offset
-        parameters["rows"] = pagesize
+        def parameters = [
+                          "query": query,
+                          "facet": ["sector_fct", "provider_fct"],
+                          "sector_fct":  "sec_01",
+                          "provider_fct": institutionName,
+                          "offset": offset,
+                          "rows": pagesize,
+                          "sort":  sort
+                         ]
         log.debug "#################### 10 "+parameters
+
+        log.info "parameters: ${parameters}"
         def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
 
         if(!searchWrapper.isOk()){
@@ -219,16 +232,16 @@ class InstitutionService {
     private putToIndex(institutionByFirstLetter, institutionWithUri, firstLetter) {
         switch(firstLetter) {
             case 'Ä':
-                institutionByFirstLetter['A'].add(institutionWithUri)
-                break
+            institutionByFirstLetter['A'].add(institutionWithUri)
+            break
             case 'Ö':
-                institutionByFirstLetter['O'].add(institutionWithUri)
-                break
+            institutionByFirstLetter['O'].add(institutionWithUri)
+            break
             case 'Ü':
-                institutionByFirstLetter['U'].add(institutionWithUri)
-                break
+            institutionByFirstLetter['U'].add(institutionWithUri)
+            break
             default:
-                institutionByFirstLetter[firstLetter].add(institutionWithUri)
+            institutionByFirstLetter[firstLetter].add(institutionWithUri)
         }
         return institutionByFirstLetter
     }
