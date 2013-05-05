@@ -101,6 +101,8 @@ $(function() {
 
       paginationModule.showResults(pageSize, sortBy);
       paginationModule.updateHistory(pageSize, sortBy);
+
+      $('.results-overall-index').text('1 - ' + pageSize);
     });
 
     $resultSortBy.change(function(event) {

@@ -26,41 +26,35 @@ $(function() {
     },
 
     buildInitialTree: function(treeDiv, detailView) {
-
       _canLog = false;
 
-      // Initialize tree
       var $self = this;
       $(treeDiv).dynatree({
         onClick: function(node, event) {
-          console.log(node);
-          $self.showNodeDetails(node.data.key, detailView);
+          $self.showNodeDetails(node.data.key, detailView, node.data.numberOfItems);
         },
         onExpand: function(expand, node) {
           $self.openTreeNode(node.data.key);
         }
-
       });
 
     },
 
+    // TODO: who calls this function?
     clickOnInstitution: function(institutionId, detailView) {
-      console.log('####################2 clickOnInstitution: ' + institutionId);
       this.showNodeDetails(institutionId, detailView);
       this.openTreeNode(institutionId, detailView);
     },
 
     openTreeNode: function(institutionId) {
-      console.log('####################2 openTreeNode ' + institutionId);
-      if (institutionId != 'rootnode') {
+      if (institutionId !== 'rootnode') {
         var institutionsApiWrapper = new InstitutionsApiWrapper();
         institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
-          console.log('####################2 child: ' + data);
         });
       }
     },
 
-    showNodeDetails: function(institutionId, detailView) {
+    showNodeDetails: function(institutionId, detailView, numberOfItems) {
       var institutionsApiWrapper = new InstitutionsApiWrapper();
 
       var query = this.getUrlParam('query');
@@ -92,12 +86,14 @@ $(function() {
       institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
         $(detailView).empty();
         $(detailView).append(data);
+
+        // We change the total number of result to itemSize
+        $('#results-total').text(numberOfItems);
+        $('.results-overall-index').text('1 - ' + pagesize);
       });
     },
 
     loadInitialTreeNodes: function(treeDiv) {
-      console.log('####################2 loadInitialTreeNodes ' + treeDiv);
-
       var query = this.getUrlParam('search');
 
       var institutionsApiWrapper = new InstitutionsApiWrapper();
@@ -105,13 +101,14 @@ $(function() {
 
         var childNodes = [];
         for (var i = 0; i < data.institutions.length; i++) {
-          childNodes.push(
-            {title: data.institutions[i].name + ' (' + data.institutions[i].count + ')',
-              key: data.institutions[i].id,
-              isFolder: true,
-              isLazy: true,
-              children: [{title: '', key: 'empty'}] }
-            );
+          childNodes.push({
+            title: data.institutions[i].name + ' (' + data.institutions[i].count + ')',
+            numberOfItems: data.institutions[i].count,
+            key: data.institutions[i].id,
+            isFolder: true,
+            isLazy: true,
+            children: [{title: '', key: 'empty'}]
+          });
         }
 
         var root = [{ title: data.count + ' Objekte',
@@ -126,7 +123,6 @@ $(function() {
         // Open root node
         var rootNodeTreeElement = $(treeDiv).dynatree('getTree').getNodeByKey('rootnode');
         rootNodeTreeElement.expand(true);
-
       });
     },
 

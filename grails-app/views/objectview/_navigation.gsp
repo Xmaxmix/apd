@@ -14,7 +14,7 @@
   <div class="page-info">
     <span class="results-overall-index">1 - 20</span>
     <span><g:message code="apd.Of" /></span>
-    <span><b><span class="results-total" id="results-total">10000</span></b></span>
+    <span><b><span class="results-total" id="results-total">0</span></b></span>
     <%--
     <g:if test="${numberOfResultsFormatted == '1'}">
      --%>
