@@ -51,6 +51,7 @@
       </div>
       <div class="span8">
         <g:render template="pagination" />
+        <g:render template="navigation" />
         <div class="list-container">
           <g:if test="${results}">
             <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>

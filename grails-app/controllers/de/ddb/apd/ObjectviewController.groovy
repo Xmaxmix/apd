@@ -76,7 +76,7 @@ class ObjectviewController {
             }
 
             def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
-            subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
+            subtitle = (subtitleMatch)?subtitleMatch[0][3]:""
 
             def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
             if (thumbnailMatch) {

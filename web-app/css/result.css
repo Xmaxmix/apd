@@ -7,3 +7,15 @@
 .page-filter label,.sort-results-switch label {
   display: inline;
 }
+
+.results-paginator-options {
+  border-bottom: solid 1px #efebe8;
+}
+
+.page-info,.page-nav {
+  display: inline-block;
+}
+
+.page-nav {
+  float: right;
+}

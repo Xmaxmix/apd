@@ -113,9 +113,7 @@ class InstitutionService {
         def responseFacets = searchResponse.facets
         def foundProviders = []
         for(int i=0; i<responseFacets.size(); i++) {
-            //            log.debug "#################### 2 "+responseFacets.get(i).field
             if(responseFacets.get(i).field == "provider_fct"){
-                //                log.debug "#################### 3 found"
                 foundProviders = responseFacets.get(i).facetValues
                 break
             }
@@ -127,9 +125,6 @@ class InstitutionService {
         for(int i=0; i<foundProviders.size(); i++){
             for(int j=0; j<allInstitutions.size(); j++){
                 if(allInstitutions[j].name == foundProviders[i].value){
-                    //log.debug "#################### 5 match:
-                    //"+allInstitutions[j].name +"=="+ foundProviders[i].value+"
-                    //-> "+allInstitutions[j].id
                     foundProviders[i]["id"] = allInstitutions[j].id
                     break
                 }
@@ -150,7 +145,6 @@ class InstitutionService {
         def resultObject = [:]
         resultObject["count"] = searchResponse.numberOfResults
         resultObject["institutions"] = resultList
-        log.debug "#################### 7 "+searchResponse.numberOfResults
 
         return resultObject
     }
