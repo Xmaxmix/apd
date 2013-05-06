@@ -31,7 +31,7 @@ class DetailviewController {
 
         def friendlyTitle = StringManipulation.getFriendlyUrlString(item.title)
 
-        def hierarchyRootItem = buildItemHierarchy(id, item.title)
+        def hierarchyRootItem = buildItemHierarchy(id, item.title, item.institution)
 
         def binaryList = itemService.findBinariesById(id)
         def binariesCounter = itemService.binariesCounter(binaryList)
@@ -94,7 +94,7 @@ class DetailviewController {
         }
     }
 
-    def buildItemHierarchy(id, label) {
+    def buildItemHierarchy(id, label, institution) {
 
         // Build the hierarchy from the item to the root element. The root element is kept.
         def parentList = itemService.getParent(id)
@@ -107,8 +107,11 @@ class DetailviewController {
         Item mainItem = rootItem.getItemFromHierarchy(id)
         mainItem.setMainItem(true)
 
+        Item institutionRootItem = new Item(['id': institution.id, 'label': institution.name, 'aggregationEntity': true])
+
         Item emptyStartItem = new Item()
-        emptyStartItem.children.add(rootItem)
+        emptyStartItem.children.add(institutionRootItem)
+        institutionRootItem.children.add(rootItem)
 
         return emptyStartItem
     }

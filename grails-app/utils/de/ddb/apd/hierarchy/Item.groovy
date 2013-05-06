@@ -28,10 +28,10 @@ class Item {
     String label
     String type
     String position
-    String leaf
-    String aggregationEntity
     List<Item> children = []
     Item parentItem
+    boolean leaf = false
+    boolean aggregationEntity = true
     boolean isMainItem = false
 
     Item(){

@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 $(function() {
-
   if (jsPageName == 'objectview') {
 
-    objectTreeWrapper = new ObjectTreeWrapper();
+    if ($('.search-widget-container').length > 0) {
+      var searchWidgetContainer = $('#search-widget');
+      searchWidget = new SearchWidget($('#search-widget-form'), searchWidgetContainer,
+        searchWidgetContainer.find('.controls-container'));
+    }
+
+    var objectTreeWrapper = new ObjectTreeWrapper();
 
     objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
     objectTreeWrapper.loadInitialTreeNodes('#institution-tree');

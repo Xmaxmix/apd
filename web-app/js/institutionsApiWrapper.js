@@ -26,7 +26,6 @@ $(function() {
     },
 
     getFullInstitutionsList: function(callback) {
-      console.log('##############1 getFullInstitutionsList ');
       $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -55,7 +54,6 @@ $(function() {
     },
 
 //    getArchiveList: function(query, facets, callback) {
-//      console.log("##############1 getArchiveList ");
 //      var fullUrl = jsContextPath + "/institutions/archives";
 //      fullUrl += "?searchQuery=" + query;
 //      fullUrl += "?facets=" + facets;
@@ -74,7 +72,6 @@ $(function() {
 
 
     getObjectTreeRootNodes: function(query, callback) {
-      console.log('##############1 getObjectTreeRootNodes ' + query);
       var fullUrl = jsContextPath + '/liste/root';
       fullUrl += '?query=' + query;
       $.ajax({
@@ -86,6 +83,9 @@ $(function() {
         complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          callback(null);
         }
       });
     },
@@ -96,6 +96,7 @@ $(function() {
       fullUrl += '&offset=' + offset;
       fullUrl += '&pagesize=' + pagesize;
       fullUrl += '&sort=' + sortBy;
+      var isAlready404 = false;
       $.ajax({
         type: 'GET',
         dataType: 'html',
@@ -103,13 +104,40 @@ $(function() {
         cache: false,
         url: fullUrl,
         complete: function(data) {
+          if (isAlready404) { // prevent redirects after 404 answer
+            callback(null);
+            return;
+          }
           callback(data.responseText);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          isAlready404 = true;
+          callback(null);
+        }
+      });
+    },
+
+    getObjectTreeNodeObjectCount: function(itemId, itemName, query, callback) {
+      var fullUrl = jsContextPath + '/liste/objectcount/' + itemId;
+      fullUrl += '?query=' + query;
+      fullUrl += '&itemName=' + itemName;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false,
+        url: fullUrl,
+        complete: function(data) {
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          callback(null);
         }
       });
     },
 
     getObjectTreeNodeChildren: function(itemId, callback) {
-      console.log('##############1 getObjectTreeNodeChildren ' + itemId);
       var fullUrl = jsContextPath + '/liste/children/' + itemId;
       $.ajax({
         type: 'GET',
@@ -120,12 +148,14 @@ $(function() {
         complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          callback(null);
         }
       });
     },
 
     getStructureTreeRootNodes: function(query, callback) {
-      console.log('##############1 getStructureTreeRootNodes ' + query);
       var fullUrl = jsContextPath + '/struktur/root';
       fullUrl += '?query=' + query;
       $.ajax({
@@ -137,28 +167,38 @@ $(function() {
         complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
         }
       });
     },
 
     getStructureTreeNodeDetails: function(itemId, query, callback) {
-      console.log('##############1 getStructureTreeNodeDetails ' + itemId);
       var fullUrl = jsContextPath + '/struktur/detail/' + itemId;
       fullUrl += '?query=' + query;
+      
+      var isAlready404 = false;
       $.ajax({
         type: 'GET',
         dataType: 'html',
         async: true,
         cache: false,
         url: fullUrl,
-        complete: function(data) {
+        complete: function(data){
+          if(isAlready404){ // prevent redirects after 404 answer
+            callback(null);
+            return;
+          }
           callback(data.responseText);
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          isAlready404 = true;
+          callback(null);
         }
       });
     },
 
     getStructureTreeNodeChildren: function(itemId, callback) {
-      console.log('##############1 getStructureTreeNodeChildren ' + itemId);
       var fullUrl = jsContextPath + '/struktur/children/' + itemId;
       $.ajax({
         type: 'GET',
@@ -169,6 +209,9 @@ $(function() {
         complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          callback(null);
         }
       });
     }

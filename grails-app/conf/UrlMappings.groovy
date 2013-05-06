@@ -76,6 +76,16 @@ class UrlMappings {
             action="getTreeRootItems"
         }
 
+        "/liste/objectcount/$id" {
+            controller="objectview"
+            action="getTreeNodeObjectCount"
+        }
+
+        "/liste/getLowerLevel/$id" {
+            controller="objectview"
+            action="getSecondLevelNodes"
+        }
+
         "/institutions/$action/$hashId?" {
             controller="institutions"
             action="getAjaxListFull"
@@ -85,16 +95,6 @@ class UrlMappings {
             controller="institutions"
             action="isAjaxListFullOutdated"
         }
-        //
-        //        "/institutions/archives" {
-        //            controller="institutions"
-        //            action="getAjaxListArchiveFull"
-        //        }
-
-        //        "/institutions/search" {
-        //            controller="institutions"
-        //            action="getAjaxSearch"
-        //        }
 
         "/item/$id/$name?" {
             controller="detailview"

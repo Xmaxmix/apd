@@ -15,7 +15,6 @@
  */
 package de.ddb.apd
 
-import groovy.json.JsonBuilder
 import groovyx.net.http.ContentType
 
 import javax.servlet.http.HttpServletResponse
@@ -26,13 +25,14 @@ class StructureviewController {
     def configurationService
 
     def index() {
+
+        def query = params.query
+
         render (view: 'structureview',  model: [:])
     }
 
     def getTreeRootItems() {
         def query = params.query
-        log.debug "##################### StructureviewController getTreeRootItems: "+query
-
         def searchResult = institutionService.searchArchives(query)
 
         render (contentType: ContentType.JSON.toString()) { searchResult}
@@ -41,13 +41,16 @@ class StructureviewController {
     def getTreeNodeDetails() {
         def id = params.id
         def query = params.query
-        log.debug "##################### StructureviewController getTreeNodeDetails: "+id
+
+        //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
+
+        //def foundInstitution = institutionService.findInstitutionForId(id)
 
         def itemId = id
         def vApiInstitution = new ApiInstitution()
         log.debug("read insitution by item id: ${id}")
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
-        log.debug "##################### StructureviewController getTreeNodeDetails: selectedOrgXML="+selectedOrgXML
+
         if (selectedOrgXML) {
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}")
@@ -73,7 +76,6 @@ class StructureviewController {
                     countObjectsForProv = -1
                 }
             }
-            log.debug "##################### StructureviewController getTreeNodeDetails: render="+countObjectsForProv
             render(
                     template: "detailView",
                     model: [
@@ -88,14 +90,10 @@ class StructureviewController {
         } else {
             forward controller: 'error', action: "notfound"
         }
-
-        //render(template: "detailView", model: ["results":foundInstitution])
     }
 
     def getTreeNodeChildren() {
         def id = params.id
-        log.debug "##################### StructureviewController getTreeNodeChildren: "+id
-        log.debug "children: ----->"+institutionService.getTechtonicFirstLvlHierarchyChildren(params.id)
         def children = institutionService.getTechtonicFirstLvlHierarchyChildren(params.id).children
 
         render (contentType: ContentType.JSON.toString()) { children }

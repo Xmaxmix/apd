@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title><g:message code="apd.List"/> - <g:message code="apd.ArchivportalD"/></title>
+    <title><g:message code="apd.Object"/> - <g:message code="apd.ArchivportalD"/></title>
 
     <meta name="page" content="objectview" />
     <meta name="layout" content="main" />
@@ -8,7 +8,22 @@
   </head>
   <body>
     <div class="row">
-      <div class="span12 search-widget-container border">search-widget</div>
+      <div class="span12 search-widget-container border">
+        <g:form id="home-search-form" url="[controller:'liste', action:'']"
+          class="form-search" method="GET">
+          <div class="input-append">
+            <input type="text" id="query" name="query"
+              class="input-xlarge search-query"
+              placeholder="<g:message code="apd.Search_Placeholder"/>" value="${query}">
+            <button type="submit" class="btn">
+              <i class="icon-search"></i>
+            </button>
+          </div>
+        </g:form>
+        <div>
+          <g:searchWidgetRender></g:searchWidgetRender>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="span4">
@@ -33,9 +48,6 @@
         <g:render template="pagination" />
         <g:render template="navigation" />
         <div class="list-container">
-          <g:if test="${results}">
-            <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
-          </g:if>
         </div>
       </div>
     </div>

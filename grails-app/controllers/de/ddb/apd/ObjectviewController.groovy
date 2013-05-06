@@ -15,6 +15,7 @@
  */
 package de.ddb.apd
 
+import net.sf.json.JSONNull;
 import groovyx.net.http.ContentType
 
 
@@ -25,7 +26,6 @@ class ObjectviewController {
     def configurationService
 
     def index() {
-        log.info('index...')
         render(view: "objectview", model: [:])
     }
 
@@ -101,11 +101,19 @@ class ObjectviewController {
 
     def getTreeNodeChildren() {
         def id = params.id
-        log.debug "##################### ObjectviewController getTreeNodeChildren: "+id
+        def children = institutionService.getTechtonicFirstLvlHierarchyChildren(params.id).children
 
-        render (contentType: ContentType.JSON.toString()) { [:]}
+        render (contentType: ContentType.JSON.toString()) { children }
     }
 
+    def getTreeNodeObjectCount() {
+        def id = params.id
+        def name = params.name
+        def query = params.query
+
+        render (contentType: ContentType.JSON.toString()) { ["id": id, "count": "-"] }
+    }
+    
     //The method can be used in ajax requests to retrieve elements on second level
     def getSecondLevelNodes(){
         assert params.id!=null, "this method should not be called without an ID"
