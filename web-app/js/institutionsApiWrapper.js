@@ -176,7 +176,7 @@ $(function() {
     getStructureTreeNodeDetails: function(itemId, query, callback) {
       var fullUrl = jsContextPath + '/struktur/detail/' + itemId;
       fullUrl += '?query=' + query;
-      
+
       var isAlready404 = false;
       $.ajax({
         type: 'GET',

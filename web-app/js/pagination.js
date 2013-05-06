@@ -135,12 +135,17 @@ $(function() {
 
     // TODO: add click listener to a.page-nav-result
     $('a.page-nav-result').click(function(event) {
-      var fullUrl = jsContextPath + '/liste/detail/' + itemId;
+      event.preventDefault();
 
-      // var fullUrl = $(this).attr('href');
-      console.log('Clicked: ', $(this).attr('href'));
-      // TODO: onClick fetch results from the server
-      // TODO: refactor this
+      var queryString = $.parseQuery($(this).attr('href'));
+
+      var fullUrl = jsContextPath + '/liste/detail/' + queryString.id;
+      fullUrl += '?query=' + queryString.query;
+      fullUrl += '&offset=' + queryString.offset;
+      fullUrl += '&pagesize=' + queryString.pagesize;
+      fullUrl += '&sort=' + queryString.sort;
+      var isAlready404 = false;
+
       $.ajax({
         type: 'GET',
         dataType: 'html',
@@ -148,8 +153,17 @@ $(function() {
         cache: false,
         url: fullUrl,
         complete: function(data) {
-          $(detailView).empty();
-          $(detailView).append(data.responseText);
+          if (isAlready404) { // prevent redirects after 404 answer
+            ///callback(null);
+            return;
+          }
+          $('.list-container').empty();
+          console.log(data.responseText);
+//          $('.list-container').append(data.responseText);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          isAlready404 = true;
+//          callback(null);
         }
       });
     });

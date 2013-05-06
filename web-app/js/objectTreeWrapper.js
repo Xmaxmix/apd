@@ -103,6 +103,10 @@ $(function() {
     },
 
     showNodeDetails: function(institutionId, detailView, numberOfItems) {
+      console.log('id', institutionId);
+      console.log('detail view', detailView);
+      console.log('number of items', numberOfItems);
+
       var institutionsApiWrapper = new InstitutionsApiWrapper();
 
       var query = this.getUrlParam('query');
@@ -141,6 +145,11 @@ $(function() {
         $('#results-total').text(numberOfItems);
         $('.results-overall-index').text('1 - ' + pagesize);
 
+        var totalPage = Math.ceil(numberOfItems / pagesize);
+        if(totalPage) {
+          $('.total-pages').text(totalPage);
+        }
+
         // we change the hrefs in the folllowing links: first, prev, next and last
         var nextPageUri = that.buildNextPageUri(pagesize);
         var lastPageUri = that.buildLastPageUri(numberOfItems, pagesize);
@@ -151,7 +160,6 @@ $(function() {
     },
 
     loadInitialTreeNodes: function(treeDiv) {
-
       var query = this.getUrlParam('query');
       if (query === '') {
         query = '*';

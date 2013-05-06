@@ -34,7 +34,10 @@
       <li class="pages-overall-index">
         <span>
             <g:message code="apd.Page" />
+            <span>1</span>
+            <%--
             <input type="text" class="input-mini page-input off" maxlength="10" value="1" />
+             --%>
             <%--
             <span class="page-nonjs">1</span>
              --%>
