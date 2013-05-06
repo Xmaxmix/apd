@@ -329,6 +329,12 @@ class InstitutionService {
         if (objectResults.size()>0){
             log.info "Object Results has something ";
             def parent =itemService.getParent(objectResults[0].id).last()
+            if(!parent?.parent || parent?.parent == "null"){
+                parent.parent = "<<null>>"
+            }
+            if(!parent?.type || parent?.type == "null"){
+                parent.type = "<<null>>"
+            }
             log.info parent;
             if(!hierarchy.children){
                 hierarchy.children = []
@@ -337,7 +343,7 @@ class InstitutionService {
         }
         hierarchy.id = id
         hierarchy.children.addAll(getChildren(id).getAt("children"));
-        
+
         return hierarchy
     }
 
