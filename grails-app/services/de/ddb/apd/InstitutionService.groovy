@@ -16,7 +16,7 @@ package de.ddb.apd
  */
 
 
-import de.ddb.apd.institutions.InstitutionsCache;
+import de.ddb.apd.institutions.InstitutionsCache
 import groovyx.net.http.HTTPBuilder
 import net.sf.json.JSONObject
 
@@ -131,7 +131,7 @@ class InstitutionService {
             }
         }
 
-      // Getting ID for institutions
+        // Getting ID for institutions
 
         def resultList = []
         foundProviders.each {
@@ -162,7 +162,7 @@ class InstitutionService {
 
         def institutionName = ""
         for(int i=0; i<allInstitutions.size(); i++){
-            if(allInstitutions[i].id == institutionId){
+            if(allInstitutions[i].id == institutionId) {
                 institutionName = allInstitutions[i].name
                 break
             }
@@ -182,6 +182,7 @@ class InstitutionService {
         }
         parameters["offset"] = offset
         parameters["rows"] = pagesize
+        parameters["sort"] = sort
         def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
 
         if(!searchWrapper.isOk()){
@@ -219,16 +220,16 @@ class InstitutionService {
     private putToIndex(institutionByFirstLetter, institutionWithUri, firstLetter) {
         switch(firstLetter) {
             case 'Ä':
-            institutionByFirstLetter['A'].add(institutionWithUri)
-            break
+                institutionByFirstLetter['A'].add(institutionWithUri)
+                break
             case 'Ö':
-            institutionByFirstLetter['O'].add(institutionWithUri)
-            break
+                institutionByFirstLetter['O'].add(institutionWithUri)
+                break
             case 'Ü':
-            institutionByFirstLetter['U'].add(institutionWithUri)
-            break
+                institutionByFirstLetter['U'].add(institutionWithUri)
+                break
             default:
-            institutionByFirstLetter[firstLetter].add(institutionWithUri)
+                institutionByFirstLetter[firstLetter].add(institutionWithUri)
         }
         return institutionByFirstLetter
     }
@@ -278,16 +279,16 @@ class InstitutionService {
      */
     private def getTechtonicFirstLvlHierarchyChildren(id){
         def JSONObject hierarchy = [:]
-        def children=getInstitutionChildren(id);
+        def children=getInstitutionChildren(id)
         //TODO throw exception if response if not JSON
         assert children instanceof JSONObject
-        def objectResults = children.results.docs[0];
+        def objectResults = children.results.docs[0]
         if(!hierarchy.children){
             hierarchy.children = []
         }
 
         if (objectResults.size()>0){
-            log.info "Object Results has something ";
+            log.info "Object Results has something "
             def parent =itemService.getParent(objectResults[0].id).last()
             if(!parent?.parent || parent?.parent == "null"){
                 parent.parent = "<<null>>"
@@ -295,14 +296,14 @@ class InstitutionService {
             if(!parent?.type || parent?.type == "null"){
                 parent.type = "<<null>>"
             }
-            log.info parent;
+            log.info parent
             if(!hierarchy.children){
                 hierarchy.children = []
             }
-            hierarchy.children.addAll(parent);
+            hierarchy.children.addAll(parent)
         }
         hierarchy.id = id
-        hierarchy.children.addAll(getChildren(id).getAt("children"));
+        hierarchy.children.addAll(getChildren(id).getAt("children"))
 
         return hierarchy
     }

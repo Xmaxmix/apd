@@ -38,6 +38,7 @@ var paginationModule = (function(History) {
     fullUrl += '&offset=' + offset;
     fullUrl += '&pagesize=' + pagesize;
     fullUrl += '&sort=' + sortBy;
+    var isAlready404 = false;
     $.ajax({
       type: 'GET',
       dataType: 'html',
@@ -45,7 +46,15 @@ var paginationModule = (function(History) {
       cache: false,
       url: fullUrl,
       complete: function(data) {
+        if (isAlready404) { // prevent redirects after 404 answer
+          callback(null);
+          return;
+        }
         callback(data.responseText);
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        isAlready404 = true;
+        callback(null);
       }
     });
   };
@@ -56,22 +65,20 @@ var paginationModule = (function(History) {
     pagesize,
     $detailView;
 
-  institutionId = getParameterByName('id');
   query = getParameterByName('query');
-  offset = getParameterByName('offset');
   $detailView = $('.list-container');
 
   return {
-    showResults: function(pageSize, sortBy) {
-      getObjectTreeNodeDetails(institutionId, query, offset, pageSize, sortBy, function(data) {
+    showResults: function(id, pageSize, sortBy, offset) {
+      getObjectTreeNodeDetails(id, query, offset, pageSize, sortBy, function(data) {
         $detailView.empty();
         $detailView.append(data);
       });
     },
-    updateHistory: function(pageSize, sortBy) {
+    updateHistory: function(id, pageSize, sortBy, offset) {
       if (History) {
       var newUri = '?query=' + encodeURI(query) + '&offset=' + offset + '&pagesize=' +
-        pageSize + '&id=' + institutionId + '&sort=' + sortBy;
+        pageSize + '&id=' + id + '&sort=' + sortBy;
       History.pushState('', encodeURI(document.title), newUri);
       } else {
         // TODO: use History.js, when the History API is not available.
@@ -85,8 +92,10 @@ $(function() {
   if (jsPageName == 'objectview') {
     var $resultPerPage = $('#result-per-page'),
         $resultSortBy = $('#result-sort-by'),
+        id = paginationModule.getParameterByName('id') || 'rootnode',
         pageSize = paginationModule.getParameterByName('pagesize') || 20,
-        sortBy = paginationModule.getParameterByName('sort') || 'RELEVANCE';
+        sortBy = paginationModule.getParameterByName('sort') || 'RELEVANCE',
+        offset = paginationModule.getParameterByName('offset') || 0;
 
     $resultPerPage.val(pageSize);
     $resultSortBy.val(sortBy);
@@ -99,8 +108,12 @@ $(function() {
       event.preventDefault();
       pageSize = $(this).val();
 
-      paginationModule.showResults(pageSize, sortBy);
-      paginationModule.updateHistory(pageSize, sortBy);
+      id = paginationModule.getParameterByName('id') || 'rootnode',
+      sortBy = paginationModule.getParameterByName('sort') || 'RELEVANCE',
+      offset = paginationModule.getParameterByName('offset') || 0;
+
+      paginationModule.showResults(id, pageSize, sortBy, offset);
+      paginationModule.updateHistory(id, pageSize, sortBy, offset);
 
       $('.results-overall-index').text('1 - ' + pageSize);
     });
@@ -109,9 +122,14 @@ $(function() {
       event.preventDefault();
       sortBy = $(this).val();
 
+      id = paginationModule.getParameterByName('id') || 'rootnode',
+      pageSize = paginationModule.getParameterByName('pagesize') || 20,
+      offset = paginationModule.getParameterByName('offset') || 0;
+      console.log('sort-by', sortBy);
+
       // TODO: don't repeat your self.
-      paginationModule.showResults(pageSize, sortBy);
-      paginationModule.updateHistory(pageSize, sortBy);
+      paginationModule.showResults(id, pageSize, sortBy, offset);
+      paginationModule.updateHistory(id, pageSize, sortBy, offset);
     });
 
 
