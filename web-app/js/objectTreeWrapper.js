@@ -80,7 +80,6 @@ $(function() {
 
             //$self.openTreeNode(data[i].id, treeDiv);
           }
-
         });
       }
     },
@@ -125,7 +124,11 @@ $(function() {
       }
 
       var History = window.History;
-      var urlParameters = '?query=' + query + '&offset=' + offset + '&pagesize=' + pagesize + '&sort=' + sortBy + '&id=' + institutionId;
+      var urlParameters = '?query=' + query +
+                          '&offset=' + offset +
+                          '&pagesize=' + pagesize +
+                          '&sort=' + sortBy +
+                          '&id=' + institutionId;
       History.pushState('', document.title, decodeURI(urlParameters));
 
       var that = this;
@@ -147,7 +150,6 @@ $(function() {
       });
     },
 
-
     loadInitialTreeNodes: function(treeDiv) {
 
       var query = this.getUrlParam('query');
@@ -161,11 +163,14 @@ $(function() {
         var childNodes = [];
         for (var i = 0; i < data.institutions.length; i++) {
 
-          var nodeTitle = "<div class='dynatree-apd-title'>" + data.institutions[i].name + ' (' + data.institutions[i].count + ')' + '</div>';
+          var nodeTitle = "<div class='dynatree-apd-title'>" +
+            data.institutions[i].name + ' (' + data.institutions[i].count + ')' + '</div>';
           //var nodeTitle = data.institutions[i].name+" ("+data.institutions[i].count+")";
 
           childNodes.push(
-            {title: nodeTitle,
+            {
+              title: nodeTitle,
+              numberOfItems: data.institutions[i].count,
               key: data.institutions[i].id,
               isFolder: true,
               isLazy: true,
