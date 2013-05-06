@@ -79,19 +79,18 @@ $(function() {
     showNodeDetails: function(institutionId, detailView) {
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
-      var query = this.getUrlParam("search");
+      var query = this.getUrlParam("query");
 
       var History = window.History;
       var urlParameters = "?query="+query+"&id="+institutionId;
       History.pushState("", document.title, decodeURI(urlParameters));
 
       institutionsApiWrapper.getStructureTreeNodeDetails(institutionId, query, function(data) {
+        $(detailView).empty();
         if(data){
-          $(detailView).empty();
           $(detailView).append(data);
           mapSetup();
         }else{
-          $(detailView).empty();
           $(detailView).append("No details found");
         }
       });
@@ -133,11 +132,15 @@ $(function() {
     },
     
     getUrlParam: function(name){
-      var results = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
-      if(!results){
-        return ""
+      name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.location.search);
+      if(results == null) {
+        return "";
+      }else{
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
       }
-      return results[1] || 0;
     },
   
   });

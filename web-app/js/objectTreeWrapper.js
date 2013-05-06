@@ -157,13 +157,17 @@ $(function() {
     },
     
     getUrlParam: function(name){
-      var results = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
-      if(!results){
-        return ""
+      name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.location.search);
+      if(results == null) {
+        return "";
+      }else{
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
       }
-      return results[1] || 0;
     },
-  
+    
   });
   
 });
