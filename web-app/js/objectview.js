@@ -26,6 +26,7 @@ $(document).ready(function () {
     
     objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
     objectTreeWrapper.loadInitialTreeNodes('#institution-tree');
+    objectTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.list-container');
 
     
 
