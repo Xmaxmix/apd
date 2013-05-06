@@ -15,7 +15,6 @@
  */
 package de.ddb.apd
 
-import groovy.json.JsonBuilder;
 import groovyx.net.http.ContentType;
 
 import javax.servlet.http.HttpServletResponse;

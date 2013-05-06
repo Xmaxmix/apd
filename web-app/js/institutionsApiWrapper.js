@@ -83,6 +83,9 @@ $(function() {
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          callback(null);
         }
       });
     },
@@ -92,6 +95,7 @@ $(function() {
       fullUrl += "?query="+query;
       fullUrl += "&offset="+offset;
       fullUrl += "&pagesize="+pagesize;
+      var isAlready404 = false;
       $.ajax({
         type: 'GET',
         dataType: 'html',
@@ -99,7 +103,15 @@ $(function() {
         cache: false, 
         url: fullUrl,
         complete: function(data){
+          if(isAlready404){ // prevent redirects after 404 answer
+            callback(null);
+            return;
+          }
           callback(data.responseText);
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          isAlready404 = true;
+          callback(null);
         }
       });
     },
@@ -117,6 +129,9 @@ $(function() {
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          callback(null);
         }
       });
     },
@@ -132,6 +147,9 @@ $(function() {
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          callback(null);
         }
       });
     },
@@ -150,6 +168,8 @@ $(function() {
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error:function (xhr, ajaxOptions, thrownError){
         }
       });
     },
@@ -157,6 +177,8 @@ $(function() {
     getStructureTreeNodeDetails: function(itemId, query, callback) {
       var fullUrl = jsContextPath + "/struktur/detail/"+itemId;
       fullUrl += "?query="+query;
+      
+      var isAlready404 = false;
       $.ajax({
         type: 'GET',
         dataType: 'html',
@@ -164,7 +186,15 @@ $(function() {
         cache: false, 
         url: fullUrl,
         complete: function(data){
+          if(isAlready404){ // prevent redirects after 404 answer
+            callback(null);
+            return;
+          }
           callback(data.responseText);
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          isAlready404 = true;
+          callback(null);
         }
       });
     },
@@ -180,6 +210,9 @@ $(function() {
         complete: function(data){
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          callback(null);
         }
       });
     },
