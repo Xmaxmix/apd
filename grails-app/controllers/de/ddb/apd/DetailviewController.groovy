@@ -117,7 +117,7 @@ class DetailviewController {
         Item mainItem = rootItem.getItemFromHierarchy(id)
         mainItem.setMainItem(true);
 
-        Item institutionRootItem = new Item(['id': institution.id, 'label': institution.name])
+        Item institutionRootItem = new Item(['id': institution.id, 'label': institution.name, 'aggregationEntity': true])
 
         Item emptyStartItem = new Item()
         emptyStartItem.children.add(institutionRootItem)
