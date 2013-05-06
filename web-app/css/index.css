@@ -16,7 +16,7 @@
 #home-search-container{
   text-align:center;
 }
-.form-search {
+#home-search-container .form-search {
   margin-top: 80px;
 }
 #home-search-form {

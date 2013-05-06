@@ -30,15 +30,14 @@ class StructureviewController {
         def query = params.query
 
         render (view: 'structureview',  model: [:])
-    }
 
+    }
 
     def getTreeRootItems() {
         def query = params.query
-
         def searchResult = institutionService.searchArchives(query)
 
-        render (contentType: ContentType.JSON.toString()) { searchResult}
+        render (contentType: ContentType.JSON.toString()) {searchResult}
     }
 
     def getTreeNodeDetails() {
@@ -53,6 +52,7 @@ class StructureviewController {
         def vApiInstitution = new ApiInstitution();
         log.debug("read insitution by item id: ${id}");
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
+
         if (selectedOrgXML) {
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");

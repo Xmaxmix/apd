@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="row">
-      <div class="span12 search-widget-container border">
+      <div class="span12 search-widget-container">
         <g:form id="home-search-form" url="[controller:'liste', action:'']"
           class="form-search" method="GET">
           <div class="input-append">
@@ -50,9 +50,8 @@
         </div>
       </div>
       <div class="span8">
-
         <div class="institution-item-details">
-          <h1>Bitte wählen Sie ein Archiv</h1>
+          <h1><g:message code="apd.Please_select_an_archive"/></h1>
         </div>
       </div>
     </div>

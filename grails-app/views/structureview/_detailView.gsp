@@ -7,13 +7,11 @@
         <div>
           <g:message code="apd.${selectedOrgXML.sector}"/>
         </div>
-         <div>
+         <div id="institution-name" data-id="${selectedItemId}">
            <h2>${selectedOrgXML.name}
-             <%-- 
              <g:if test="${(countObjcs > 0)}">
                <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
-               <g:link class="count" controller="search" action="results" params="[query: '', offset: '0',
-                 rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'apd.InstitutionItem_IngestedObjectCountTitleText')}">
+               <g:link class="count" controller="objectview" action="index" title="${message(code: 'apd.InstitutionItem_IngestedObjectCountTitleText')}">
                  <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                  <g:if test="${(countObjcs == 1)}">
                    <g:message args="${flashArgs}" code="apd.InstitutionItem_IngestedObjectCountFormat" />
@@ -23,7 +21,6 @@
                  </g:if>
                </g:link>
              </g:if>
-             --%>
            </h2>
          </div>
          <div>
@@ -51,7 +48,7 @@
         </p>
       </div>
       <g:if test="${((subOrg)&&(subOrg.size() > 0)&&(!(parentOrg[parentOrg.size() - 1].aggregationEntity)))}">
-        <div class="hierarchy">
+        <div class="hierarchy span8">
           <span class="title"><g:message code="apd.InstitutionItem_OtherLocations" /></span>
           <ol class="institution-list">
             <li class="institution-listitem">
