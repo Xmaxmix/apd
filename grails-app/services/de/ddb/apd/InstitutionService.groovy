@@ -327,20 +327,17 @@ class InstitutionService {
         }
 
         if (objectResults.size()>0){
+            log.info "Object Results has something ";
             def parent =itemService.getParent(objectResults[0].id).last()
-            hierarchy << [id: parent.id.toString(), label: parent.label.toString(), children: getChildren(id).getAt("children")];
+            log.info parent;
             if(!hierarchy.children){
                 hierarchy.children = []
             }
-            if (parent.leaf==false){
-                //hierarchy << ["tectonics": getChildren(parent.id).getAt("children")];
-                hierarchy.children.addAll(getChildren(parent.id).getAt("children"));
-            }
-        }else{
-            //hierarchy << [id: id, "tectonics": getChildren(id).getAt("children")];
-            hierarchy.id = id
-            hierarchy.children.addAll(getChildren(id).getAt("children"));
+            hierarchy.children.addAll(parent);
         }
+        hierarchy.id = id
+        hierarchy.children.addAll(getChildren(id).getAt("children"));
+        
         return hierarchy
     }
 

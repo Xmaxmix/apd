@@ -81,6 +81,11 @@ class UrlMappings {
             action="getTreeNodeObjectCount"
         }
 
+        "/liste/getLowerLevel/$id" {
+            controller="objectview"
+            action="getSecondLevelNodes"
+        }
+
         "/institutions/$action/$hashId?" {
             controller="institutions"
             action="getAjaxListFull"
