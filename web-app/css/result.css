@@ -19,3 +19,7 @@
 .page-nav {
   float: right;
 }
+
+.off {
+  display: none;
+}

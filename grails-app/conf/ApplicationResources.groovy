@@ -58,6 +58,7 @@ modules = {
         resource url:'/js/vendor/large-cookie.js'
         resource url:'/js/vendor/dynatree.js'
         resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
+        resource url:'/js/vendor/jquery-queryParser.min.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/global-variables.js'
         resource url:'/js/binaries-viewer.js'

@@ -113,5 +113,29 @@ $(function() {
       paginationModule.showResults(pageSize, sortBy);
       paginationModule.updateHistory(pageSize, sortBy);
     });
+
+
+    // TODO: add click listener to a.page-nav-result
+    $('a.page-nav-result').click(function(event) {
+      var fullUrl = jsContextPath + '/liste/detail/' + itemId;
+
+      // var fullUrl = $(this).attr('href');
+      console.log('Clicked: ', $(this).attr('href'));
+      // TODO: onClick fetch results from the server
+      // TODO: refactor this
+      $.ajax({
+        type: 'GET',
+        dataType: 'html',
+        async: true,
+        cache: false,
+        url: fullUrl,
+        complete: function(data) {
+          $(detailView).empty();
+          $(detailView).append(data.responseText);
+        }
+      });
+    });
+    // TODO: onSuccess replace the result list with the new HTML
+    // TODO: update the navigations
   }
 });

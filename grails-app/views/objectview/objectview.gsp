@@ -25,26 +25,6 @@
         <div class="row">
           <div class="span4">
             <div id="institution-tree">
-              <%-- 
-              <ul>
-                <li>
-                  <span> ${searchResult.count } <g:message code="apd.Object"/></span>
-                  <ul>
-                    <g:each in="${ searchResult.institutions }">
-                      <li id="${ it.id }" class="" >
-                        <a id="a-${ it.id }" class="" href="#">
-                          ${ it?.name } 
-                          <span>(${ it?.count } <g:message code="apd.Object"/>)</span>
-                        </a>
-                        <ul>
-                          <li></li>
-                        </ul>
-                      </li>
-                    </g:each>
-                  </ul>
-                </li>
-              </ul>
-              --%>
             </div>
           </div>
         </div>

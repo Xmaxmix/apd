@@ -15,32 +15,21 @@
     <span class="results-overall-index">1 - 20</span>
     <span><g:message code="apd.Of" /></span>
     <span><b><span class="results-total" id="results-total">0</span></b></span>
-    <%--
-    <g:if test="${numberOfResultsFormatted == '1'}">
-     --%>
     <g:if test="true">
-      <span id="results-label"><g:message code="apd.Result_lowercase" /></span>
+      <span id="results-label"><g:message code="apd.Results_lowercase" /></span>
     </g:if>
     <g:else>
-      <span id="results-label"><g:message code="apd.Results_lowercase" /></span>
+      <span id="results-label"><g:message code="apd.Result_lowercase" /></span>
     </g:else>
   </div><!-- /end of .page-info -->
   
   <div class="page-nav">
     <ul class="inline">
-      <%--
-      <g:if test="${navData.paginationUrl.firstPg == null}">
-        <g:set var="displayLeftPagination" value="off"></g:set>
-      </g:if>
-      <g:if test="${navData.paginationUrl.lastPg ==null}">
-        <g:set var="displayRightPagination" value="off"></g:set>
-      </g:if>
-       --%>
-      <li class="first-page">
-        <a class="page-nav-result" href="paginationUrlFirstPage"><g:message code="apd.First_Label" /></a>  
+      <li class="first-page" >
+        <a class="off page-nav-result" href="paginationUrlFirstPage"><g:message code="apd.First_Label" /></a>  
       </li>
       <li class="prev-page br">
-        <a class="page-nav-result" href="paginationUrlPrevPage"><g:message code="apd.Previous_Label" /></a> 
+        <a class="off page-nav-result" href="paginationUrlPrevPage"><g:message code="apd.Previous_Label" /></a> 
       </li>
       <li class="pages-overall-index">
         <span>
@@ -66,5 +55,4 @@
       </li>
     </ul>
   </div><!-- /end of .page-nav -->
-
 </div>

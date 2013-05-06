@@ -54,6 +54,24 @@ $(function() {
       }
     },
 
+    buildNextPageUri: function(pagesize) {
+      var query = $.getQuery(window.location.href);
+      query.offset = parseInt(query.offset, 10) + parseInt(pagesize, 10);
+      return location.host + location.pathname + '?' + $.param(query);
+    },
+
+    buildLastPageUri: function(totalResult, pagesize) {
+      var pageSize = parseInt(pagesize, 10);
+      // #page = Math.ceil(#results / pagesize)
+      var totalPage = Math.ceil(totalResult / pageSize);
+
+      var query = $.getQuery(window.location.href);
+
+      // offset = (#page - 1) * pagesize
+      query.offset = (totalPage - 1) * pageSize;
+      return location.host + location.pathname + '?' + $.param(query);
+    },
+
     showNodeDetails: function(institutionId, detailView, numberOfItems) {
       var institutionsApiWrapper = new InstitutionsApiWrapper();
 
@@ -82,6 +100,7 @@ $(function() {
                                                        '&sort=' + sortBy +
                                                        '&id=' + institutionId);
 
+      var that = this;
       // TODO: too many parameters, refactor to use hash
       institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
         $(detailView).empty();
@@ -90,8 +109,16 @@ $(function() {
         // We change the total number of result to itemSize
         $('#results-total').text(numberOfItems);
         $('.results-overall-index').text('1 - ' + pagesize);
+
+        // we change the hrefs in the folllowing links: first, prev, next and last
+        var nextPageUri = that.buildNextPageUri(pagesize);
+        var lastPageUri = that.buildLastPageUri(numberOfItems, pagesize);
+
+        $('li.next-page').find('a.page-nav-result').attr('href', nextPageUri);
+        $('li.last-page').find('a.page-nav-result').attr('href', lastPageUri);
       });
     },
+
 
     loadInitialTreeNodes: function(treeDiv) {
       var query = this.getUrlParam('search');
