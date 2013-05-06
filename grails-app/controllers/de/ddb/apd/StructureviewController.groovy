@@ -90,7 +90,7 @@ class StructureviewController {
         def query = params.query
         def searchResult = institutionService.searchArchives(query)
 
-        render (contentType: ContentType.JSON.toString()) { searchResult}
+        render (contentType: ContentType.JSON.toString()) {searchResult}
     }
 
     def getTreeNodeDetails() {

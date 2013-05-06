@@ -151,17 +151,14 @@ function mapSetup() {
     GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + jsContextPath + MAP_DIR;
     jsLongitude = $("div.location").attr('data-lon');
     jsLatitude = $("div.location").attr('data-lat');
-    InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+    if ($("#divOSM").length > 0){
+        InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+        //TODO move the pushing state directly on the tree's elements on click event
+        History.pushState({state:1}, $('#institution-name').attr('data-id'), "/apd/struktur/item/"+$('#institution-name').attr('data-id'));
+    }
     return;
 };
 
 $(document).ready(function() {
-    INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
-    GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + jsContextPath + MAP_DIR;
-    jsLongitude = $("div.location").attr('data-lon');
-    jsLatitude = $("div.location").attr('data-lat');
-    if ($("#divOSM").length > 0){
-      InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
-    }
-    return;
+    mapSetup();
 });

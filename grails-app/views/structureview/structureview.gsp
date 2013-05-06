@@ -61,7 +61,7 @@
       </div>
       <div class="span8">
 
-        <div class="institution-item-details">
+      <div class="institution-item-details">
         <%-- 
           <div id="details-container">
             <g:if test="${selectedItemId}">
@@ -72,7 +72,7 @@
             </g:else>
           </div>
           --%>
-          <h1>Bitte wählen Sie ein Archiv</h1>
+          <h1><g:message code="apd.Please_select_an_archive"/></h1>
         </div>
       </div>
     </div>
