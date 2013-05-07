@@ -337,6 +337,9 @@ class InstitutionService {
                 if(!parent?.type || parent?.type == "null"){
                     parent.type = "<<null>>"
                 }
+                if(!parent?.institution || parent?.institution == "null"){
+                    parent.instutition = false
+                }
                 if(!hierarchy.children){
                     hierarchy.children = []
                 }
