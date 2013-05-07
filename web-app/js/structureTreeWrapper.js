@@ -34,9 +34,9 @@ $(function() {
       $(treeDiv).dynatree({
         onClick: function(node, event) {
           if(!node.bExpanded){
-            $self.openTreeNode(node.data.key, treeDiv);
+            $self.openTreeNode(node.data.key, treeDiv, 2);
           }
-          $self.showNodeDetails(node.data.key, detailView);
+          $self.showNodeDetails(node.data.key, treeDiv, detailView);
         },
         onExpand: function(expand, node) {
         },
@@ -45,8 +45,9 @@ $(function() {
       
     },
     
-    openTreeNode: function(institutionId, treeDiv) {
+    openTreeNode: function(institutionId, treeDiv, recursionDepth) {
       var $self = this;
+      recursionDepth = recursionDepth - 1;
       
       if(institutionId != "rootnode"){
 
@@ -66,37 +67,63 @@ $(function() {
                   children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}]}
                 );
             }
+            
+            if(childNodes.length == 0){
+              $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).data.isFolder = false;
+            }
+            
             $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
             $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
+            
+            if(recursionDepth > 0){
+              for(var i=0; i<data.length; i++) {
+                $self.openTreeNode(data[i].id, treeDiv, recursionDepth);
+              }
+            }
             
           }else{
             $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
           }
+          
         });
       }
     },
 
-    showNodeDetails: function(institutionId, detailView) {
+    showNodeDetails: function(institutionId, treeDiv, detailView) {
       var institutionsApiWrapper = new InstitutionsApiWrapper();
-      
+
       var query = this.getUrlParam("query");
 
-      var History = window.History;
-      var urlParameters = "?query="+query+"&id="+institutionId;
-      History.pushState("", document.title, decodeURI(urlParameters));
+      if(institutionId != "rootnode"){
+        var History = window.History;
+        var urlParameters = "?query="+query+"&id="+institutionId;
+        History.pushState("", document.title, decodeURI(urlParameters));
+      }
+      
+      var id = this.getUrlParam("id");
+      if(id != "" && id != "rootnode"){
+        institutionId = id;
+      }
 
+      
       institutionsApiWrapper.getStructureTreeNodeDetails(institutionId, query, function(data) {
         $(detailView).empty();
         if(data){
           $(detailView).append(data);
           mapSetup();
         }else{
-          $(detailView).append("No details found");
+          $(detailView).append("Bitte wählen Sie ein Archiv");
         }
+        
+        var History = window.History;
+        var urlParameters = "?query="+query+"&id="+institutionId;
+        History.pushState("", document.title, decodeURI(urlParameters));
+
       });
     },
     
     loadInitialTreeNodes: function(treeDiv) {
+      var $self = this;
       
       var query = "*"
 
@@ -118,6 +145,11 @@ $(function() {
               );
           }
           
+          for(var i=0; i<data.institutions.length; i++) {
+            if(data.institutions[i].id){
+              $self.openTreeNode(data.institutions[i].id, treeDiv, 1);
+            }
+          }          
           
           $(treeDiv).dynatree("getRoot").addChild(rootNodes);
           

@@ -34,9 +34,9 @@ $(function() {
       $(treeDiv).dynatree({
         onClick: function(node, event) {
           if(!node.bExpanded){
-            $self.openTreeNode(node.data.key, treeDiv);
+            $self.openTreeNode(node.data.key, treeDiv, 2);
           }
-          $self.showNodeDetails(node.data.key, detailView);
+          $self.showNodeDetails(node.data.key, treeDiv, detailView);
         },
         onExpand: function(expand, node) {
         },
@@ -45,8 +45,9 @@ $(function() {
       
     },
     
-    openTreeNode: function(institutionId, treeDiv) {
+    openTreeNode: function(institutionId, treeDiv, recursionDepth) {
       var $self = this;
+      recursionDepth = recursionDepth - 1;
 
       var query = this.getUrlParam("query");
       if(query == ""){
@@ -57,37 +58,49 @@ $(function() {
         var institutionsApiWrapper = new InstitutionsApiWrapper();
         institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
 
-          var childNodes = [];
-          for(var i=0; i<data.length; i++) {
-
-            var nodeTitle = "<div class='dynatree-apd-title'>" + data[i].label + " (?)</div>";
-            //var nodeTitle = data[i].label;
+          if(data){
+            var childNodes = [];
+            for(var i=0; i<data.length; i++) {
+  
+              var nodeTitle = "<div class='dynatree-apd-title'>" + data[i].label + " (?)</div>";
+              //var nodeTitle = data[i].label;
+              
+              childNodes.push(
+                {title: nodeTitle, 
+                  key: data[i].id, 
+                  isFolder: true, 
+                  isLazy: true,
+                  children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}]}
+                );
+            }
             
-            childNodes.push(
-              {title: nodeTitle, 
-                key: data[i].id, 
-                isFolder: true, 
-                isLazy: true,
-                children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}]}
-              );
+            if(childNodes.length == 0){
+              $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).data.isFolder = false;
+            }
+            
+            $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
+            $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
+            
+            for(var i=0; i<data.length; i++) {
+              institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(response){
+                var node = $(treeDiv).dynatree("getTree").getNodeByKey(response.id);
+                node.setTitle(node.data.title.replace("(?)", "("+response.count+")"));
+              });
+
+              if(recursionDepth > 0){
+                $self.openTreeNode(data[i].id, treeDiv, recursionDepth);
+              }
+            }
+            
+            
+          }else{
+            // No response data from backend
           }
-          $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).removeChildren();
-          $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
-          
-          for(var i=0; i<data.length; i++) {
-            institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(response){
-              var node = $(treeDiv).dynatree("getTree").getNodeByKey(response.id);
-              node.setTitle(node.data.title.replace("(?)", "("+response.count+")"));
-            });
-           
-            //$self.openTreeNode(data[i].id, treeDiv);
-          }
-        
         });
       }
     },
 
-    showNodeDetails: function(institutionId, detailView) {
+    showNodeDetails: function(institutionId, treeDiv, detailView) {
 
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       
@@ -104,17 +117,31 @@ $(function() {
         pagesize = "20"
       }
       
-      var History = window.History;
-      var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId;
-      History.pushState("", document.title, decodeURI(urlParameters));
+      if(institutionId != "rootnode"){
+        var History = window.History;
+        var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId;
+        History.pushState("", document.title, decodeURI(urlParameters));
+      }
+      
+      var id = this.getUrlParam("id");
+      if(id != "" && id != "rootnode"){
+        institutionId = id;
+      }
+      
       
       institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
         $(detailView).empty();
         $(detailView).append(data);
+
+        var History = window.History;
+        var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId;
+        History.pushState("", document.title, decodeURI(urlParameters));
+        
       });
     },
     
     loadInitialTreeNodes: function(treeDiv) {
+      var $self = this;
       
       var query = this.getUrlParam("query");
       if(query == ""){
@@ -124,34 +151,44 @@ $(function() {
       var institutionsApiWrapper = new InstitutionsApiWrapper();
       institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
         
-        var childNodes = [];
-        for(var i=0; i<data.institutions.length; i++) {
+        if(data){
+          var childNodes = [];
+          for(var i=0; i<data.institutions.length; i++) {
+            
+            var nodeTitle = "<div class='dynatree-apd-title'>" + data.institutions[i].name+" ("+data.institutions[i].count+")" + "</div>";
+            //var nodeTitle = data.institutions[i].name+" ("+data.institutions[i].count+")";
+            
+            childNodes.push(
+              {title: nodeTitle, 
+                key: data.institutions[i].id, 
+                isFolder: true, 
+                isLazy: true, 
+                children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}] }
+              );
+          }
           
-          var nodeTitle = "<div class='dynatree-apd-title'>" + data.institutions[i].name+" ("+data.institutions[i].count+")" + "</div>";
-          //var nodeTitle = data.institutions[i].name+" ("+data.institutions[i].count+")";
+          for(var i=0; i<data.institutions.length; i++) {
+            if(data.institutions[i].id){
+              $self.openTreeNode(data.institutions[i].id, treeDiv, 1);
+            }
+          }          
           
-          childNodes.push(
-            {title: nodeTitle, 
-              key: data.institutions[i].id, 
-              isFolder: true, 
-              isLazy: true, 
-              children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}] }
-            );
+          var nodeTitle = "<div class='dynatree-apd-title'>" + data.count+" Objekte" + "</div>";
+          var root = [{ title: nodeTitle, 
+                        key: "rootnode", 
+                        isFolder: true, 
+                        isLazy: true, 
+                        children: childNodes}
+                      ];
+          
+          $(treeDiv).dynatree("getRoot").addChild(root);
+          
+          // Open root node
+          var rootNodeTreeElement = $(treeDiv).dynatree("getTree").getNodeByKey("rootnode");
+          rootNodeTreeElement.expand(true);
+        }else{
+          //No data from backend
         }
-        
-        var nodeTitle = "<div class='dynatree-apd-title'>" + data.count+" Objekte" + "</div>";
-        var root = [{ title: nodeTitle, 
-                      key: "rootnode", 
-                      isFolder: true, 
-                      isLazy: true, 
-                      children: childNodes}
-                    ];
-        
-        $(treeDiv).dynatree("getRoot").addChild(root);
-        
-        // Open root node
-        var rootNodeTreeElement = $(treeDiv).dynatree("getTree").getNodeByKey("rootnode");
-        rootNodeTreeElement.expand(true);
         
       });
     },

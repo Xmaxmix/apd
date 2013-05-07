@@ -26,11 +26,8 @@ $(document).ready(function () {
 
     structureTreeWrapper.buildInitialTree('#institution-tree', '.institution-item-details');
     structureTreeWrapper.loadInitialTreeNodes('#institution-tree');
+    structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
 
-    // When page loads -> load the data and build tree
-//    apiWrapper.getFullInstitutionsList(function(json){
-//      printInstitutionsList(json);
-//    });		
   
   }
 });

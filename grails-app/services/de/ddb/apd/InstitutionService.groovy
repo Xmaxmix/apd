@@ -359,18 +359,23 @@ class InstitutionService {
 
         if (objectResults.size()>0){
             log.info "Object Results has something ";
-            def parent =itemService.getParent(objectResults[0].id).last()
-            if(!parent?.parent || parent?.parent == "null"){
-                parent.parent = "<<null>>"
+            def parentList = itemService.getParent(objectResults[0].id)
+            if(parentList && parentList.size() > 0){
+                def parent = itemService.getParent(objectResults[0].id).last()
+                if(!parent?.parent || parent?.parent == "null"){
+                    parent.parent = "<<null>>"
+                }
+                if(!parent?.type || parent?.type == "null"){
+                    parent.type = "<<null>>"
+                }
+                if(!parent?.institution || parent?.institution == "null"){
+                    parent.instutition = false
+                }
+                if(!hierarchy.children){
+                    hierarchy.children = []
+                }
+                hierarchy.children.addAll(parent);
             }
-            if(!parent?.type || parent?.type == "null"){
-                parent.type = "<<null>>"
-            }
-            log.info parent;
-            if(!hierarchy.children){
-                hierarchy.children = []
-            }
-            hierarchy.children.addAll(parent);
         }
         hierarchy.id = id
         hierarchy.children.addAll(getChildren(id).getAt("children"));

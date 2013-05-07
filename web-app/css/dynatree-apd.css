@@ -20,6 +20,7 @@ ul.dynatree-container li {
 
 span.dynatree-node a {
   display: block !important;
+  font-weight: bold;
 }
 
 .dynatree-apd-title {

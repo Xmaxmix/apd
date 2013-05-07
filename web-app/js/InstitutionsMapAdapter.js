@@ -154,7 +154,7 @@ function mapSetup() {
     if ($("#divOSM").length > 0){
         InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
         //TODO move the pushing state directly on the tree's elements on click event
-        History.pushState({state:1}, $('#institution-name').attr('data-id'), "/apd/struktur/item/"+$('#institution-name').attr('data-id'));
+//        History.pushState({state:1}, $('#institution-name').attr('data-id'), "/apd/struktur/item/"+$('#institution-name').attr('data-id'));
     }
     return;
 };
