@@ -34,7 +34,7 @@ class StructureviewController {
 
     def getTreeRootItems() {
         def query = params.query
-        def searchResult = institutionService.searchArchives(query)
+        def searchResult = institutionService.searchArchivesForStructure(query)
 
         render (contentType: ContentType.JSON.toString()) {searchResult}
     }

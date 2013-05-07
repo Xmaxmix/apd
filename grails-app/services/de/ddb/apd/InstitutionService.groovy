@@ -165,6 +165,37 @@ class InstitutionService {
         return resultObject
 
     }
+    
+    def searchArchivesForStructure(String query) {
+        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
+        def backendUrl = configurationService.getBackendUrl()
+        def parameters = [:]
+        parameters["query"] = query
+        parameters["sector"] = "sec_01"
+        def searchWrapper = ApiConsumer.getJson(backendUrl, "/institutions", parameters)
+
+        if(!searchWrapper.isOk()){
+            log.error "searchArchives(): search returned an error"
+        }
+
+
+        //Getting result institutions for search
+        def searchResponse = searchWrapper.getResponse()
+
+        // Getting ID for institutions
+        println searchResponse.get(0)
+        def resultList = []
+        searchResponse.each {
+            resultList.add(["id": it.id, "name": it.name, "count": 0])
+        }
+
+        def resultObject = [:]
+        resultObject["count"] = resultList.size()
+        resultObject["institutions"] = resultList
+
+        return resultObject
+
+    }
 
     def searchArchive(String query, String institutionId, String offset, String pagesize) {
         // http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?
