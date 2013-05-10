@@ -15,26 +15,26 @@
  */
 
 $(function() {
-  
-  InstitutionsApiWrapper = function(){
+
+  InstitutionsApiWrapper = function() {
     this.init();
-  }
+  };
 
   $.extend(InstitutionsApiWrapper.prototype, {
 
     init: function() {
     },
-	
+
     getFullInstitutionsList: function(callback) {
       $.ajax({
         type: 'GET',
         dataType: 'json',
         async: true,
         cache: false, // always no-cache this request!
-        url: jsContextPath+"/institutions/outdated/"+jsInstitutionsListHash, // it is important to always add the hash!
-        complete: function(data){
+        url: jsContextPath + '/institutions/outdated/' + jsInstitutionsListHash, // it is important to always add the hash!
+        complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
-          if(jsonResponse.content.isOutdated){
+          if (jsonResponse.content.isOutdated) {
             jsInstitutionsListHash = jsonResponse.content.hashId; //Refresh hash url if dataset changed
           }
 
@@ -43,16 +43,16 @@ $(function() {
             dataType: 'text', // Explicitly use "text/plain" as contenttype because some browsers disable caching for JSON
             async: true,
             cache: true, // always cache this request!
-            url: jsContextPath+"/institutions/full/"+jsInstitutionsListHash, // it is important to always add the hash!
-            complete: function(data){
+            url: jsContextPath + '/institutions/full/' + jsInstitutionsListHash, // it is important to always add the hash!
+            complete: function(data) {
               var jsonResponse = jQuery.parseJSON(data.responseText);
               callback(jsonResponse);
             }
-          });			
+          });
         }
-      });			
+      });
     },
-    
+
 //    getArchiveList: function(query, facets, callback) {
 //      var fullUrl = jsContextPath + "/institutions/archives";
 //      fullUrl += "?searchQuery=" + query;
@@ -61,7 +61,7 @@ $(function() {
 //        type: 'GET',
 //        dataType: 'json',
 //        async: true,
-//        cache: false, 
+//        cache: false,
 //        url: fullUrl,
 //        complete: function(data){
 //          var jsonResponse = jQuery.parseJSON(data.responseText);
@@ -69,47 +69,48 @@ $(function() {
 //        }
 //      });
 //    },
-    
-    
+
+
     getObjectTreeRootNodes: function(query, callback) {
-      var fullUrl = jsContextPath + "/liste/root";
-      fullUrl += "?query="+query;
+      var fullUrl = jsContextPath + '/liste/root';
+      fullUrl += '?query=' + query;
       $.ajax({
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
-        complete: function(data){
+        complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
         },
-        error:function (xhr, ajaxOptions, thrownError){
+        error: function(xhr, ajaxOptions, thrownError) {
           callback(null);
         }
       });
     },
 
-    getObjectTreeNodeDetails: function(itemId, query, offset, pagesize, callback) {
-      var fullUrl = jsContextPath + "/liste/detail/"+itemId;
-      fullUrl += "?query="+query;
-      fullUrl += "&offset="+offset;
-      fullUrl += "&pagesize="+pagesize;
+    getObjectTreeNodeDetails: function(itemId, query, offset, pagesize, sortBy, callback) {
+      var fullUrl = jsContextPath + '/liste/detail/' + itemId;
+      fullUrl += '?query=' + query;
+      fullUrl += '&offset=' + offset;
+      fullUrl += '&pagesize=' + pagesize;
+      fullUrl += '&sort=' + sortBy;
       var isAlready404 = false;
       $.ajax({
         type: 'GET',
         dataType: 'html',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
-        complete: function(data){
-          if(isAlready404){ // prevent redirects after 404 answer
+        complete: function(data) {
+          if (isAlready404) { // prevent redirects after 404 answer
             callback(null);
             return;
           }
           callback(data.responseText);
         },
-        error:function (xhr, ajaxOptions, thrownError){
+        error: function(xhr, ajaxOptions, thrownError) {
           isAlready404 = true;
           callback(null);
         }
@@ -117,73 +118,71 @@ $(function() {
     },
 
     getObjectTreeNodeObjectCount: function(itemId, itemName, query, callback) {
-      var fullUrl = jsContextPath + "/liste/objectcount/"+itemId;
-      fullUrl += "?query="+query;
-      fullUrl += "&itemName="+itemName;
+      var fullUrl = jsContextPath + '/liste/objectcount/' + itemId;
+      fullUrl += '?query=' + query;
+      fullUrl += '&itemName=' + itemName;
       $.ajax({
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
-        complete: function(data){
+        complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
         },
-        error:function (xhr, ajaxOptions, thrownError){
+        error: function(xhr, ajaxOptions, thrownError) {
           callback(null);
         }
       });
     },
 
     getObjectTreeNodeChildren: function(itemId, callback) {
-      var fullUrl = jsContextPath + "/liste/children/"+itemId;
+      var fullUrl = jsContextPath + '/liste/children/' + itemId;
       $.ajax({
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
-        complete: function(data){
+        complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
         },
-        error:function (xhr, ajaxOptions, thrownError){
+        error: function(xhr, ajaxOptions, thrownError) {
           callback(null);
         }
       });
     },
-    
-    
 
     getStructureTreeRootNodes: function(query, callback) {
-      var fullUrl = jsContextPath + "/struktur/root";
-      fullUrl += "?query="+query;
+      var fullUrl = jsContextPath + '/struktur/root';
+      fullUrl += '?query=' + query;
       $.ajax({
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
-        complete: function(data){
+        complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
         },
-        error:function (xhr, ajaxOptions, thrownError){
+        error: function(xhr, ajaxOptions, thrownError) {
         }
       });
     },
 
     getStructureTreeNodeDetails: function(itemId, query, callback) {
-      var fullUrl = jsContextPath + "/struktur/detail/"+itemId;
-      fullUrl += "?query="+query;
-      
+      var fullUrl = jsContextPath + '/struktur/detail/' + itemId;
+      fullUrl += '?query=' + query;
+
       var isAlready404 = false;
       $.ajax({
         type: 'GET',
         dataType: 'html',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
         complete: function(data){
           if(isAlready404){ // prevent redirects after 404 answer
@@ -198,25 +197,24 @@ $(function() {
         }
       });
     },
-    
+
     getStructureTreeNodeChildren: function(itemId, callback) {
-      var fullUrl = jsContextPath + "/struktur/children/"+itemId;
+      var fullUrl = jsContextPath + '/struktur/children/' + itemId;
       $.ajax({
         type: 'GET',
         dataType: 'json',
         async: true,
-        cache: false, 
+        cache: false,
         url: fullUrl,
-        complete: function(data){
+        complete: function(data) {
           var jsonResponse = jQuery.parseJSON(data.responseText);
           callback(jsonResponse);
         },
-        error:function (xhr, ajaxOptions, thrownError){
+        error: function(xhr, ajaxOptions, thrownError) {
           callback(null);
         }
       });
-    },
-    
-    
+    }
+
   });
 });

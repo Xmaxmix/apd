@@ -15,9 +15,7 @@
  */
 package de.ddb.apd
 
-import de.ddb.apd.StringManipulation;
-import de.ddb.apd.exception.ItemNotFoundException;
-import de.ddb.apd.hierarchy.Item;
+import de.ddb.apd.hierarchy.Item
 
 class DetailviewController {
 
@@ -59,14 +57,6 @@ class DetailviewController {
             def ddbUri = configurationService.getDDBUrl() + "/item/" + id
             def fields = translate(item.fields)
 
-            //                if(params.print){
-            //                    renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
-            //                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
-            //                        binaryList: binaryList, pageLabel: item.pageLabel,
-            //                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-            //                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation],
-            //                    filename: "Item-Detail.pdf")
-            //                }else{
             render(
                     view: "detailview",
                     model: ['itemUri': itemUri,
@@ -115,7 +105,7 @@ class DetailviewController {
 
         // Get the mainItem
         Item mainItem = rootItem.getItemFromHierarchy(id)
-        mainItem.setMainItem(true);
+        mainItem.setMainItem(true)
 
         Item institutionRootItem = new Item(['id': institution.id, 'label': institution.name, 'aggregationEntity': true])
 

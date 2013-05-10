@@ -1,10 +1,10 @@
 <html>
   <head>
     <title><g:message code="apd.Object"/> - <g:message code="apd.ArchivportalD"/></title>
-    
+
     <meta name="page" content="objectview" />
     <meta name="layout" content="main" />
-    
+
   </head>
   <body>
     <div class="row">
@@ -45,6 +45,8 @@
         </div>
       </div>
       <div class="span8">
+        <g:render template="pagination" />
+        <g:render template="navigation" />
         <div class="list-container">
         </div>
       </div>

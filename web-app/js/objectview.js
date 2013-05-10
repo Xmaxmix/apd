@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function () {
-  if(jsPageName == "objectview") {
-    
+$(function() {
+  if (jsPageName == 'objectview') {
+
     if ($('.search-widget-container').length > 0) {
       var searchWidgetContainer = $('#search-widget');
-      searchWidget = new SearchWidget($('#search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
+      searchWidget = new SearchWidget($('#search-widget-form'), searchWidgetContainer,
+        searchWidgetContainer.find('.controls-container'));
     }
-    
-    
+
+    var objectDetailWrapper = new ObjectDetailWrapper();
+    objectDetailWrapper.initializePagination();
+
     var objectTreeWrapper = new ObjectTreeWrapper();
-    
     objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
     objectTreeWrapper.loadInitialTreeNodes('#institution-tree');
     objectTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.list-container');
-
-    
 
   }
 });

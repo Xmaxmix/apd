@@ -15,9 +15,9 @@
  */
 package de.ddb.apd
 
-import groovyx.net.http.ContentType;
+import groovyx.net.http.ContentType
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse
 
 class StructureviewController {
 
@@ -29,14 +29,13 @@ class StructureviewController {
         def query = params.query
 
         render (view: 'structureview',  model: [:])
-
     }
 
     def getTreeRootItems() {
         def query = params.query
         def searchResult = institutionService.searchArchivesForStructure(query)
 
-        render (contentType: ContentType.JSON.toString()) {searchResult}
+        render (contentType: ContentType.JSON.toString()) { searchResult}
     }
 
     def getTreeNodeDetails() {
@@ -47,34 +46,34 @@ class StructureviewController {
 
         //def foundInstitution = institutionService.findInstitutionForId(id)
 
-        def itemId = id;
-        def vApiInstitution = new ApiInstitution();
-        log.debug("read insitution by item id: ${id}");
-        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
+        def itemId = id
+        def vApiInstitution = new ApiInstitution()
+        log.debug("read insitution by item id: ${id}")
+        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
 
         if (selectedOrgXML) {
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
-            log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
+            log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}")
             if (jsonOrgParentHierarchy.size() == 1) {
                 if (jsonOrgParentHierarchy[0].id != id) {
-                    log.error("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}");
+                    log.error("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}")
                     forward controller: 'error', action: "ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}"
                 }
             }
             else if (jsonOrgParentHierarchy.size() > 1) {
-                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
+                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
             }
-            log.debug("root itemId = ${itemId}");
+            log.debug("root itemId = ${itemId}")
             def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
             log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
             def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
-            int countObjectsForProv = 0;
+            int countObjectsForProv = 0
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
                     countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
                 }
                 catch (NumberFormatException ex) {
-                    countObjectsForProv = -1;
+                    countObjectsForProv = -1
                 }
             }
             render(
@@ -101,10 +100,10 @@ class StructureviewController {
     }
 
     def ajaxDetails() {
-        def id = params.id;
-        def itemId = id;
-        def vApiInstitution = new ApiInstitution();
-        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
+        def id = params.id
+        def itemId = id
+        def vApiInstitution = new ApiInstitution()
+        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
         if (selectedOrgXML) {
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
             if (jsonOrgParentHierarchy.size() == 1) {
@@ -113,17 +112,17 @@ class StructureviewController {
                 }
             }
             else if (jsonOrgParentHierarchy.size() > 1) {
-                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
+                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
             }
             def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
             def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
-            int countObjectsForProv = 0;
+            int countObjectsForProv = 0
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
                     countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
                 }
                 catch (NumberFormatException ex) {
-                    countObjectsForProv = -1;
+                    countObjectsForProv = -1
                 }
             }
             render(template: "ajaxDetails", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])

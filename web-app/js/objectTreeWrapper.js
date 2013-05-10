@@ -15,20 +15,21 @@
  */
 
 $(function() {
-  
-  ObjectTreeWrapper = function(){
+
+  ObjectTreeWrapper = function() {
     this.init();
-  }
+  };
 
   $.extend(ObjectTreeWrapper.prototype, {
 
+	  objectDetailWrapper: new ObjectDetailWrapper(),
+	  
     init: function() {
     },
 
     buildInitialTree: function(treeDiv, detailView) {
-      
       _canLog = false;
-      
+
       // Initialize tree
       var $self = this;
       $(treeDiv).dynatree({
@@ -36,25 +37,26 @@ $(function() {
           if(!node.bExpanded){
             $self.openTreeNode(node.data.key, treeDiv, 2);
           }
-          $self.showNodeDetails(node.data.key, treeDiv, detailView);
+          //$self.showNodeDetails(node.data.key, detailView, node.data.numberOfItems);
+          $self.showNodeDetails(node.data.key, detailView, detailView);
         },
         onExpand: function(expand, node) {
-        },
-
+        }
       });
-      
+
     },
-    
+
     openTreeNode: function(institutionId, treeDiv, recursionDepth) {
+
       var $self = this;
       recursionDepth = recursionDepth - 1;
 
-      var query = this.getUrlParam("query");
-      if(query == ""){
-        query = "*"
+      var query = this.getUrlParam('query');
+      if (query === '') {
+        query = '*';
       }
-      
-      if(institutionId != "rootnode"){
+
+      if (institutionId != 'rootnode') {
         var institutionsApiWrapper = new InstitutionsApiWrapper();
         institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
 
@@ -64,7 +66,7 @@ $(function() {
   
               var nodeTitle = "<div class='dynatree-apd-title'>" + data[i].label + " (?)</div>";
               //var nodeTitle = data[i].label;
-              
+
               childNodes.push(
                 {title: nodeTitle, 
                   key: data[i].id, 
@@ -91,8 +93,7 @@ $(function() {
                 $self.openTreeNode(data[i].id, treeDiv, recursionDepth);
               }
             }
-            
-            
+
           }else{
             // No response data from backend
           }
@@ -100,55 +101,110 @@ $(function() {
       }
     },
 
-    showNodeDetails: function(institutionId, treeDiv, detailView) {
+//    buildNextPageUri: function(pagesize) {
+//      var query = $.getQuery(window.location.href);
+//      query.offset = parseInt(query.offset, 10) + parseInt(pagesize, 10);
+//      return location.host + location.pathname + '?' + $.param(query);
+//    },
+//
+//    buildLastPageUri: function(totalResult, pagesize) {
+//      var pageSize = parseInt(pagesize, 10);
+//      // #page = Math.ceil(#results / pagesize)
+//      var totalPage = Math.ceil(totalResult / pageSize);
+//
+//      var query = $.getQuery(window.location.href);
+//
+//      // offset = (#page - 1) * pagesize
+//      query.offset = (totalPage - 1) * pageSize;
+//      return location.host + location.pathname + '?' + $.param(query);
+//    },
 
+    showNodeDetails: function(institutionId, treeDiv, detailView) {
+    	$self = this;
+    	
+        console.log('id', institutionId);
+        console.log('treeDiv', treeDiv);
+        console.log('detail view', detailView);
+        //console.log('number of items', numberOfItems);
       var institutionsApiWrapper = new InstitutionsApiWrapper();
-      
-      var query = this.getUrlParam("query");
-      if(query == ""){
-        query = "*"
+
+      var query = this.getUrlParam('query');
+      if (query === '') {
+        query = '*';
       }
-      var offset = this.getUrlParam("offset");
-      if(offset == ""){
-        offset = "0"
+      var offset = this.getUrlParam('offset');
+      if (offset === '') {
+        offset = '0';
       }
-      var pagesize = this.getUrlParam("pagesize");
-      if(pagesize == ""){
-        pagesize = "20"
+      var pagesize = this.getUrlParam('pagesize');
+      if (pagesize === '') {
+        pagesize = '20';
+      }
+
+      var sortBy = this.getUrlParam('sort');
+      if (sortBy === '') {
+        sortBy = 'RELEVANCE';
       }
       
       if(institutionId != "rootnode"){
         var History = window.History;
-        var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId;
-        History.pushState("", document.title, decodeURI(urlParameters));
+        var urlParameters = '?query=' + query +
+                            '&offset=' + offset +
+                            '&pagesize=' + pagesize +
+                            '&sort=' + sortBy +
+                            '&id=' + institutionId;
+        History.pushState('', document.title, decodeURI(urlParameters));
       }
-      
+
       var id = this.getUrlParam("id");
       if(id != "" && id != "rootnode"){
         institutionId = id;
       }
-      
-      
-      institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
+
+      var that = this;
+
+      institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
         $(detailView).empty();
         $(detailView).append(data);
+        
+        $self.objectDetailWrapper.nodeDetailsLoaded();
+        // We change the total number of result to itemSize
+        //$('#results-total').text(numberOfItems);
+//        $('.results-overall-index').text('1 - ' + pagesize);
+//
+//        var totalPage = Math.ceil(numberOfItems / pagesize);
+//        if(totalPage) {
+//          $('.total-pages').text(totalPage);
+//        }
+//
+//        // we change the hrefs in the folllowing links: first, prev, next and last
+//        var nextPageUri = that.buildNextPageUri(pagesize);
+//        var lastPageUri = that.buildLastPageUri(numberOfItems, pagesize);
+//
+//        $('li.next-page').find('a.page-nav-result').attr('href', nextPageUri);
+//        $('li.last-page').find('a.page-nav-result').attr('href', lastPageUri);
 
         var History = window.History;
-        var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId;
-        History.pushState("", document.title, decodeURI(urlParameters));
-        
+        var urlParameters = '?query=' + query +
+                    '&offset=' + offset +
+                    '&pagesize=' + pagesize +
+                    '&sort=' + sortBy +
+                    '&id=' + institutionId;
+        History.pushState('', document.title, decodeURI(urlParameters));
+
       });
     },
-    
+
     loadInitialTreeNodes: function(treeDiv) {
+
       var $self = this;
-      
       var query = this.getUrlParam("query");
-      if(query == ""){
+      if(query === ""){
         query = "*"
       }
 
       var institutionsApiWrapper = new InstitutionsApiWrapper();
+
       institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
         
         if(data){
@@ -171,8 +227,8 @@ $(function() {
             if(data.institutions[i].id){
               $self.openTreeNode(data.institutions[i].id, treeDiv, 1);
             }
-          }          
-          
+          }
+
           var nodeTitle = "<div class='dynatree-apd-title'>" + data.count+" Objekte" + "</div>";
           var root = [{ title: nodeTitle, 
                         key: "rootnode", 
@@ -189,10 +245,10 @@ $(function() {
         }else{
           //No data from backend
         }
-        
+
       });
     },
-    
+
     getUrlParam: function(name){
       name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
       var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -203,8 +259,8 @@ $(function() {
       }else{
         return decodeURIComponent(results[1].replace(/\+/g, " "));
       }
-    },
-    
+    }
+
   });
-  
+
 });

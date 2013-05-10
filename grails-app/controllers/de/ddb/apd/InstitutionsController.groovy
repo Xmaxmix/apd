@@ -33,7 +33,7 @@ class InstitutionsController {
         response.setHeader("Cache-Control", "no-cache")
         render (contentType: ContentType.JSON.toString()) { builder }
     }
-
+    
     //    def getAjaxListArchiveFull() {
     //        def hash = params.hashId
     //        def allInstitutions = institutionService.findAll()
@@ -112,7 +112,5 @@ class InstitutionsController {
     //
     //        render (contentType: ContentType.JSON.toString()) { resultList }
     //
-    //    }
-
-
+    //    }   
 }

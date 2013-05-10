@@ -16,7 +16,7 @@ package de.ddb.apd
  */
 
 
-import de.ddb.apd.institutions.InstitutionsCache;
+import de.ddb.apd.institutions.InstitutionsCache
 import groovyx.net.http.HTTPBuilder
 import net.sf.json.JSONObject
 
@@ -52,26 +52,6 @@ class InstitutionService {
             def firstChar = it?.name[0]?.toUpperCase()
             it.firstChar = firstChar
 
-            //                def firstChar = it?.name[0]?.toUpperCase()
-            //                it.firstChar = firstChar
-            //
-            //                /*
-            //                 * mark an institution as the first one that start with the
-            //                 * character. We will use it for assigning the id in the HTML.
-            //                 * See: views/institutions/_listItem.gsp
-            //                 * */
-            //                if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
-            //                    it.isFirst = true
-            //                }
-            //
-            //                it.sectorLabelKey = 'apd.' + it.sector
-            //                buildChildren(it, totalInstitution)
-            //                institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
-            /*
-             * mark an institution as the first one that start with the
-             * character. We will use it for assigning the id in the HTML.
-             * See: views/institutions/_listItem.gsp
-             * */
             if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
                 it.isFirst = true
             }
@@ -163,7 +143,6 @@ class InstitutionService {
         resultObject["institutions"] = resultList
 
         return resultObject
-
     }
     
     def searchArchivesForStructure(String query) {
@@ -197,22 +176,24 @@ class InstitutionService {
 
     }
 
-    def searchArchive(String query, String institutionId, String offset, String pagesize) {
-        // http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?
-        // query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01&provider_fct=Landesarchiv+Baden-W%C3%BCrttemberg
-
-        if(!offset){
+    def searchArchive(query, institutionId, offset, pagesize, sort) {
+        if(!offset) {
             offset = "0"
         }
-        if(!pagesize){
+
+        if(!pagesize) {
             pagesize = "20"
+        }
+
+        if(!sort) {
+            sort = 'RELEVANCE'
         }
 
         def allInstitutions = findAll()
 
         def institutionName = ""
         for(int i=0; i<allInstitutions.size(); i++){
-            if(allInstitutions[i].id == institutionId){
+            if(allInstitutions[i].id == institutionId) {
                 institutionName = allInstitutions[i].name
                 break
             }
@@ -232,6 +213,7 @@ class InstitutionService {
         }
         parameters["offset"] = offset
         parameters["rows"] = pagesize
+        parameters["sort"] = sort
         def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
 
         if(!searchWrapper.isOk()){
@@ -240,27 +222,6 @@ class InstitutionService {
 
         return searchWrapper.getResponse()?.results[0]?.docs
     }
-
-    //    def findInstitutionForId(String id){
-    //        def fullInstitutionsList = this.findAll()
-    //        return findInstitutionForIdRecursion(id, fullInstitutionsList)
-    //    }
-    //
-    //    private def findInstitutionForIdRecursion(String id, List institutions){
-    //        for(int i=0; i<institutions.size(); i++){
-    //            if(institutions[i].id == id){
-    //                return institutions[i]
-    //            }
-    //            if(institutions[i].children){
-    //                def foundInstitution = findInstitutionForIdRecursion(id, institutions[i].children)
-    //                if(foundInstitution) {
-    //                    return foundInstitution
-    //                }
-    //            }
-    //        }
-    //        return null
-    //    }
-
 
     private getTotal(rootList) {
         def total = rootList.size()
@@ -349,36 +310,31 @@ class InstitutionService {
      */
     private def getTechtonicFirstLvlHierarchyChildren(id){
         def JSONObject hierarchy = [:]
-        def children=getInstitutionChildren(id);
+        def children=getInstitutionChildren(id)
         //TODO throw exception if response if not JSON
         assert children instanceof JSONObject
-        def objectResults = children.results.docs[0];
+        def objectResults = children.results.docs[0]
         if(!hierarchy.children){
             hierarchy.children = []
         }
 
         if (objectResults.size()>0){
-            log.info "Object Results has something ";
-            def parentList = itemService.getParent(objectResults[0].id)
-            if(parentList && parentList.size() > 0){
-                def parent = itemService.getParent(objectResults[0].id).last()
-                if(!parent?.parent || parent?.parent == "null"){
-                    parent.parent = "<<null>>"
-                }
-                if(!parent?.type || parent?.type == "null"){
-                    parent.type = "<<null>>"
-                }
-                if(!parent?.institution || parent?.institution == "null"){
-                    parent.instutition = false
-                }
-                if(!hierarchy.children){
-                    hierarchy.children = []
-                }
-                hierarchy.children.addAll(parent);
+            log.info "Object Results has something "
+            def parent =itemService.getParent(objectResults[0].id).last()
+            if(!parent?.parent || parent?.parent == "null"){
+                parent.parent = "<<null>>"
             }
+            if(!parent?.type || parent?.type == "null"){
+                parent.type = "<<null>>"
+            }
+            log.info parent
+            if(!hierarchy.children){
+                hierarchy.children = []
+            }
+            hierarchy.children.addAll(parent)
         }
         hierarchy.id = id
-        hierarchy.children.addAll(getChildren(id).getAt("children"));
+        hierarchy.children.addAll(getChildren(id).getAt("children"))
 
         return hierarchy
     }
@@ -403,7 +359,6 @@ class InstitutionService {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), searchPath,query)
         if(!apiResponse.isOk()){
             log.error "institutionService.getInstitutionChildren(): Server returned no parents -> " + id
-
         }
         return apiResponse.getResponse()
     }

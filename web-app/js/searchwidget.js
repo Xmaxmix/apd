@@ -1,16 +1,16 @@
 //Search widget
 SearchWidget = function(form, widget, controls) {
   this.init(form, widget, controls);
-}
+};
 
 $.extend(SearchWidget.prototype, {
 
-  connectedForm : null,
-  connectedControlsContainer : null,
-  connectedWidgetContainer : null,
-  selectedValues : new Array(),
+  connectedForm: null,
+  connectedControlsContainer: null,
+  connectedWidgetContainer: null,
+  selectedValues: [],
 
-  init : function(form, widget, controls) {
+  init: function(form, widget, controls) {
     var currObjInstance = this;
     this.connectedForm = form;
     this.connectedWidgetContainer = widget;
@@ -19,11 +19,11 @@ $.extend(SearchWidget.prototype, {
 
     this.connectedControlsContainer.find('select').each(function() {
       $(this).change(function() {
-        if ($(this).val() == "default") {
-          $(this).addClass("empty");
+        if ($(this).val() == 'default') {
+          $(this).addClass('empty');
         }
         else {
-          $(this).removeClass("empty");
+          $(this).removeClass('empty');
         }
         var filterValue = $(this).find('option:selected').attr('value');
         var content = this.value;
@@ -35,16 +35,16 @@ $.extend(SearchWidget.prototype, {
     });
 
   },
-  renderSelection : function(filterValue, content) {
+  renderSelection: function(filterValue, content) {
 
     var currObjInstance = this;
 
     // Create hidden input
     var hiddenInput = $(document.createElement('input'));
     hiddenInput.attr('type', 'hidden');
-    hiddenInput.attr('name', 'filter')
+    hiddenInput.attr('name', 'filter');
     hiddenInput.attr('value', filterValue);
-    this.connectedForm.append(hiddenInput)
+    this.connectedForm.append(hiddenInput);
 
     // Create pillbox
     var li = $(document.createElement('li'));
