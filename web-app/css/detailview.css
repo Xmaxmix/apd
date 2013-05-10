@@ -51,3 +51,22 @@
 .detailview .binaries {
 }
 
+.detailview .sibling-navigation .sibling-previous {
+  display: inline-block;
+}
+.detailview .sibling-navigation .sibling-previous img {
+  margin-top: -7px;
+}
+  
+.detailview .sibling-navigation .sibling-current {
+  display: inline-block;
+}
+
+.detailview .sibling-navigation .sibling-next {
+  display: inline-block;
+}
+.detailview .sibling-navigation .sibling-next img {
+  margin-top: -7px;
+}
+
+

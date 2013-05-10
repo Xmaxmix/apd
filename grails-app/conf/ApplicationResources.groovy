@@ -72,6 +72,7 @@ modules = {
         resource url:'/js/index.js'
         resource url:'/js/structureview.js'
         resource url:'/js/objectview.js'
+        resource url:'/js/detailview.js'
         resource url:'/js/tooltip.js'
         resource url:'/js/advanced-search.js'
     }
