@@ -1,4 +1,7 @@
 <div class="sibling-navigation">
+  <div>
+    <g:message code="apd.Sibling_Navigation"/>    
+  </div>
 
   <div class="sibling-previous">
     <g:if test="${siblingInformation.previous}">
