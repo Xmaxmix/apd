@@ -23,7 +23,8 @@ $(function() {
   $.extend(ObjectTreeWrapper.prototype, {
 
 	  objectDetailWrapper: new ObjectDetailWrapper(),
-	  
+    institutionsApiWrapper: new InstitutionsApiWrapper(),
+
     init: function() {
     },
 
@@ -37,7 +38,6 @@ $(function() {
           if(!node.bExpanded){
             $self.openTreeNode(node.data.key, treeDiv, 2);
           }
-          //$self.showNodeDetails(node.data.key, detailView, node.data.numberOfItems);
           $self.showNodeDetails(node.data.key, detailView, detailView);
         },
         onExpand: function(expand, node) {
@@ -55,24 +55,23 @@ $(function() {
       if (query === '') {
         query = '*';
       }
-
-      if (institutionId != 'rootnode') {
-        var institutionsApiWrapper = new InstitutionsApiWrapper();
-        institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
+      
+      if(institutionId != "rootnode"){
+        this.institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
 
           if(data){
             var childNodes = [];
             for(var i=0; i<data.length; i++) {
   
               var nodeTitle = "<div class='dynatree-apd-title'>" + data[i].label + " (?)</div>";
-              //var nodeTitle = data[i].label;
 
               childNodes.push(
                 {title: nodeTitle, 
                   key: data[i].id, 
                   isFolder: true, 
                   isLazy: true,
-                  children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}]}
+                  children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
+                  isInstitution: data[i].institution}
                 );
             }
             
@@ -84,7 +83,7 @@ $(function() {
             $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
             
             for(var i=0; i<data.length; i++) {
-              institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(response){
+              $self.institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(response){
                 var node = $(treeDiv).dynatree("getTree").getNodeByKey(response.id);
                 node.setTitle(node.data.title.replace("(?)", "("+response.count+")"));
               });
@@ -120,18 +119,18 @@ $(function() {
 //    },
 
     showNodeDetails: function(institutionId, treeDiv, detailView) {
-    	$self = this;
+    	var $self = this;
     	
-        console.log('id', institutionId);
-        console.log('treeDiv', treeDiv);
-        console.log('detail view', detailView);
-        //console.log('number of items', numberOfItems);
-      var institutionsApiWrapper = new InstitutionsApiWrapper();
+      console.log('id', institutionId);
+      console.log('treeDiv', treeDiv);
+      console.log('detail view', detailView);
+      //console.log('number of items', numberOfItems);
 
       var query = this.getUrlParam('query');
       if (query === '') {
         query = '*';
       }
+
       var offset = this.getUrlParam('offset');
       if (offset === '') {
         offset = '0';
@@ -146,13 +145,19 @@ $(function() {
         sortBy = 'RELEVANCE';
       }
       
+      var isInstitution = false;
+//      if($(treeDiv).dynatree("getTree").getNodeByKey(institutionId)){
+//        isInstitution = $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).data.isInstitution;
+//      }
+      
       if(institutionId != "rootnode"){
         var History = window.History;
         var urlParameters = '?query=' + query +
                             '&offset=' + offset +
                             '&pagesize=' + pagesize +
                             '&sort=' + sortBy +
-                            '&id=' + institutionId;
+                            '&id=' + institutionId + 
+                            '&isInstitution=' + isInstitution;
         History.pushState('', document.title, decodeURI(urlParameters));
       }
 
@@ -161,9 +166,7 @@ $(function() {
         institutionId = id;
       }
 
-      var that = this;
-
-      institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
+      this.institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
         $(detailView).empty();
         $(detailView).append(data);
         
@@ -189,9 +192,10 @@ $(function() {
                     '&offset=' + offset +
                     '&pagesize=' + pagesize +
                     '&sort=' + sortBy +
-                    '&id=' + institutionId;
+                    '&id=' + institutionId + 
+                    '&isInstitution=' + isInstitution;
         History.pushState('', document.title, decodeURI(urlParameters));
-
+        
       });
     },
 
@@ -203,9 +207,7 @@ $(function() {
         query = "*"
       }
 
-      var institutionsApiWrapper = new InstitutionsApiWrapper();
-
-      institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
+      this.institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
         
         if(data){
           var childNodes = [];
@@ -219,7 +221,8 @@ $(function() {
                 key: data.institutions[i].id, 
                 isFolder: true, 
                 isLazy: true, 
-                children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}] }
+                children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
+                isInstitution: data.institutions[i].institution}
               );
           }
           
@@ -234,7 +237,8 @@ $(function() {
                         key: "rootnode", 
                         isFolder: true, 
                         isLazy: true, 
-                        children: childNodes}
+                        children: childNodes,
+                        isInstitution: false}
                       ];
           
           $(treeDiv).dynatree("getRoot").addChild(root);

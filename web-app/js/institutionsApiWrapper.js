@@ -97,6 +97,7 @@ $(function() {
       fullUrl += '&pagesize=' + pagesize;
       fullUrl += '&sort=' + sortBy;
       var isAlready404 = false;
+
       $.ajax({
         type: 'GET',
         dataType: 'html',
@@ -173,10 +174,9 @@ $(function() {
       });
     },
 
-    getStructureTreeNodeDetails: function(itemId, query, callback) {
-      var fullUrl = jsContextPath + '/struktur/detail/' + itemId;
-      fullUrl += '?query=' + query;
-
+    getStructureTreeNodeDetails: function(itemId, query, isInstitution, callback) {
+      var fullUrl = jsContextPath + "/struktur/detail/"+itemId;
+      fullUrl = fullUrl + "?query="+query+"&isInstitution="+isInstitution;
       var isAlready404 = false;
       $.ajax({
         type: 'GET',

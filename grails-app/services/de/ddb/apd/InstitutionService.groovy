@@ -135,7 +135,7 @@ class InstitutionService {
 
         def resultList = []
         foundProviders.each {
-            resultList.add(["id": it.id, "name": it.value, "count": it.count])
+            resultList.add(["id": it.id, "name": it.value, "count": it.count, "institution": true])
         }
 
         def resultObject = [:]
@@ -144,7 +144,7 @@ class InstitutionService {
 
         return resultObject
     }
-    
+
     def searchArchivesForStructure(String query) {
         //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
         def backendUrl = configurationService.getBackendUrl()
@@ -162,10 +162,10 @@ class InstitutionService {
         def searchResponse = searchWrapper.getResponse()
 
         // Getting ID for institutions
-        println searchResponse.get(0)
+        //println searchResponse.get(0)
         def resultList = []
         searchResponse.each {
-            resultList.add(["id": it.id, "name": it.name, "count": 0])
+            resultList.add(["id": it.id, "name": it.name, "count": 0, "institution": true])
         }
 
         def resultObject = [:]
@@ -319,19 +319,23 @@ class InstitutionService {
         }
 
         if (objectResults.size()>0){
-            log.info "Object Results has something "
-            def parent =itemService.getParent(objectResults[0].id).last()
-            if(!parent?.parent || parent?.parent == "null"){
-                parent.parent = "<<null>>"
+            def parentList = itemService.getParent(objectResults[0].id)
+            if(parentList && parentList.size() > 0){
+                def parent = itemService.getParent(objectResults[0].id).last()
+                if(!parent?.parent || parent?.parent == "null"){
+                    parent.parent = "<<null>>"
+                }
+                if(!parent?.type || parent?.type == "null"){
+                    parent.type = "<<null>>"
+                }
+                if(!parent?.institution || parent?.institution == "null"){
+                    parent.institution = false
+                }
+                if(!hierarchy.children){
+                    hierarchy.children = []
+                }
+                hierarchy.children.addAll(parent);
             }
-            if(!parent?.type || parent?.type == "null"){
-                parent.type = "<<null>>"
-            }
-            log.info parent
-            if(!hierarchy.children){
-                hierarchy.children = []
-            }
-            hierarchy.children.addAll(parent)
         }
         hierarchy.id = id
         hierarchy.children.addAll(getChildren(id).getAt("children"))
@@ -344,7 +348,7 @@ class InstitutionService {
         def children = itemService.getChildren(id)
         HashMap jsonMap = new HashMap()
         jsonMap.children = children.collect {child ->
-            return ["id": child.id, label: child.label, parent:child.parent, leaf: child.leaf, aggregationEntity:child.aggregationEntity,institute:false]
+            return ["id": child.id, label: child.label, parent:child.parent, leaf: child.leaf, aggregationEntity:child.aggregationEntity,institution:false]
 
         }
         return jsonMap

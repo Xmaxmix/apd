@@ -41,6 +41,7 @@ class StructureviewController {
     def getTreeNodeDetails() {
         def id = params.id
         def query = params.query
+        def isInstitution = params.isInstitution
 
         //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
 
