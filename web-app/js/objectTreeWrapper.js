@@ -22,6 +22,8 @@ $(function() {
 
   $.extend(ObjectTreeWrapper.prototype, {
 
+    institutionsApiWrapper: new InstitutionsApiWrapper(),
+
     init: function() {
     },
 
@@ -55,22 +57,21 @@ $(function() {
       }
       
       if(institutionId != "rootnode"){
-        var institutionsApiWrapper = new InstitutionsApiWrapper();
-        institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
+        this.institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
 
           if(data){
             var childNodes = [];
             for(var i=0; i<data.length; i++) {
   
               var nodeTitle = "<div class='dynatree-apd-title'>" + data[i].label + " (?)</div>";
-              //var nodeTitle = data[i].label;
               
               childNodes.push(
                 {title: nodeTitle, 
                   key: data[i].id, 
                   isFolder: true, 
                   isLazy: true,
-                  children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}]}
+                  children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
+                  isInstitution: data[i].institution}
                 );
             }
             
@@ -82,7 +83,7 @@ $(function() {
             $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).addChild(childNodes);
             
             for(var i=0; i<data.length; i++) {
-              institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(response){
+              $self.institutionsApiWrapper.getObjectTreeNodeObjectCount(data[i].id, data[i].label, query, function(response){
                 var node = $(treeDiv).dynatree("getTree").getNodeByKey(response.id);
                 node.setTitle(node.data.title.replace("(?)", "("+response.count+")"));
               });
@@ -102,7 +103,7 @@ $(function() {
 
     showNodeDetails: function(institutionId, treeDiv, detailView) {
 
-      var institutionsApiWrapper = new InstitutionsApiWrapper();
+      var isInstitution = $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).data.isInstitution;
       
       var query = this.getUrlParam("query");
       if(query == ""){
@@ -119,7 +120,7 @@ $(function() {
       
       if(institutionId != "rootnode"){
         var History = window.History;
-        var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId;
+        var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId+"&isInstitution="+isInstitution;
         History.pushState("", document.title, decodeURI(urlParameters));
       }
       
@@ -129,12 +130,12 @@ $(function() {
       }
       
       
-      institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
+      this.institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, function(data) {
         $(detailView).empty();
         $(detailView).append(data);
 
         var History = window.History;
-        var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId;
+        var urlParameters = "?query="+query+"&offset="+offset+"&pagesize="+pagesize+"&id="+institutionId+"&isInstitution="+isInstitution;
         History.pushState("", document.title, decodeURI(urlParameters));
         
       });
@@ -148,8 +149,7 @@ $(function() {
         query = "*"
       }
 
-      var institutionsApiWrapper = new InstitutionsApiWrapper();
-      institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
+      this.institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
         
         if(data){
           var childNodes = [];
@@ -163,7 +163,8 @@ $(function() {
                 key: data.institutions[i].id, 
                 isFolder: true, 
                 isLazy: true, 
-                children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}] }
+                children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
+                isInstitution: data.institutions[i].institution}
               );
           }
           
@@ -178,7 +179,8 @@ $(function() {
                         key: "rootnode", 
                         isFolder: true, 
                         isLazy: true, 
-                        children: childNodes}
+                        children: childNodes,
+                        isInstitution: false}
                       ];
           
           $(treeDiv).dynatree("getRoot").addChild(root);

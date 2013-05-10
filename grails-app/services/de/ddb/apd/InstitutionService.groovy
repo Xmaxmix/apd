@@ -155,7 +155,7 @@ class InstitutionService {
 
         def resultList = []
         foundProviders.each {
-            resultList.add(["id": it.id, "name": it.value, "count": it.count])
+            resultList.add(["id": it.id, "name": it.value, "count": it.count, "institution": true])
         }
 
         def resultObject = [:]
@@ -165,7 +165,7 @@ class InstitutionService {
         return resultObject
 
     }
-    
+
     def searchArchivesForStructure(String query) {
         //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
         def backendUrl = configurationService.getBackendUrl()
@@ -183,10 +183,10 @@ class InstitutionService {
         def searchResponse = searchWrapper.getResponse()
 
         // Getting ID for institutions
-        println searchResponse.get(0)
+        //println searchResponse.get(0)
         def resultList = []
         searchResponse.each {
-            resultList.add(["id": it.id, "name": it.name, "count": 0])
+            resultList.add(["id": it.id, "name": it.name, "count": 0, "institution": true])
         }
 
         def resultObject = [:]
@@ -369,7 +369,7 @@ class InstitutionService {
                     parent.type = "<<null>>"
                 }
                 if(!parent?.institution || parent?.institution == "null"){
-                    parent.instutition = false
+                    parent.institution = false
                 }
                 if(!hierarchy.children){
                     hierarchy.children = []
@@ -388,7 +388,7 @@ class InstitutionService {
         def children = itemService.getChildren(id)
         HashMap jsonMap = new HashMap()
         jsonMap.children = children.collect {child ->
-            return ["id": child.id, label: child.label, parent:child.parent, leaf: child.leaf, aggregationEntity:child.aggregationEntity,institute:false]
+            return ["id": child.id, label: child.label, parent:child.parent, leaf: child.leaf, aggregationEntity:child.aggregationEntity,institution:false]
 
         }
         return jsonMap

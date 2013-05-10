@@ -29,7 +29,6 @@ class StructureviewController {
         def query = params.query
 
         render (view: 'structureview',  model: [:])
-
     }
 
     def getTreeRootItems() {
@@ -42,6 +41,7 @@ class StructureviewController {
     def getTreeNodeDetails() {
         def id = params.id
         def query = params.query
+        def isInstitution = params.isInstitution
 
         //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
 

@@ -174,10 +174,9 @@ $(function() {
       });
     },
 
-    getStructureTreeNodeDetails: function(itemId, query, callback) {
+    getStructureTreeNodeDetails: function(itemId, query, isInstitution, callback) {
       var fullUrl = jsContextPath + "/struktur/detail/"+itemId;
-      fullUrl += "?query="+query;
-      
+      fullUrl = fullUrl + "?query="+query+"&isInstitution="+isInstitution;
       var isAlready404 = false;
       $.ajax({
         type: 'GET',

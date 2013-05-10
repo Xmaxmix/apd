@@ -21,14 +21,12 @@ $(document).ready(function () {
       searchWidget = new SearchWidget($('#search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
     }
     
-    
     var objectTreeWrapper = new ObjectTreeWrapper();
     
     objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
     objectTreeWrapper.loadInitialTreeNodes('#institution-tree');
     objectTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.list-container');
-
     
-
+    
   }
 });
