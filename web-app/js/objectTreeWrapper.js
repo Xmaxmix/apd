@@ -22,7 +22,7 @@ $(function() {
 
   $.extend(ObjectTreeWrapper.prototype, {
 
-	  objectDetailWrapper: new ObjectDetailWrapper(),
+    objectDetailWrapper: new ObjectDetailWrapper(),
     institutionsApiWrapper: new InstitutionsApiWrapper(),
 
     init: function() {
@@ -99,24 +99,6 @@ $(function() {
         });
       }
     },
-
-//    buildNextPageUri: function(pagesize) {
-//      var query = $.getQuery(window.location.href);
-//      query.offset = parseInt(query.offset, 10) + parseInt(pagesize, 10);
-//      return location.host + location.pathname + '?' + $.param(query);
-//    },
-//
-//    buildLastPageUri: function(totalResult, pagesize) {
-//      var pageSize = parseInt(pagesize, 10);
-//      // #page = Math.ceil(#results / pagesize)
-//      var totalPage = Math.ceil(totalResult / pageSize);
-//
-//      var query = $.getQuery(window.location.href);
-//
-//      // offset = (#page - 1) * pagesize
-//      query.offset = (totalPage - 1) * pageSize;
-//      return location.host + location.pathname + '?' + $.param(query);
-//    },
 
     showNodeDetails: function(institutionId, treeDiv, detailView) {
     	var $self = this;

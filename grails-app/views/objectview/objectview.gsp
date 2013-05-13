@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="row">
-      <div class="span12 search-widget-container border">
+      <div class="span12 search-widget-container">
         <g:form id="home-search-form" url="[controller:'liste', action:'']"
           class="form-search" method="GET">
           <div class="input-append">
