@@ -86,6 +86,11 @@ class UrlMappings {
             action="getSecondLevelNodes"
         }
 
+        "/liste/getinstitutionparent/$id" {
+            controller="objectview"
+            action="getTopParentInstitution"
+        }
+
         "/institutions/$action/$hashId?" {
             controller="institutions"
             action="getAjaxListFull"
