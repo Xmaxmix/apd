@@ -9,6 +9,9 @@
   <body>
     <div class="container detailview">
       <div class="row">
+        <div class="span12 navigation-search">
+          <g:render template="navigationSearch" />
+        </div>
         <div class="span6 hierarchy">
           <div class="hierarchy-container">
             <g:set var="hierarchyItem" value="${hierarchyRoot}" />

@@ -220,7 +220,8 @@ class InstitutionService {
             log.error "searchArchive(): search returned an error"
         }
 
-        return searchWrapper.getResponse()?.results[0]?.docs
+        //return searchWrapper.getResponse()?.results[0]?.docs
+        return searchWrapper.getResponse()
     }
 
     private getTotal(rootList) {

@@ -82,4 +82,8 @@ class HtmlParser {
         def metaTagContent = htmlParser."**".find{it.name() == 'meta' && it.@name == metaTagName}.@content
         return metaTagContent
     }
+
+    def getTextWithoutTags(){
+        return htmlParser.text()
+    }
 }
