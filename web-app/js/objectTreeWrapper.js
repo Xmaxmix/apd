@@ -38,7 +38,7 @@ $(function() {
           if(!node.bExpanded){
             $self.openTreeNode(node.data.key, treeDiv, 2);
           }
-          $self.showNodeDetails(node.data.key, detailView, detailView);
+          $self.objectDetailWrapper.showNodeDetails(node.data.key, detailView, detailView, node.data.numberOfItems);
         },
         onExpand: function(expand, node) {
         }
@@ -100,87 +100,6 @@ $(function() {
       }
     },
 
-    showNodeDetails: function(institutionId, treeDiv, detailView) {
-    	var $self = this;
-    	
-      console.log('id', institutionId);
-      console.log('treeDiv', treeDiv);
-      console.log('detail view', detailView);
-      //console.log('number of items', numberOfItems);
-
-      var query = this.getUrlParam('query');
-      if (query === '') {
-        query = '*';
-      }
-
-      var offset = this.getUrlParam('offset');
-      if (offset === '') {
-        offset = '0';
-      }
-      var pagesize = this.getUrlParam('pagesize');
-      if (pagesize === '') {
-        pagesize = '20';
-      }
-
-      var sortBy = this.getUrlParam('sort');
-      if (sortBy === '') {
-        sortBy = 'RELEVANCE';
-      }
-      
-      var isInstitution = false;
-//      if($(treeDiv).dynatree("getTree").getNodeByKey(institutionId)){
-//        isInstitution = $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).data.isInstitution;
-//      }
-      
-      if(institutionId != "rootnode"){
-        var History = window.History;
-        var urlParameters = '?query=' + query +
-                            '&offset=' + offset +
-                            '&pagesize=' + pagesize +
-                            '&sort=' + sortBy +
-                            '&id=' + institutionId + 
-                            '&isInstitution=' + isInstitution;
-        History.pushState('', document.title, decodeURI(urlParameters));
-      }
-
-      var id = this.getUrlParam("id");
-      if(id != "" && id != "rootnode"){
-        institutionId = id;
-      }
-
-      this.institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
-        $(detailView).empty();
-        $(detailView).append(data);
-        
-        $self.objectDetailWrapper.nodeDetailsLoaded();
-        // We change the total number of result to itemSize
-        //$('#results-total').text(numberOfItems);
-//        $('.results-overall-index').text('1 - ' + pagesize);
-//
-//        var totalPage = Math.ceil(numberOfItems / pagesize);
-//        if(totalPage) {
-//          $('.total-pages').text(totalPage);
-//        }
-//
-//        // we change the hrefs in the folllowing links: first, prev, next and last
-//        var nextPageUri = that.buildNextPageUri(pagesize);
-//        var lastPageUri = that.buildLastPageUri(numberOfItems, pagesize);
-//
-//        $('li.next-page').find('a.page-nav-result').attr('href', nextPageUri);
-//        $('li.last-page').find('a.page-nav-result').attr('href', lastPageUri);
-
-        var History = window.History;
-        var urlParameters = '?query=' + query +
-                    '&offset=' + offset +
-                    '&pagesize=' + pagesize +
-                    '&sort=' + sortBy +
-                    '&id=' + institutionId + 
-                    '&isInstitution=' + isInstitution;
-        History.pushState('', document.title, decodeURI(urlParameters));
-        
-      });
-    },
-
     loadInitialTreeNodes: function(treeDiv) {
 
       var $self = this;
@@ -201,6 +120,7 @@ $(function() {
             childNodes.push(
               {title: nodeTitle, 
                 key: data.institutions[i].id, 
+                numberOfItems: data.institutions[i].count,
                 isFolder: true, 
                 isLazy: true, 
                 children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
