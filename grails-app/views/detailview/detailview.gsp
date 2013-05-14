@@ -8,18 +8,20 @@
   </head>
   <body>
     <div class="container detailview">
-      <div class="row">
+      <div class="row toprow" >
         <div class="span6 hierarchy">
           <div class="hierarchy-container">
             <g:set var="hierarchyItem" value="${hierarchyRoot}" />
             <g:render template="hierarchy" />
           </div>
         </div>
-        <div class="span4 navigation">
-          <g:render template="navigation" />
-        </div>
-        <div class="span2 logo">
-          <g:render template="logo" />
+        <div class="span6">
+          <div class="logo">
+            <g:render template="logo" />
+          </div>
+          <div class="navigation">
+            <g:render template="navigation" />
+          </div>
         </div>
       </div>
       <div class="row">

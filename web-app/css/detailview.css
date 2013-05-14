@@ -15,6 +15,11 @@
  */
 
 .detailview {
+  margin-top: 20px;
+}
+
+.detailview .toprow {
+  position: relative;
 }
 
 .detailview .hierarchy {
@@ -35,9 +40,11 @@
   line-height: 20px;
 }
 
+
 .detailview .navigation {
-  text-align: center;
-  padding-bottom: 30px;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
 }
 
 .detailview .logo {
@@ -50,4 +57,47 @@
 
 .detailview .binaries {
 }
+
+.detailview .sibling-navigation .nav-text {
+  height: 25px;
+  margin-left: 30px;
+}
+.detailview .sibling-navigation .sibling-previous {
+  display: inline-block;
+  height: 15px;
+}
+.detailview .sibling-navigation .nav-button {
+  width: 20px;
+  height: 20px;
+}
+.detailview .sibling-navigation .left-active {
+  background: url(../images/icons/navigations.png) no-repeat 0px 0px;
+}
+.detailview .sibling-navigation .left-inactive {
+  background: url(../images/icons/navigations.png) no-repeat 0px -30px;
+}
+.detailview .sibling-navigation .right-active {
+  background: url(../images/icons/navigations.png) no-repeat 0px -60px;
+}
+.detailview .sibling-navigation .right-inactive {
+  background: url(../images/icons/navigations.png) no-repeat 0px -90px;
+}
+
+.detailview .sibling-navigation .sibling-current {
+  display: inline-block;
+}
+
+.detailview .sibling-current form, .detailview .sibling-current p, .detailview .sibling-current select {
+  margin: 0px;
+}
+
+.detailview .sibling-navigation #siblings-dropdown {
+  width: 350px !important;
+}
+
+.detailview .sibling-navigation .sibling-next {
+  display: inline-block;
+  height: 15px;
+}
+
 

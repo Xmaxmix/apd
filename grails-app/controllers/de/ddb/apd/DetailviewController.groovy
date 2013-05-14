@@ -46,6 +46,8 @@ class DetailviewController {
             item.pageLabel= itemService.getItemTitle(id)
         }
 
+        def siblingInformation = getSiblingInformation(id, item.title)
+
         // TODO: handle 404 and failure separately. HTTP Status Code 404, should
         // to `not found` page _and_ Internal Error should go to `internal server
         // error` page. We should send also the HTTP Status Code 404 or 500 to the
@@ -76,7 +78,8 @@ class DetailviewController {
                         //'hitNumber': params["hitNumber"],
                         //'results': searchResultParameters["resultsItems"],
                         //'searchResultUri': searchResultParameters["searchResultUri"],
-                        'binaryInformation': binaryInformation]
+                        'binaryInformation': binaryInformation,
+                        'siblingInformation': siblingInformation]
                     )
         }
     }
@@ -114,6 +117,43 @@ class DetailviewController {
         institutionRootItem.children.add(rootItem)
 
         return emptyStartItem
+    }
+
+    def getSiblingInformation(id, name) {
+        def siblingInformation = [:]
+
+        def siblings = []
+        def parentList = itemService.getParent(id)
+        if(parentList.size() > 1){
+            def parentId = parentList.get(0).parent
+            def childList = itemService.getChildren(parentId)
+            siblings.addAll(childList)
+        }else if(parentList.size() == 1){
+            siblings.add(parentList.get(0))
+        }else{
+            siblings.add(['id': id, 'label': name])
+        }
+        siblingInformation["siblings"] = siblings
+
+        for(int i=0; i<siblings.size(); i++){
+            if(siblings[i].id == id){
+                if(i==0 && i==siblings.size()-1){
+                    siblingInformation["previous"] = null
+                    siblingInformation["next"] = null
+                }else if(i==0){
+                    siblingInformation["previous"] = null
+                    siblingInformation["next"] = siblings[i+1]
+                }else if(i==siblings.size()-1){
+                    siblingInformation["previous"] = siblings[i-1]
+                    siblingInformation["next"] = null
+                }else{
+                    siblingInformation["previous"] = siblings[i-1]
+                    siblingInformation["next"] = siblings[i+1]
+                }
+            }
+        }
+
+        return siblingInformation
     }
 
 }
