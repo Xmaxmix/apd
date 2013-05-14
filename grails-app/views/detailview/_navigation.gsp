@@ -1,14 +1,14 @@
 <div class="sibling-navigation">
-  <div>
+  <div class="nav-text">
     <g:message code="apd.Sibling_Navigation"/>    
   </div>
 
   <div class="sibling-previous">
     <g:if test="${siblingInformation.previous}">
-      <g:link url="${siblingInformation.previous.id}"><g:img dir="images/icons" file="nav-left-active.png"/></g:link>
+      <g:link url="${siblingInformation.previous.id}"><div class="nav-button left-active" ></div></g:link>
     </g:if>
     <g:else>
-      <g:img dir="images/icons" file="nav-left-inactive.png"/>
+      <div class="nav-button left-inactive" ></div>
     </g:else>
   </div>
 
@@ -31,10 +31,10 @@
 
   <div class="sibling-next">
     <g:if test="${siblingInformation.next}">
-      <g:link url="${siblingInformation.next.id}"><g:img dir="images/icons" file="nav-right-active.png"/></g:link>
+      <g:link url="${siblingInformation.next.id}"><div class="nav-button right-active" ></div></g:link>
     </g:if>
     <g:else>
-      <g:img dir="images/icons" file="nav-right-inactive.png"/>
+      <div class="nav-button right-inactive" ></div>
     </g:else>
   </div>
 
