@@ -132,41 +132,123 @@ $(function() {
       paginationModule.updateHistory(id, pageSize, sortBy, offset);
     });
 
-
-    // TODO: add click listener to a.page-nav-result
-    $('a.page-nav-result').click(function(event) {
-      event.preventDefault();
-
-      var queryString = $.parseQuery($(this).attr('href'));
-
-      var fullUrl = jsContextPath + '/liste/detail/' + queryString.id;
-      fullUrl += '?query=' + queryString.query;
-      fullUrl += '&offset=' + queryString.offset;
-      fullUrl += '&pagesize=' + queryString.pagesize;
-      fullUrl += '&sort=' + queryString.sort;
-      var isAlready404 = false;
-
-      $.ajax({
-        type: 'GET',
-        dataType: 'html',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          if (isAlready404) { // prevent redirects after 404 answer
-            ///callback(null);
-            return;
-          }
-          $('.list-container').empty();
-          console.log(data.responseText);
-//          $('.list-container').append(data.responseText);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          isAlready404 = true;
-//          callback(null);
-        }
-      });
+    
+    
+    
+    
+    //click listener for the elements with class page-nav-result
+    $('.page-nav-result').click(function(){
+      fetchResultsList(this.href);
+      return false;
     });
+
+    function fetchResultsList(url){
+
+//        var divSearchResultsOverlayModal = $(document.createElement('div'));
+//        divSearchResultsOverlayModal.addClass('search-results-overlay-modal');
+//        var divSearchResultsOverlayWaiting = $(document.createElement('div'));
+//        divSearchResultsOverlayWaiting.addClass('search-results-overlay-waiting');
+//        var divSearchResultsOverlayImg = $(document.createElement('div'));
+//        divSearchResultsOverlayImg.addClass('small-loader');
+//        divSearchResultsOverlayWaiting.append(divSearchResultsOverlayImg);
+//
+//        $('.search-results').append(divSearchResultsOverlayModal);
+//        $('.search-results').append(divSearchResultsOverlayWaiting);
+
+        var request = $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          async: true,
+          url: url+'&reqType=ajax',
+          complete: function(data){
+            $('.list-container').fadeOut('fast', function(){
+            var JSONresponse = jQuery.parseJSON(data.responseText);
+            if(JSONresponse.numberOfResults==0){
+                $('.search-noresults-content').removeClass("off");
+                $('.search-results-content').addClass("off");
+            }else{
+                $('.search-noresults-content').addClass("off");
+                $('.search-results-content').removeClass("off");
+            }
+            $('.list-container').html(JSONresponse.results);
+            $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
+            $('.pages-overall-index span span').html(JSONresponse.page);
+            $('.total-pages').html(JSONresponse.totalPages);
+        //    $('.result-pages-count').html(JSONresponse.totalPages);
+            $('.results-total').html(JSONresponse.numberOfResults);
+            if (JSONresponse.numberOfResults == "1") {
+                $('#results-label').html(messages.ddbnext.Result_lowercase);
+            }
+            else {
+                $('#results-label').html(messages.ddbnext.Results_lowercase);
+            }
+            if(JSONresponse.paginationURL.nextPg){
+              $(".page-nav .next-page").removeClass("off");
+              $(".page-nav .last-page").removeClass("off");
+              $('.page-nav .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
+              $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
+            }else{
+              $(".page-nav .next-page").addClass("off");
+              $(".page-nav .last-page").addClass("off");
+            }
+            if(JSONresponse.paginationURL.firstPg){
+              $(".page-nav .prev-page").removeClass("off");
+              $(".page-nav .first-page").removeClass("off");
+              $('.page-nav .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
+              $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
+            }else{
+              $(".page-nav .prev-page").addClass("off");
+              $(".page-nav .first-page").addClass("off");
+            }
+            historyManager(url);
+            $('.list-container').fadeIn('fast');
+            
+//            divSearchResultsOverlayImg.remove();
+//            divSearchResultsOverlayWaiting.remove();
+//            divSearchResultsOverlayModal.remove();
+            
+//            setHovercardEvents();
+            });
+          }
+        });
+    }
+    
+    
+    
+    // TODO: add click listener to a.page-nav-result
+//    $('a.page-nav-result').click(function(event) {
+//      event.preventDefault();
+//
+//      var queryString = $.parseQuery($(this).attr('href'));
+//
+//      var fullUrl = jsContextPath + '/liste/detail/' + queryString.id;
+//      fullUrl += '?query=' + queryString.query;
+//      fullUrl += '&offset=' + queryString.offset;
+//      fullUrl += '&pagesize=' + queryString.pagesize;
+//      fullUrl += '&sort=' + queryString.sort;
+//      var isAlready404 = false;
+//
+//      $.ajax({
+//        type: 'GET',
+//        dataType: 'html',
+//        async: true,
+//        cache: false,
+//        url: fullUrl,
+//        complete: function(data) {
+//          if (isAlready404) { // prevent redirects after 404 answer
+//            ///callback(null);
+//            return;
+//          }
+////          $('.list-container').empty();
+////          console.log(data.responseText);
+////          $('.list-container').append(data.responseText);
+//        },
+//        error: function(xhr, ajaxOptions, thrownError) {
+//          isAlready404 = true;
+////          callback(null);
+//        }
+//      });
+//    });
     // TODO: onSuccess replace the result list with the new HTML
     // TODO: update the navigations
   }

@@ -44,7 +44,10 @@
           </div>
         </div>
       </div>
-      <div class="span8">
+      <div class="span8 search-noresults-content off">
+        <g:render template="noResults" />
+      </div>
+      <div class="span8 search-results-content">
         <g:render template="pagination" />
         <g:render template="navigation" />
         <div class="list-container">
