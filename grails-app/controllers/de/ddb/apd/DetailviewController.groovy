@@ -141,11 +141,11 @@ class DetailviewController {
                     siblingInformation["previous"] = null
                     siblingInformation["next"] = null
                 }else if(i==0){
-                    siblingInformation["previous"] = null
+                    siblingInformation["previous"] = siblings[siblings.size()-1]
                     siblingInformation["next"] = siblings[i+1]
                 }else if(i==siblings.size()-1){
                     siblingInformation["previous"] = siblings[i-1]
-                    siblingInformation["next"] = null
+                    siblingInformation["next"] = siblings[0]
                 }else{
                     siblingInformation["previous"] = siblings[i-1]
                     siblingInformation["next"] = siblings[i+1]
