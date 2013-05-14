@@ -56,6 +56,7 @@ class ObjectviewController {
         def offset = params.offset
         def pagesize = params.pagesize
         def sort = params.sort
+
         log.info """Get tree node details for item with \n
                 the ID: ${id},\n
                 query: ${query}, \n
@@ -69,6 +70,7 @@ class ObjectviewController {
             def subtitle
             def thumbnail
             def media = []
+
 
             def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
             if (titleMatch) {

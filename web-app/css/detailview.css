@@ -58,7 +58,7 @@
 }
 
 .detailview .search-nav {
-  margin-left: 0px;
+  margin-left: 0;
   line-height: 30px;
 }
 
@@ -69,13 +69,13 @@
 .detailview .back-to-list {
   margin-left: 5px;
   padding-left: 16px;
-  background: url(../images/icons/list_backarrows.png) no-repeat 0px 0px;
+  background: url(../images/icons/list_backarrows.png) no-repeat 0 0;
   margin-right: 10px
 }
 
 .detailview .page-link {
   padding-left: 22px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat 0px 0px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat 0 0;
 }
 
 .detailview .item-nav {

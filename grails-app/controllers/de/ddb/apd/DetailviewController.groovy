@@ -116,8 +116,15 @@ class DetailviewController {
     def buildNavigationData(def params) {
         def navData = [:]
 
+
+        println "#################### 1 "
+        //def resultsItems = institutionService.searchArchive(params.query, params.id, params.offset, params.pagesize, params.sort)
+        def firstResultItem = institutionService.searchArchive(params.query, params.id, 0, 1, params.sort)
+        def resultCount = firstResultItem["numberOfResults"]
+        def lastResultItem = institutionService.searchArchive(params.query, params.id, resultCount-1, 1, params.sort)
         def resultsItems = institutionService.searchArchive(params.query, params.id, params.offset, params.pagesize, params.sort)
 
+        println "#################### 2 "
         def hitNumber = 1
         for(int i=0; i<resultsItems.results[0]["docs"].size(); i++){
             if(resultsItems.results[0]["docs"].get(i).id == params.id){
@@ -125,11 +132,16 @@ class DetailviewController {
             }
         }
 
+        println "#################### 3 "
         navData["results"] = resultsItems
         navData["hitNumber"] = hitNumber
-        navData["firstHit"] = resultsItems.results[0]["docs"].get(0).id
-        navData["lastHit"] = resultsItems.results[0]["docs"].get(resultsItems.results[0]["docs"].size()-1).id
+        navData["firstHit"] = firstResultItem.results[0]["docs"].get(0).id
+        navData["lastHit"] = lastResultItem.results[0]["docs"].get(0).id
 
+        println "#################### 4 "+navData["results"]
+        println "#################### 4 "+navData["hitNumber"]
+        println "#################### 4 "+navData["firstHit"]
+        println "#################### 4 "+navData["lastHit"]
         return navData
     }
 }
