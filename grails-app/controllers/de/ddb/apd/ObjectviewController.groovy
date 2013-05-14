@@ -119,4 +119,9 @@ class ObjectviewController {
         assert params.id!=null, "this method should not be called without an ID"
         render institutionService.getTechtonicFirstLvlHierarchyChildren(params.id)
     }
+    //The method can be used in ajax requests to retrieve all elements up to institution parent
+    def getTopParentInstitution(){
+        assert params.id!=null, "this method should not be called without an ID"
+        render institutionService.getInstitutionParent(params.id)
+    }
 }

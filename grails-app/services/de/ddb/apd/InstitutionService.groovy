@@ -17,6 +17,7 @@ package de.ddb.apd
 
 
 import de.ddb.apd.institutions.InstitutionsCache
+import grails.util.CosineSimilarity;
 import groovyx.net.http.HTTPBuilder
 import net.sf.json.JSONObject
 
@@ -366,4 +367,31 @@ class InstitutionService {
         }
         return apiResponse.getResponse()
     }
+    /**
+     * This method is also temporary until proper support is provided by backend software
+     * @param id
+     * @return
+     */
+    private def getInstitutionParent(id){
+        def parent = itemService.getParent(id)
+        parent = getParentBasedOnSimilarity(parent)
+        return parent;
+    }
+
+    private getParentBasedOnSimilarity(parent) {
+        def institutionsList = findAll()
+        def candidates = []
+        institutionsList.each {
+            candidates << it.name
+        }
+        def cosines = CosineSimilarity.mostSimilar(parent.last().label, candidates);
+        institutionsList.each {
+            if (it.name== cosines.first().toString()){
+                it.label = it.name;
+                parent << it
+            }
+        }
+        return parent
+    }
+
 }
