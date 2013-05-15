@@ -56,6 +56,7 @@ class ObjectviewController {
         def offset = params.offset
         def pagesize = params.pagesize
         def sort = params.sort
+
         log.info """Get tree node details for item with \n
                 the ID: ${id},\n
                 query: ${query}, \n
@@ -63,12 +64,13 @@ class ObjectviewController {
                 offset: ${offset}
                 sort: ${sort}"""
 
-        def resultsItems = institutionService.searchArchive(query, id, offset, pagesize, sort)
+        def resultsItems = institutionService.searchArchive(query, id, offset, pagesize, sort)?.results[0]?.docs
         resultsItems.each {
             def title
             def subtitle
             def thumbnail
             def media = []
+
 
             def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
             if (titleMatch) {
@@ -88,7 +90,14 @@ class ObjectviewController {
                 mediaMatch[0][2].split (",").each{ media.add(it) }
             }
 
-            it["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
+            HtmlParser htmlParser = new HtmlParser(title)
+            def urlFriendlyTitle = StringManipulation.getFriendlyUrlString(htmlParser.getTextWithoutTags())
+
+            it["preview"] = ['title':title,
+                'subtitle': subtitle,
+                'media': media,
+                'thumbnail': thumbnail,
+                'urlFriendlyTitle': urlFriendlyTitle]
         }
 
         render(

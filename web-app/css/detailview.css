@@ -101,3 +101,77 @@
 }
 
 
+.detailview .navigation-search {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #EFEBE8;
+}
+
+.detailview .search-nav {
+  margin-left: 0;
+  line-height: 30px;
+}
+
+.detailview .search-nav-item {
+   display: inline-block;
+}
+  
+.detailview .back-to-list {
+  margin-left: 5px;
+  padding-left: 16px;
+  background: url(../images/icons/list_backarrows.png) no-repeat 0 0;
+  margin-right: 10px
+}
+
+.detailview .page-link {
+  padding-left: 22px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat 0 0;
+}
+
+.detailview .item-nav {
+  line-height: 30px;
+  text-align: right;
+}
+.detailview .item-nav ul {
+  margin-bottom: 0;
+}
+.detailview .item-nav ul li {
+  padding: 0;
+}
+.detailview .item-nav .first-item a, 
+.detailview .item-nav .prev-item a, 
+.detailview .item-nav .next-item a, 
+.detailview .item-nav .last-item a {
+  background: url("../images/icons/pagination.png") no-repeat;
+}
+.detailview .item-nav .first-item a {
+  padding-left: 14px;
+  background-position: left -20px;
+}
+.detailview .item-nav .prev-item {
+  margin-right: 5px;
+}
+.detailview .item-nav .prev-item a {
+  padding-left: 14px;
+  padding-right: 5px;
+  background-position: left -60px;
+}
+.detailview .item-nav .next-item a {
+  padding-right: 14px;
+  padding-left: 5px;
+  background-position: right -40px;
+}
+.detailview .item-nav .next-item {
+  margin-left: 5px;
+}
+.detailview .item-nav .last-item  {
+  padding-right: 5px;
+}
+.detailview .item-nav .last-item a {
+  padding-right: 14px;
+  background-position: right 0px;
+}
+.detailview .item-nav .items-overall-index {
+  margin-right: 10px;
+}
+

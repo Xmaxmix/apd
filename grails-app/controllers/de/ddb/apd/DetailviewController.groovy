@@ -21,6 +21,8 @@ class DetailviewController {
 
     def itemService
     def configurationService
+    def institutionService
+
 
     def index() {
         //Check if Item-Detail was called from search-result and fill parameters
@@ -48,40 +50,35 @@ class DetailviewController {
 
         def siblingInformation = getSiblingInformation(id, item.title)
 
-        // TODO: handle 404 and failure separately. HTTP Status Code 404, should
-        // to `not found` page _and_ Internal Error should go to `internal server
-        // error` page. We should send also the HTTP Status Code 404 or 500 to the
-        // Client.
-        if(item == '404' || item?.failure) {
-            redirect(controller: 'error')
-        } else {
-            def itemUri = request.forwardURI
-            def ddbUri = configurationService.getDDBUrl() + "/item/" + id
-            def fields = translate(item.fields)
+        def navData = buildNavigationData(params)
 
-            render(
-                    view: "detailview",
-                    model: ['itemUri': itemUri,
-                        'ddbUri': ddbUri,
-                        'viewerUri': item.viewerUri,
-                        'title': item.title,
-                        'friendlyTitle': friendlyTitle,
-                        'item': item.item,
-                        'itemId': id,
-                        'institution': item.institution,
-                        'fields': fields,
-                        'binaryList': binaryList,
-                        'pageLabel': item.pageLabel,
-                        'hierarchyRoot': hierarchyRootItem,
-                        //'firstHit': searchResultParameters["searchParametersMap"]["firstHit"],
-                        //'lastHit': searchResultParameters["searchParametersMap"]["lastHit"],
-                        //'hitNumber': params["hitNumber"],
-                        //'results': searchResultParameters["resultsItems"],
-                        //'searchResultUri': searchResultParameters["searchResultUri"],
-                        'binaryInformation': binaryInformation,
-                        'siblingInformation': siblingInformation]
-                    )
-        }
+        def itemUri = request.forwardURI
+        def ddbUri = configurationService.getDDBUrl() + "/item/" + id
+        def fields = translate(item.fields)
+
+        render(
+                view: "detailview",
+                model: ['itemUri': itemUri,
+                    'ddbUri': ddbUri,
+                    'viewerUri': item.viewerUri,
+                    'title': item.title,
+                    'friendlyTitle': friendlyTitle,
+                    'item': item.item,
+                    'itemId': id,
+                    'institution': item.institution,
+                    'fields': fields,
+                    'binaryList': binaryList,
+                    'pageLabel': item.pageLabel,
+                    'hierarchyRoot': hierarchyRootItem,
+                    //'firstHit': searchResultParameters["searchParametersMap"]["firstHit"],
+                    //'lastHit': searchResultParameters["searchParametersMap"]["lastHit"],
+                    //'hitNumber': params["hitNumber"],
+                    //'results': searchResultParameters["resultsItems"],
+                    //'searchResultUri': searchResultParameters["searchResultUri"],
+                    'binaryInformation': binaryInformation,
+                    'siblingInformation': siblingInformation,
+                    'navData': navData]
+                )
     }
 
     def translate(fields) {
@@ -154,6 +151,68 @@ class DetailviewController {
         }
 
         return siblingInformation
+    }
+
+    def buildNavigationData(def params) {
+        def navData = [:]
+
+        def hitNumber = 1
+        if(params.hitNumber){
+            hitNumber = params.hitNumber.toInteger()
+        }
+        def currentId = params.id
+        def pagesize = 1
+        if(params.pagesize) {
+            pagesize = params.pagesize.toInteger()
+        }
+        def searchOffset = 0
+        if(hitNumber > 1) {
+            searchOffset = hitNumber - 2
+        }
+        def sort = "RELEVANCE"
+        if(params.sort){
+            sort = params.sort
+        }
+
+        //def resultsItems = institutionService.searchArchive(params.query, params.id, params.offset, params.pagesize, params.sort)
+        def firstResultItem = institutionService.searchArchive(params.query, params.id, 0, 1, sort)
+        def resultCount = firstResultItem["numberOfResults"]
+        def lastResultItem = institutionService.searchArchive(params.query, params.id, resultCount-1, 1, sort)
+        def resultsItems = institutionService.searchArchive(params.query, params.id, searchOffset, 3, sort)
+
+
+        def firstHitId = firstResultItem.results[0]["docs"]?.get(0)?.id
+        def lastHitId = lastResultItem.results[0]["docs"]?.get(0)?.id
+        def previousHitId = "none"
+        if(hitNumber > 1){
+            previousHitId = resultsItems.results[0]["docs"]?.get(0)?.id
+        }
+        def nextHitId = "none"
+        if(hitNumber < resultCount){
+            def currentIdIndex = Integer.MAX_VALUE;
+            for(int i=0; i<resultsItems.results[0]["docs"].size(); i++){
+                if(resultsItems.results[0]["docs"].getAt(i).id == currentId){
+                    currentIdIndex = i
+                    break;
+                }
+            }
+            if(currentIdIndex < resultsItems.results[0]["docs"].size() - 1) {
+                nextHitId = resultsItems.results[0]["docs"]?.get(currentIdIndex + 1)?.id
+            }
+        }
+
+        def newOffset = (int)((hitNumber - 1) / pagesize)
+
+        navData["resultCount"] = resultCount
+        navData["hitNumber"] = hitNumber
+        navData["pagesize"] = pagesize
+        navData["previousHit"] = previousHitId
+        navData["nextHit"] = nextHitId
+        navData["firstHit"] = firstHitId
+        navData["lastHit"] = lastHitId
+        navData["newOffset"] = newOffset
+
+        return navData
     }
 
 }
