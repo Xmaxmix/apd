@@ -138,12 +138,12 @@ $(function() {
                             '&offset=' + offset +
                             '&pagesize=' + pagesize +
                             '&sort=' + sortBy +
-                            '&id=' + institutionId + 
+                            '&nodeId=' + institutionId + 
                             '&isInstitution=' + isInstitution;
         History.pushState('', document.title, decodeURI(urlParameters));
       }
 
-      var id = this.getUrlParam("id");
+      var id = this.getUrlParam("nodeId");
       if(id != "" && id != "rootnode"){
         institutionId = id;
       }
@@ -174,7 +174,7 @@ $(function() {
                     '&offset=' + offset +
                     '&pagesize=' + pagesize +
                     '&sort=' + sortBy +
-                    '&id=' + institutionId + 
+                    '&nodeId=' + institutionId + 
                     '&isInstitution=' + isInstitution;
         History.pushState('', document.title, decodeURI(urlParameters));
         

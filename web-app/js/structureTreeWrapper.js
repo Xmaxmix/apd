@@ -97,11 +97,13 @@ $(function() {
 
       if(institutionId != "rootnode"){
         var History = window.History;
-        var urlParameters = "?query="+query+"&id="+institutionId+"&isInstitution="+isInstitution;
+        var urlParameters = "?query=" + query + 
+                            "&nodeId=" + institutionId + 
+                            "&isInstitution=" + isInstitution;
         History.pushState("", document.title, decodeURI(urlParameters));
       }
       
-      var id = this.getUrlParam("id");
+      var id = this.getUrlParam("nodeId");
       if(id != "" && id != "rootnode"){
         institutionId = id;
       }
@@ -116,7 +118,9 @@ $(function() {
         }
         
         var History = window.History;
-        var urlParameters = "?query="+query+"&id="+institutionId+"&isInstitution="+isInstitution;
+        var urlParameters = "?query=" + query + 
+                            "&nodeId=" + institutionId + 
+                            "&isInstitution=" + isInstitution;
         History.pushState("", document.title, decodeURI(urlParameters));
 
       });
