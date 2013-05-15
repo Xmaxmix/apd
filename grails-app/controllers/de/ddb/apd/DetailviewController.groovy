@@ -173,12 +173,16 @@ class DetailviewController {
         if(params.sort){
             sort = params.sort
         }
+        def nodeId = "rootnode"
+        if(params.nodeId) {
+            nodeId = params.nodeId
+        }
 
         //def resultsItems = institutionService.searchArchive(params.query, params.id, params.offset, params.pagesize, params.sort)
-        def firstResultItem = institutionService.searchArchive(params.query, params.id, 0, 1, sort)
+        def firstResultItem = institutionService.searchArchive(params.query, nodeId, 0, 1, sort)
         def resultCount = firstResultItem["numberOfResults"]
-        def lastResultItem = institutionService.searchArchive(params.query, params.id, resultCount-1, 1, sort)
-        def resultsItems = institutionService.searchArchive(params.query, params.id, searchOffset, 3, sort)
+        def lastResultItem = institutionService.searchArchive(params.query, nodeId, resultCount-1, 1, sort)
+        def resultsItems = institutionService.searchArchive(params.query, nodeId, searchOffset, 3, sort)
 
 
         def firstHitId = firstResultItem.results[0]["docs"]?.get(0)?.id

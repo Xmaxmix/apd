@@ -17,8 +17,8 @@ $(function() {
   if (jsPageName == 'detailview') {
 
     $('#siblings-dropdown').change(function() {
-      var id = $("#siblings-dropdown").val();
-      var linkUrl = location.protocol + "//" + location.host + jsContextPath + "/item/" + id;
+      var path = $("#siblings-dropdown").val();
+      var linkUrl = location.protocol + "//" + location.host + path;
       window.location = linkUrl;
     });
     
