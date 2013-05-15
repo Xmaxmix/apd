@@ -214,7 +214,26 @@ $(function() {
           callback(null);
         }
       });
-    }
+    },
+    
+    getStructureTreeNodeParents: function(itemId, callback) {
+      var fullUrl = jsContextPath + '/struktur/parents/' + itemId;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+        cache: false,
+        url: fullUrl,
+        complete: function(data) {
+          var jsonResponse = jQuery.parseJSON(data.responseText);
+          callback(jsonResponse);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          callback(null);
+        }
+      });
+    },
+
 
   });
 });

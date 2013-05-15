@@ -376,6 +376,7 @@ class InstitutionService {
     def getInstitutionParent(id){
         def parent = itemService.getParent(id)
         parent = getParentBasedOnSimilarity(parent)
+        println "################# "+parent
         return parent;
     }
 
@@ -388,11 +389,16 @@ class InstitutionService {
             if (it.name== cosines.first().toString()){
                 it.label = it.name;
                 parent.last().parent = it.id
-                it["parent"] = "null"
+                it["parent"] = ""
                 it["leaf"] = false
-                it["type"] = "null"
+                it["type"] = ""
                 it["aggregationEntity"] = true
                 parent << it
+            }
+        }
+        parent.each {
+            if(it.type){
+                it.type = ""
             }
         }
         return parent

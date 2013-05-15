@@ -100,6 +100,13 @@ class StructureviewController {
         render (contentType: ContentType.JSON.toString()) { children }
     }
 
+    def getTreeNodeParents() {
+        def id = params.id
+        def parents = institutionService.getInstitutionParent(id)
+
+        render (contentType: ContentType.JSON.toString()) { parents }
+    }
+
     def ajaxDetails() {
         def id = params.id
         def itemId = id

@@ -45,6 +45,11 @@ $(function() {
 
       });
       
+      var nodeId = this.getUrlParam("nodeId");
+      if(nodeId){
+        this.openPathToNode(nodeId);
+      }
+      
     },
     
     openTreeNode: function(institutionId, treeDiv, recursionDepth) {
@@ -163,6 +168,16 @@ $(function() {
         }else{
           var rootNodes = [];
           $(treeDiv).dynatree("getRoot").addChild(rootNodes);
+        }
+      });
+    },
+    
+    openPathToNode: function(nodeId) {
+      this.institutionsApiWrapper.getStructureTreeNodeParents(nodeId, function(data){
+        if(data){
+          for(var i=0; i<data.length; i++){
+            console.log("############### "+data[i]);
+          }            
         }
       });
     },
