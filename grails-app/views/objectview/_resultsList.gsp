@@ -21,7 +21,8 @@ use it to render HTML in the server.
   <g:set var="pageHitCounter" value="${0}"/>
   <g:each in="${results}">
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
-    <g:set var="hitNumber" value="${offset + pageHitCounter}"/>
+    <g:set var="pagesize" value="${params.pagesize.toInteger()}" />
+    <g:set var="hitNumber" value="${(offset.toInteger() * pagesize) + pageHitCounter}"/>
     <g:set var="controller" value="item" />
     <g:set var="action" value="${it.id}" />
     <g:if test="${it.category == 'Institution'}">

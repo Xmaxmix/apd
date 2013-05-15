@@ -116,32 +116,62 @@ class DetailviewController {
     def buildNavigationData(def params) {
         def navData = [:]
 
-
-        println "#################### 1 "
-        //def resultsItems = institutionService.searchArchive(params.query, params.id, params.offset, params.pagesize, params.sort)
-        def firstResultItem = institutionService.searchArchive(params.query, params.id, 0, 1, params.sort)
-        def resultCount = firstResultItem["numberOfResults"]
-        def lastResultItem = institutionService.searchArchive(params.query, params.id, resultCount-1, 1, params.sort)
-        def resultsItems = institutionService.searchArchive(params.query, params.id, params.offset, params.pagesize, params.sort)
-
-        println "#################### 2 "
         def hitNumber = 1
-        for(int i=0; i<resultsItems.results[0]["docs"].size(); i++){
-            if(resultsItems.results[0]["docs"].get(i).id == params.id){
-                hitNumber = i + 1;
+        if(params.hitNumber){
+            hitNumber = params.hitNumber.toInteger()
+        }
+        def currentId = params.id
+        def pagesize = 1
+        if(params.pagesize) {
+            pagesize = params.pagesize.toInteger()
+        }
+        def searchOffset = 0
+        if(hitNumber > 1) {
+            searchOffset = hitNumber - 2
+        }
+        def sort = "RELEVANCE"
+        if(params.sort){
+            sort = params.sort
+        }
+
+        //def resultsItems = institutionService.searchArchive(params.query, params.id, params.offset, params.pagesize, params.sort)
+        def firstResultItem = institutionService.searchArchive(params.query, params.id, 0, 1, sort)
+        def resultCount = firstResultItem["numberOfResults"]
+        def lastResultItem = institutionService.searchArchive(params.query, params.id, resultCount-1, 1, sort)
+        def resultsItems = institutionService.searchArchive(params.query, params.id, searchOffset, 3, sort)
+
+
+        def firstHitId = firstResultItem.results[0]["docs"]?.get(0)?.id
+        def lastHitId = lastResultItem.results[0]["docs"]?.get(0)?.id
+        def previousHitId = "none"
+        if(hitNumber > 1){
+            previousHitId = resultsItems.results[0]["docs"]?.get(0)?.id
+        }
+        def nextHitId = "none"
+        if(hitNumber < resultCount){
+            def currentIdIndex = Integer.MAX_VALUE;
+            for(int i=0; i<resultsItems.results[0]["docs"].size(); i++){
+                if(resultsItems.results[0]["docs"].getAt(i).id == currentId){
+                    currentIdIndex = i
+                    break;
+                }
+            }
+            if(currentIdIndex < resultsItems.results[0]["docs"].size() - 1) {
+                nextHitId = resultsItems.results[0]["docs"]?.get(currentIdIndex + 1)?.id
             }
         }
 
-        println "#################### 3 "
-        navData["results"] = resultsItems
-        navData["hitNumber"] = hitNumber
-        navData["firstHit"] = firstResultItem.results[0]["docs"].get(0).id
-        navData["lastHit"] = lastResultItem.results[0]["docs"].get(0).id
+        def newOffset = (int)((hitNumber - 1) / pagesize)
 
-        println "#################### 4 "+navData["results"]
-        println "#################### 4 "+navData["hitNumber"]
-        println "#################### 4 "+navData["firstHit"]
-        println "#################### 4 "+navData["lastHit"]
+        navData["resultCount"] = resultCount
+        navData["hitNumber"] = hitNumber
+        navData["pagesize"] = pagesize
+        navData["previousHit"] = previousHitId
+        navData["nextHit"] = nextHitId
+        navData["firstHit"] = firstHitId
+        navData["lastHit"] = lastHitId
+        navData["newOffset"] = newOffset
+
         return navData
     }
 }
