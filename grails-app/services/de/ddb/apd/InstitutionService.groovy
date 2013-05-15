@@ -373,7 +373,7 @@ class InstitutionService {
      * @param id
      * @return
      */
-    private def getInstitutionParent(id){
+    def getInstitutionParent(id){
         def parent = itemService.getParent(id)
         parent = getParentBasedOnSimilarity(parent)
         return parent;
@@ -382,13 +382,16 @@ class InstitutionService {
     private getParentBasedOnSimilarity(parent) {
         def institutionsList = findAll()
         def candidates = []
-        institutionsList.each {
-            candidates << it.name
-        }
+        institutionsList.each { candidates << it.name }
         def cosines = CosineSimilarity.mostSimilar(parent.last().label, candidates);
         institutionsList.each {
             if (it.name== cosines.first().toString()){
                 it.label = it.name;
+                parent.last().parent = it.id
+                it["parent"] = "null"
+                it["leaf"] = false
+                it["type"] = "null"
+                it["aggregationEntity"] = true
                 parent << it
             }
         }

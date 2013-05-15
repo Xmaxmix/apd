@@ -97,7 +97,9 @@ class DetailviewController {
     def buildItemHierarchy(id, label, institution) {
 
         // Build the hierarchy from the item to the root element. The root element is kept.
-        def parentList = itemService.getParent(id)
+        //def parentList = itemService.getParent(id)
+        def parentList = institutionService.getInstitutionParent(id)
+
 
         def startItem = new Item(['id': id, 'label': label])
 
@@ -107,11 +109,11 @@ class DetailviewController {
         Item mainItem = rootItem.getItemFromHierarchy(id)
         mainItem.setMainItem(true)
 
-        Item institutionRootItem = new Item(['id': institution.id, 'label': institution.name, 'aggregationEntity': true])
-
+        //Item institutionRootItem = new Item(['id': institution.id, 'label': institution.name, 'aggregationEntity': true])
         Item emptyStartItem = new Item()
-        emptyStartItem.children.add(institutionRootItem)
-        institutionRootItem.children.add(rootItem)
+        //emptyStartItem.children.add(institutionRootItem)
+        //institutionRootItem.children.add(rootItem)
+        emptyStartItem.children.add(rootItem)
 
         return emptyStartItem
     }
@@ -161,6 +163,9 @@ class DetailviewController {
             hitNumber = params.hitNumber.toInteger()
         }
         def currentId = params.id
+        if(params.searchId){
+            currentId = params.searchId
+        }
         def pagesize = 1
         if(params.pagesize) {
             pagesize = params.pagesize.toInteger()
