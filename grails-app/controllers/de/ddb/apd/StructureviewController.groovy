@@ -108,6 +108,7 @@ class StructureviewController {
     }
 
     def ajaxDetails() {
+
         def id = params.id
         def itemId = id
         def vApiInstitution = new ApiInstitution()

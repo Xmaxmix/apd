@@ -133,13 +133,14 @@ class Item {
             List<Item> appendedChilds = appendChildren(currentParents, allItemList)
             currentParents = appendedChilds;
         }
+
         return root
     }
 
     private static Item getRootItem(List allItems) {
         for(int i=0; i<allItems.size(); i++){
             Item currentItem = allItems.get(i)
-            if(currentItem.parent == null || "null".equals(currentItem.parent) ){
+            if(currentItem.parent == null || "null" == currentItem.parent || "" == currentItem.parent ){
                 return currentItem
             }
         }
@@ -152,7 +153,7 @@ class Item {
             Item currentParent = parents.get(i)
             for(int j=possibleChildList.size()-1; j>=0; j--){
                 Item currentChild = possibleChildList.get(j)
-                if(currentChild.parent.equals(currentParent.id)){
+                if(currentChild.parent == currentParent?.id){
                     currentParent.children.add(currentChild)
                     currentChild.parentItem = currentParent
                     possibleChildList.remove(j)

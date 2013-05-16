@@ -69,7 +69,7 @@ $(function() {
                 {title: nodeTitle, 
                   key: data[i].id, 
                   isFolder: true, 
-                  isLazy: true,
+                  isLazy: false,
                   children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
                   isInstitution: data[i].institution}
                 );
@@ -202,7 +202,7 @@ $(function() {
               {title: nodeTitle, 
                 key: data.institutions[i].id, 
                 isFolder: true, 
-                isLazy: true, 
+                isLazy: false, 
                 children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
                 isInstitution: data.institutions[i].institution}
               );

@@ -17,6 +17,9 @@
 $(document).ready(function () {
   if(jsPageName == "structureview") {
 
+    var treeDiv = "#institution-tree";
+    var detailDiv = ".institution-item-details";
+    
     if ($('.search-widget-container').length > 0) {
       var searchWidgetContainer = $('#search-widget');
       searchWidget = new SearchWidget($('#search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
@@ -24,10 +27,24 @@ $(document).ready(function () {
 
     var structureTreeWrapper = new StructureTreeWrapper();
 
-    structureTreeWrapper.buildInitialTree('#institution-tree', '.institution-item-details');
-    structureTreeWrapper.loadInitialTreeNodes('#institution-tree');
-    structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
+    structureTreeWrapper.buildInitialTree(treeDiv, detailDiv, function() {
+      
+      structureTreeWrapper.loadInitialTreeNodes(treeDiv, function(){
 
+        var nodeId = structureTreeWrapper.getUrlParam("nodeId");
+        if(nodeId){
+          structureTreeWrapper.openPathToNode(nodeId, treeDiv, detailDiv);
+        }
+
+      });
+      
+      //structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
+      
+      
+
+    });
+
+    
   
   }
 });

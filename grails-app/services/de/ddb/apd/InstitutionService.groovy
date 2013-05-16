@@ -310,8 +310,9 @@ class InstitutionService {
      * 3. Get all children for our institution and return a hierarchy if succesfull
      * @return JSONObject
      */
-    private def getTechtonicFirstLvlHierarchyChildren(id){
+    def getTechtonicFirstLvlHierarchyChildren(id){
         def JSONObject hierarchy = [:]
+
         def children=getInstitutionChildren(id)
         //TODO throw exception if response if not JSON
         assert children instanceof JSONObject
@@ -341,6 +342,20 @@ class InstitutionService {
         }
         hierarchy.id = id
         hierarchy.children.addAll(getChildren(id).getAt("children"))
+
+        if(id == "XYMQPA4OHAYDDFYWHV6Q4RFUIISTLQJV"){ // Special case for Landesarchiv BW with its 7 tectonics
+            def tectonics = [
+                [id:"A7DCNBBFPDAZHS7ESXK3Q76ZAGJ2W6H7", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Hauptstaatsarchiv Stuttgart", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"HOEPZL253TB56GXLCPJ6QVNY4X5QCOJF", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Staatsarchiv Ludwigsburg", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"SCVLIRRGBA66IBT4YXOZ2GJHERYX7Q2U", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Staatsarchiv Freiburg", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"GVOQN7F2CZCHWRKJE2RKRHBIERX23TGA", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Hohenlohe-Zentralarchiv Neuenstein", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"36BF267YNTQVVLZDC6IKZ66KMIRJT4YZ", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Generallandesarchiv Karlsruhe", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"YSUXYV6ZN7577VESVIMJQNOZFMCODOGJ", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Staatsarchiv Wertheim", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"3NNKFXSDLL3BVHKI5R62PVAYUJTTJODG", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Staatsarchiv Sigmaringen", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false]
+            ]
+            hierarchy.children.remove(0) // remove old tectonic
+            hierarchy.children.addAll(0,tectonics)
+        }
 
         return hierarchy
     }
@@ -376,7 +391,6 @@ class InstitutionService {
     def getInstitutionParent(id){
         def parent = itemService.getParent(id)
         parent = getParentBasedOnSimilarity(parent)
-        println "################# "+parent
         return parent;
     }
 
@@ -387,18 +401,27 @@ class InstitutionService {
         def cosines = CosineSimilarity.mostSimilar(parent.last().label, candidates);
         institutionsList.each {
             if (it.name== cosines.first().toString()){
+                //Fix the different attributes for objects and institutions
                 it.label = it.name;
                 parent.last().parent = it.id
                 it["parent"] = ""
                 it["leaf"] = false
                 it["type"] = ""
                 it["aggregationEntity"] = true
+                it["children"] = []
                 parent << it
             }
         }
+        //Fix null types (causing JSON problems)
         parent.each {
             if(it.type){
                 it.type = ""
+            }
+        }
+        //Remove entries that contain themselfs as parents
+        for(int i=parent.size()-1; i>=0; i--){
+            if(parent.get(i).id == parent.get(i).parent){
+                parent.remove(i);
             }
         }
         return parent
