@@ -16,203 +16,159 @@
 
 $(function() {
 
-  InstitutionsApiWrapper = function() {
-    this.init();
-  };
+  InstitutionsApiWrapper = function() {};
 
   $.extend(InstitutionsApiWrapper.prototype, {
 
-    init: function() {
-    },
-
     getFullInstitutionsList: function(callback) {
-      $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        async: true,
-        cache: false, // always no-cache this request!
-        url: jsContextPath + '/institutions/outdated/' + jsInstitutionsListHash, // it is important to always add the hash!
-        complete: function(data) {
-          var jsonResponse = jQuery.parseJSON(data.responseText);
-          if (jsonResponse.content.isOutdated) {
-            jsInstitutionsListHash = jsonResponse.content.hashId; //Refresh hash url if dataset changed
-          }
-
-          $.ajax({
-            type: 'GET',
-            dataType: 'text', // Explicitly use "text/plain" as contenttype because some browsers disable caching for JSON
-            async: true,
-            cache: true, // always cache this request!
-            url: jsContextPath + '/institutions/full/' + jsInstitutionsListHash, // it is important to always add the hash!
-            complete: function(data) {
-              var jsonResponse = jQuery.parseJSON(data.responseText);
-              callback(jsonResponse);
-            }
-          });
+      var url = jsContextPath + '/institutions/outdated/' + jsInstitutionsListHash;
+      
+      var complete = function(data) {
+        var jsonResponse = jQuery.parseJSON(data.responseText);
+        if (jsonResponse.content.isOutdated) {
+          jsInstitutionsListHash = jsonResponse.content.hashId; //Refresh hash url if dataset changed
         }
-      });
+        var innestedComplete = function(dataResponse) {
+          var jsonResponse = jQuery.parseJSON(dataResponse.responseText);
+          callback(jsonResponse);
+        }
+        this.executeCall('json', url, true, true, innestedComplete, null);
+      };
+      
+      var error = function(){};
+      
+      this.executeCall('json', url, true, false, complete, error);
     },
-
-//    getArchiveList: function(query, facets, callback) {
-//      var fullUrl = jsContextPath + "/institutions/archives";
-//      fullUrl += "?searchQuery=" + query;
-//      fullUrl += "?facets=" + facets;
-//      $.ajax({
-//        type: 'GET',
-//        dataType: 'json',
-//        async: true,
-//        cache: false,
-//        url: fullUrl,
-//        complete: function(data){
-//          var jsonResponse = jQuery.parseJSON(data.responseText);
-//          callback(jsonResponse);
-//        }
-//      });
-//    },
-
 
     getObjectTreeRootNodes: function(query, callback) {
-      var fullUrl = jsContextPath + '/liste/root';
-      fullUrl += '?query=' + query;
-      $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          var jsonResponse = jQuery.parseJSON(data.responseText);
-          callback(jsonResponse);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          callback(null);
-        }
-      });
+      var url = jsContextPath + '/liste/root'+'?query=' + query;
+      
+      var complete = function(data) {
+        var jsonResponse = jQuery.parseJSON(data.responseText);
+        callback(jsonResponse);
+      };
+      
+      var error = function(xhr, ajaxOptions, thrownError) {
+        callback(null);
+      };
+      
+      this.executeCall('json', url, true, false, complete, error);
     },
 
     getObjectTreeNodeDetails: function(itemId, query, offset, pagesize, sortBy, callback) {
-      var fullUrl = jsContextPath + '/liste/detail/' + itemId;
-      fullUrl += '?query=' + query;
-      fullUrl += '&offset=' + offset;
-      fullUrl += '&pagesize=' + pagesize;
-      fullUrl += '&sort=' + sortBy;
+      var url = jsContextPath + '/liste/detail/' + itemId;
+      url += '?query=' + query;
+      url += '&offset=' + offset;
+      url += '&pagesize=' + pagesize;
+      url += '&sort=' + sortBy;
       var isAlready404 = false;
-
-      $.ajax({
-        type: 'GET',
-        dataType: 'html',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          if (isAlready404) { // prevent redirects after 404 answer
-            callback(null);
-            return;
-          }
-          callback(data.responseText);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          isAlready404 = true;
+      
+      var complete = function(data) {
+        if (isAlready404) { // prevent redirects after 404 answer
           callback(null);
+          return;
         }
-      });
+        callback(data.responseText);
+      };
+      
+      var error = function(xhr, ajaxOptions, thrownError) {
+        isAlready404 = true;
+        callback(null);
+      };
+      
+      this.executeCall('html', url, true, false, complete, error);
     },
 
     getObjectTreeNodeObjectCount: function(itemId, itemName, query, callback) {
-      var fullUrl = jsContextPath + '/liste/objectcount/' + itemId;
-      fullUrl += '?query=' + query;
-      fullUrl += '&itemName=' + itemName;
-      $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          var jsonResponse = jQuery.parseJSON(data.responseText);
-          callback(jsonResponse);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          callback(null);
-        }
-      });
+      var url = jsContextPath + '/liste/objectcount/' + itemId;
+      url += '?query=' + query;
+      url += '&itemName=' + itemName;
+      
+      var complete = function(data) {
+        var jsonResponse = jQuery.parseJSON(data.responseText);
+        callback(jsonResponse);
+      };
+      
+      var error = function(xhr, ajaxOptions, thrownError) {
+        callback(null);
+      };
+      
+      this.executeCall('json', url, true, false, complete, error);
     },
 
     getObjectTreeNodeChildren: function(itemId, callback) {
-      var fullUrl = jsContextPath + '/liste/children/' + itemId;
-      $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          var jsonResponse = jQuery.parseJSON(data.responseText);
-          callback(jsonResponse);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          callback(null);
-        }
-      });
+      var url = jsContextPath + '/liste/children/' + itemId;
+      
+      var complete = function(data) {
+        var jsonResponse = jQuery.parseJSON(data.responseText);
+        callback(jsonResponse);
+      };
+      
+      var error = function(xhr, ajaxOptions, thrownError) {
+        callback(null);
+      };
+      
+      this.executeCall('json', url, true, false, complete, error);
     },
 
     getStructureTreeRootNodes: function(query, callback) {
-      var fullUrl = jsContextPath + '/struktur/root';
-      fullUrl += '?query=' + query;
-      $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          var jsonResponse = jQuery.parseJSON(data.responseText);
-          callback(jsonResponse);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-        }
-      });
+      var url = jsContextPath + '/struktur/root'+'?query=' + query;
+      
+      var complete = function(data) {
+        var jsonResponse = jQuery.parseJSON(data.responseText);
+        callback(jsonResponse);
+      };
+      
+      var error = function() {};
+      
+      this.executeCall('json', url, true, false, complete, error);
     },
 
     getStructureTreeNodeDetails: function(itemId, query, isInstitution, callback) {
-      var fullUrl = jsContextPath + "/struktur/detail/"+itemId;
-      fullUrl = fullUrl + "?query="+query+"&isInstitution="+isInstitution;
+      var url = jsContextPath + "/struktur/detail/"+itemId;
+      url += "?query="+query+"&isInstitution="+isInstitution;
       var isAlready404 = false;
-      $.ajax({
-        type: 'GET',
-        dataType: 'html',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data){
-          if(isAlready404){ // prevent redirects after 404 answer
-            callback(null);
-            return;
-          }
-          callback(data.responseText);
-        },
-        error:function (xhr, ajaxOptions, thrownError){
-          isAlready404 = true;
+      
+      var complete = function(data){
+        if(isAlready404){ // prevent redirects after 404 answer
           callback(null);
+          return;
         }
-      });
+        callback(data.responseText);
+      };
+      
+      var error = function (xhr, ajaxOptions, thrownError){
+        isAlready404 = true;
+        callback(null);
+      };
+      
+      this.executeCall('json', url, true, false, complete, error);
     },
 
     getStructureTreeNodeChildren: function(itemId, callback) {
-      var fullUrl = jsContextPath + '/struktur/children/' + itemId;
+      var url = jsContextPath + '/struktur/children/' + itemId;
+      
+      var complete = function(data) {
+        var jsonResponse = jQuery.parseJSON(data.responseText);
+        callback(jsonResponse);
+      };
+      
+      var error = function(xhr, ajaxOptions, thrownError) {
+        callback(null);
+      };
+      
+      this.executeCall('json', url, true, false, complete, error);
+    },
+    
+    executeCall: function(dataType, url, async, cache, complete, error){
       $.ajax({
         type: 'GET',
-        dataType: 'json',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          var jsonResponse = jQuery.parseJSON(data.responseText);
-          callback(jsonResponse);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          callback(null);
-        }
+        dataType: dataType,
+        async: async,
+        cache: cache,
+        url: url,
+        complete: function(data){complete(data)},
+        error: function(xhr, ajaxOptions, thrownError){error(xhr, ajaxOptions, thrownError)}
       });
     },
     
