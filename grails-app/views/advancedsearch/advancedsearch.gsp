@@ -5,10 +5,6 @@
   <meta name="page" content="advancedsearch" />
   <meta name="layout" content="main" />
 
-  <%-- 
-  <r:require module="advancedsearch"/>
-  --%>
-  
 </head>
 <body>
   <div id="advanced-search" class="row">

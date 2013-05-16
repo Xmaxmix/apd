@@ -13,43 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#advanced-search .operator {
+.advanced-search-header {
+  float: left;
+}
+
+.operator {
   margin-bottom: 15px;
 }
 
-#advanced-search .operator label {
+.operator label {
   margin-right: 5px;
   font-size: 1em;
 }
 
-#advanced-search .heading span {
+.heading span {
   margin-top:12px;
   margin-left:20px;
 }
 
-#advanced-search .group-operator {
+.group-operator {
   margin-top: 15px;
   margin-bottom: 15px;
 }
 
-#advanced-search .reset, .submit {
+.reset, .submit {
   width: 100px;
   margin: 0 4px;
 }
 
-#advanced-search .search-group {
+.search-group {
   background-color: #EFEBE8;
   border-bottom: 1px solid #D1CDCB;
   border-top: 1px solid #D1CDCB;
   margin-bottom:15px;
 }
 
-#advanced-search .search-field-row {
+.search-field-row {
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-#advanced-search .remove-button,.remove-group-button,.add-button,.add-group-button {
+.remove-button,.remove-group-button,.add-button,.add-group-button {
   width:20px;
   height:20px;
   box-shadow:none;
@@ -57,80 +61,85 @@
   background:url("../images/icons/adv_search_row_actions.png") no-repeat;
 }
 
-#advanced-search .add-group-button {
+.add-group-button {
+  float: right;
   width:205px;
   font-size:1em;
   font-weight:normal;
   text-shadow:none;
   color:#000000;
   background-position:187px 2px;
-  line-height: 0px;
+  line-height: 0;
 }
 
-#advanced-search .add-group-button:hover {
-  background-position:187px -18px;
+.add-group-button:hover {
+  background-position: 187px -18px;
   color: #990000;
 }
 
-#advanced-search .remove-button,.remove-group-button {
-  background-position:0px -60px;
+.remove-button,.remove-group-button {
+  background-position:0 -60px;
 }
 
-#advanced-search .add-button,.add-group-button {
-  background-position:0px 0px;
+.remove-group-button {
+  float:right;
 }
 
-#advanced-search .remove-button:hover, .remove-group-button:hover {
-  background-position:0px -80px;
+.add-button,.add-group-button {
+  background-position:0 0;
 }
 
-#advanced-search .add-button:hover {
-  background-position:0px -20px;
+.remove-button:hover, .remove-group-button:hover {
+  background-position:0 -80px;
 }
 
-#advanced-search .value {
+.add-button:hover {
+  background-position:0 -20px;
+}
+
+.value {
   margin-top:1px;
   height:20px;
   padding-left:4px;
 }
 
-#advanced-search .button-group {
-  margin: 10px 0 20px 0;
+.advanced-search-form-actions {
+  float: right;
 }
 
-#advanced-search .button-group.fr {
+.button-group {
   text-align: right;
 }
 
-#advanced-search .row-button-group {
+.row-button-group {
   margin: 0 0 0 5px;
 }
 
-#advanced-search .search-field-row .value,.facet,.facet-values,.match {
+.search-field-row .value,.facet,.facet-values,.match {
   width:100%;
 }
 
-#advanced-search .bb {
+.bb {
   margin-top: 10px;
   margin-bottom: 25px;
 }
 
-#advanced-search .bt {
+.bt {
   border-top: solid 1px #fff;
 }
 
-#advanced-search .bt .span12 {
+.bt .span12 {
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
-#advanced-search .tooltip{
+.tooltip{
   top: 228px;
   color: #3e3a37;
   font-size: 0.938em;
 }
 
-#advanced-search .contextual-help {
+ .contextual-help {
   margin-left: 4px;
   margin-top: 5px;
   display: inline-block;
@@ -141,10 +150,6 @@
 
 .date-facet {
   width: 45%;
-}
-
-#lifespan-to {
-  float: right;
 }
 
 /* TODO: We include all CSS from DDB. We might have to remove unused styles. */
@@ -190,14 +195,6 @@ form label {
 }
 
 /* TODO: use semantic class name */
-.fl {
-  float: left !important;
-}
-
-.fr {
-  float: right !important;
-}
-
 .bb {
   border-bottom: solid 1px #efebe8;
 }

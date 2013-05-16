@@ -1,9 +1,9 @@
 <div class="row heading bb">
   <div class="span6">
-    <div class="fl">
+    <header class="advanced-search-header">
       <h1><g:message code="apd.AdvancedSearch"/>
-    </div>
-    <span class="contextual-help fl hidden-phone hidden-tablet"
+    </header>
+    <span class="contextual-help"
       title="<g:message code="apd.AdvancedSearch_Hint"
         args="${[('<a href="' + createLink(controller:"content",
         params:[dir:'help', id:'search-advanced']) +'">').encodeAsHTML(),('</a>').encodeAsHTML()]}"
