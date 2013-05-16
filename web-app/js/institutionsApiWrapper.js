@@ -160,6 +160,21 @@ $(function() {
       this.executeCall('json', url, true, false, complete, error);
     },
     
+    getStructureTreeNodeParents: function(itemId, callback) {
+      var url = jsContextPath + '/struktur/parents/' + itemId;
+      
+      var complete = function(data) {
+        var jsonResponse = jQuery.parseJSON(data.responseText);
+        callback(jsonResponse);
+      };
+      
+      var error = function(xhr, ajaxOptions, thrownError) {
+        callback(null);
+      }
+      
+      this.executeCall('json', url, true, false, complete, error);
+    },
+    
     executeCall: function(dataType, url, async, cache, complete, error){
       $.ajax({
         type: 'GET',
@@ -170,26 +185,6 @@ $(function() {
         complete: function(data){complete(data)},
         error: function(xhr, ajaxOptions, thrownError){error(xhr, ajaxOptions, thrownError)}
       });
-    },
-    
-    getStructureTreeNodeParents: function(itemId, callback) {
-      var fullUrl = jsContextPath + '/struktur/parents/' + itemId;
-      $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          var jsonResponse = jQuery.parseJSON(data.responseText);
-          callback(jsonResponse);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          callback(null);
-        }
-      });
-    },
-
-
+    }
   });
 });
