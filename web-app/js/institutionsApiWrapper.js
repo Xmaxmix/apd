@@ -142,7 +142,7 @@ $(function() {
         callback(null);
       };
       
-      this.executeCall('json', url, true, false, complete, error);
+      this.executeCall('text', url, true, false, complete, error);
     },
 
     getStructureTreeNodeChildren: function(itemId, callback) {
