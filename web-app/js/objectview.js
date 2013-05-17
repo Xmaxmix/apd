@@ -30,7 +30,6 @@ $(function() {
     console.log(detailViewElement)
     
     var objectTreeManager = new TreeManager(treeElement, detailViewElement, false);
-    objectTreeManager.loadInitialTreeNodes(treeElement);
-    objectTreeManager.showNodeDetails('rootnode', treeElement, detailViewElement);
+
   }
 });

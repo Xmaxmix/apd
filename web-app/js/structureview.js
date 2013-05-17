@@ -16,7 +16,6 @@
 
 $(document).ready(function () {
   if(jsPageName == "structureview") {
-
     var treeElement = $("#institution-tree");
     var detailViewElement = $(".institution-item-details");
     
@@ -26,7 +25,7 @@ $(document).ready(function () {
     }
     
     var structureTreeManager = new TreeManager(treeElement, detailViewElement, true);
-      
+    console.log(structureTreeManager)
       //structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
   }
 });

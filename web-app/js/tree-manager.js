@@ -48,7 +48,7 @@ $(function(){
             var emptyFunction = function(){};
             $self.openTreeNode(node.data.key, treeElement, 2, emptyFunction, openCalls, emptyFunction);
           }
-          if(this.isStructure){
+          if($self.isStructure){
             $self.showNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
           }else{
             $self.showNodeDetails(node.data.key, detailViewElement, detailViewElement);
@@ -56,17 +56,26 @@ $(function(){
         },
         onExpand: function(expand, node) {},
         onPostInit: function(isReloading, isError){
-          if(!isReloading && $self.isStructure){
+          if(!isReloading && this.isStructure){
             $self.initialized = true;
             $self.loadInitialTreeNodes(treeElement, function(){
               var nodeId = getUrlParam("nodeId");
               if(nodeId){
-                $self.openPathToNode(nodeId, treeElement, detailDiv);
+                $self.openPathToNode(nodeId, treeElement, detailViewElement);
               }
             });
           }
         }
       });
+      this.loadInitialTreeNodes(treeElement, function(){
+        var nodeId = getUrlParam("nodeId");
+        if(nodeId){
+          $self.openPathToNode(nodeId, treeElement, detailViewElement);
+        }
+      });
+      if(!this.isStructure){
+        this.showNodeDetails('rootnode', treeElement, detailViewElement);
+      }
     },
     
     openTreeNode: function(institutionId, treeElement, recursionDepth, initialTreeNodesLoadedCallback, openCalls, isOpenedCallback){
@@ -344,7 +353,7 @@ $(function(){
         if(data){
           var childNodes = [];
           for(var i=0; i<data.institutions.length; i++) {
-            var tmpNodeTitle = "<div class='dynatree-apd-title'>" + data.count+" Objekte" + "</div>";
+            var tmpNodeTitle = "<div class='dynatree-apd-title'>" + data.institutions[i].name+" ("+data.institutions[i].count+")" + "</div>";
             $self.createAndPushNode(tmpNodeTitle, childNodes, data.institutions[i].id, true, false, data.institutions[i].institution);
           }
           
@@ -375,17 +384,17 @@ $(function(){
       });
     },
     
-    openPathToNode: function(nodeId, treeElemen, detailViewElement) {
+    openPathToNode: function(nodeId, treeElement, detailViewElement) {
       var $self = this;
       this.institutionsApiWrapper.getStructureTreeNodeParents(nodeId, function(data){
         if(data){
-          $self.openNode(data, treeElement, detailViewElement);
+          $self.openNode(nodeId, data, treeElement, detailViewElement);
         }
       });
       
     },
     
-    openNode: function(nodeList, treeElement, detailViewElement){
+    openNode: function(nodeId, nodeList, treeElement, detailViewElement){
       var $self = this;
       if(nodeList.length > 0){
         var currentNode = nodeList[nodeList.length-1];
@@ -397,14 +406,14 @@ $(function(){
             if(node){
               node.expand(true);
             }
-            $self.openNode(nodeList, treeElement, detailViewElement);
+            $self.openNode(nodeId, nodeList, treeElement, detailViewElement);
           }
         });
       }else{ // Last node
         var node = treeElement.dynatree("getTree").getNodeByKey(nodeId);
         node.select(true);
         
-        $self.showNodeDetails(node.data.key, node.data.institution, treeElement, detailViewElement);
+        $self.showNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
         
         var nodeAnchor = $(nodeId);
         nodeAnchor.scrollIntoView();
