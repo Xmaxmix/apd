@@ -17,34 +17,16 @@
 $(document).ready(function () {
   if(jsPageName == "structureview") {
 
-    var treeDiv = "#institution-tree";
-    var detailDiv = ".institution-item-details";
+    var treeElement = $("#institution-tree");
+    var detailViewElement = $(".institution-item-details");
     
     if ($('.search-widget-container').length > 0) {
       var searchWidgetContainer = $('#search-widget');
       searchWidget = new SearchWidget($('#search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
     }
-
-    var structureTreeWrapper = new StructureTreeWrapper();
-
-    structureTreeWrapper.buildInitialTree(treeDiv, detailDiv, function() {
-      
-      structureTreeWrapper.loadInitialTreeNodes(treeDiv, function(){
-
-        var nodeId = structureTreeWrapper.getUrlParam("nodeId");
-        if(nodeId){
-          structureTreeWrapper.openPathToNode(nodeId, treeDiv, detailDiv);
-        }
-
-      });
+    
+    var structureTreeManager = new TreeManager(treeElement, detailViewElement, true);
       
       //structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
-      
-      
-
-    });
-
-    
-  
   }
 });

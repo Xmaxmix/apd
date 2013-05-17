@@ -24,10 +24,13 @@ $(function() {
 
     var objectDetailWrapper = new ObjectDetailWrapper();
     objectDetailWrapper.initializePagination();
-
-    var objectTreeWrapper = new ObjectTreeWrapper();
-    objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
-    objectTreeWrapper.loadInitialTreeNodes('#institution-tree');
-    objectTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.list-container');
+    
+    var treeElement = $("#institution-tree");
+    var detailViewElement = $(".list-container");
+    console.log(detailViewElement)
+    
+    var objectTreeManager = new TreeManager(treeElement, detailViewElement, false);
+    objectTreeManager.loadInitialTreeNodes(treeElement);
+    objectTreeManager.showNodeDetails('rootnode', treeElement, detailViewElement);
   }
 });
