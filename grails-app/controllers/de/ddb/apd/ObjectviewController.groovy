@@ -97,6 +97,7 @@ class ObjectviewController {
                     "results": resultsItems,
                     "offset": offset
                 ])
+
     }
 
     def getTreeNodeChildren() {

@@ -37,8 +37,8 @@ $(function() {
         onClick: function(node, event) {
           if(!node.bExpanded){
             $self.openTreeNode(node.data.key, treeDiv, 2);
+            $self.objectDetailWrapper.showNodeDetails(node.data.key, detailView, node.data.numberOfItems);
           }
-          $self.objectDetailWrapper.showNodeDetails(node.data.key, detailView, detailView, node.data.numberOfItems);
         },
         onExpand: function(expand, node) {
         }

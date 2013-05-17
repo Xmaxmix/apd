@@ -48,6 +48,7 @@
         <g:render template="noResults" />
       </div>
       <div class="span8 search-results-content">
+        <div class="off result-count"></div>
         <g:render template="pagination" />
         <g:render template="navigation" />
         <div class="list-container">

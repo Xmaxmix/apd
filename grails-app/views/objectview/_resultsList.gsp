@@ -17,7 +17,7 @@ limitations under the License.
 We use this template to build the response for JavaScript Client. We do _not_
 use it to render HTML in the server.
  --%>
-<ul class="results-list unstyled  <g:if test="${viewType == 'grid'}">grid</g:if>">
+<ul class="results-list unstyled">
   <g:set var="pageHitCounter" value="${0}"/>
   <g:each in="${results}">
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
@@ -29,18 +29,9 @@ use it to render HTML in the server.
         <g:set var="action" value="showInstitutionsTreeByItemId" />
     </g:if>
     <li class="item bt">
-      <div class="summary <g:if test="${viewType != 'grid'}">row</g:if>">
-        <g:if test="${viewType == 'grid'}">
-          <g:render template="thumbnailWrapper"
-            model="${[item: it, confBinary: confBinary, action: action, controller: controller]}" />
-          <g:render template="summaryMainWrapper"
-            model="${[item: it, action: action, controller: controller]}" />
-        </g:if>
-        <g:else>
+      <div class="summary row">
           <g:render template="summaryMainWrapper" model="${[item: it, action: action, controller: controller]}" />
-          <g:render template="thumbnailWrapper"
-            model="${[item: it, confBinary: confBinary, action: action, controller: controller]}" />
-        </g:else>
+          <g:render template="thumbnailWrapper" model="${[item: it, confBinary: confBinary, action: action, controller: controller]}" />
       </div>
     </li>
   </g:each>

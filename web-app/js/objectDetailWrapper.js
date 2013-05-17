@@ -32,7 +32,7 @@ $(function() {
 //        this.showNodeDetails('rootnode', '#institution-tree', '.list-container', rootNodeTreeElement.data.numberOfItems);
     },
 
-    showNodeDetails: function(institutionId, treeDiv, detailView, numberOfItems) {
+    showNodeDetails: function(institutionId, detailView, numberOfItems) {
       var $self = this;
 
       var query = this.getUrlParam('query');
@@ -53,12 +53,11 @@ $(function() {
       if (sortBy === '') {
         sortBy = 'RELEVANCE';
       }
-      
+
       var isInstitution = false;
-//      if($(treeDiv).dynatree("getTree").getNodeByKey(institutionId)){
-//        isInstitution = $(treeDiv).dynatree("getTree").getNodeByKey(institutionId).data.isInstitution;
-//      }
-      
+
+      $('.result-count').text(numberOfItems);
+
       if(institutionId != "rootnode"){
         var History = window.History;
         var urlParameters = '?query=' + query +
@@ -79,21 +78,60 @@ $(function() {
         $(detailView).empty();
         $(detailView).append(data);
 
-        // We change the total number of result to itemSize
-        $('#results-total').text(numberOfItems);
-        $('.results-overall-index').text('1 - ' + pagesize);
+        // pagination numbers
+        var fromPag = Math.ceil(pagesize*(offset / pagesize)+1);
+        var toPag = Math.ceil(parseInt(offset) + parseInt(pagesize));
+        var currentPagination = fromPag+"-"+toPag;
+        $('.results-overall-index').text(currentPagination);
 
+        // total number of result for the pagination
+        $('#results-total').text(numberOfItems);
+
+        // current page number for the navigation
+        var currentPage = Math.ceil((offset / pagesize)+1);
+        $('.current-page').text(currentPage);
+
+        // total number of pages for the navigation
         var totalPage = Math.ceil(numberOfItems / pagesize);
         if(totalPage) {
           $('.total-pages').text(totalPage);
         }
 
-        // we change the hrefs in the following links: first, prev, next and last
+        // activation of pagination and navigation controllers
+
+        // first page
+        if (currentPage == 1) {
+          $('li.first-page a.page-nav-result').addClass("off");
+          $('li.prev-page a.page-nav-result').addClass("off");
+          $('li.next-page a.page-nav-result').removeClass("off");
+          $('li.last-page a.page-nav-result').removeClass("off");
+        }
+        else {
+          $('li.first-page a.page-nav-result').removeClass("off");
+          $('li.prev-page a.page-nav-result').removeClass("off");
+        }
+
+        // last page
+        if (currentPage == parseInt($('.total-pages').text(), 10)) {
+          $('li.first-page a.page-nav-result').removeClass("off");
+          $('li.prev-page a.page-nav-result').removeClass("off");
+          $('li.next-page a.page-nav-result').addClass("off");
+          $('li.last-page a.page-nav-result').addClass("off");
+        }
+
+        // updating of the hrefs in the following links: first, prev, next and last
+        var firstPageUri = $self.buildFirstPageUri(pagesize);
+        var prevPageUri = $self.buildPrevPageUri(pagesize);
         var nextPageUri = $self.buildNextPageUri(pagesize);
+        if (!numberOfItems){
+          numberOfItems = parseInt($('.result-count').text(), 10);
+        }
         var lastPageUri = $self.buildLastPageUri(numberOfItems, pagesize);
 
-        $('li.next-page').find('a.page-nav-result').attr('href', nextPageUri);
-        $('li.last-page').find('a.page-nav-result').attr('href', lastPageUri);
+        $('li.first-page a.page-nav-result').attr('href', firstPageUri);
+        $('li.prev-page a.page-nav-result').attr('href', prevPageUri);
+        $('li.next-page a.page-nav-result').attr('href', nextPageUri);
+        $('li.last-page a.page-nav-result').attr('href', lastPageUri);
 
         var History = window.History;
         var urlParameters = '?query=' + query +
@@ -107,22 +145,31 @@ $(function() {
       });
     },
 
+    buildFirstPageUri: function(pagesize) {
+      var query = $.getQuery(window.location.href);
+      query.offset = 0;
+      return location.pathname + '?' + $.param(query);
+    },
+
+    buildPrevPageUri: function(pagesize) {
+      var query = $.getQuery(window.location.href);
+      query.offset = parseInt(query.offset, 10) - parseInt(pagesize, 10);
+      return location.pathname + '?' + $.param(query);
+    },
+
     buildNextPageUri: function(pagesize) {
       var query = $.getQuery(window.location.href);
       query.offset = parseInt(query.offset, 10) + parseInt(pagesize, 10);
-      return location.host + location.pathname + '?' + $.param(query);
+      return location.pathname + '?' + $.param(query);
     },
 
     buildLastPageUri: function(totalResult, pagesize) {
       var pageSize = parseInt(pagesize, 10);
-      // 	#page = Math.ceil(#results / pagesize)
       var totalPage = Math.ceil(totalResult / pageSize);
-
       var query = $.getQuery(window.location.href);
 
-      // offset = (#page - 1) * pagesize
       query.offset = (totalPage - 1) * pageSize;
-      return location.host + location.pathname + '?' + $.param(query);
+      return location.pathname + '?' + $.param(query);
     },
 
     getUrlParam: function(name){

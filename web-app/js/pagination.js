@@ -116,6 +116,17 @@ $(function() {
       paginationModule.updateHistory(id, pageSize, sortBy, offset);
 
       $('.results-overall-index').text('1 - ' + pageSize);
+      var numberOfItems = parseInt($('.result-count').text(), 10);
+      var totalPage = Math.ceil(numberOfItems / pageSize);
+      if(totalPage) {
+        $('.total-pages').text(totalPage);
+      }
+      var objectDetailWrapper = new ObjectDetailWrapper();
+      var nextPageUri = objectDetailWrapper.buildNextPageUri(pageSize);
+      var lastPageUri = objectDetailWrapper.buildLastPageUri(numberOfItems, pageSize);
+
+      $('li.next-page a.page-nav-result').attr('href', nextPageUri);
+      $('li.last-page a.page-nav-result').attr('href', lastPageUri);
     });
 
     $resultSortBy.change(function(event) {
@@ -130,17 +141,47 @@ $(function() {
       // TODO: don't repeat your self.
       paginationModule.showResults(id, pageSize, sortBy, offset);
       paginationModule.updateHistory(id, pageSize, sortBy, offset);
+
+      var queryNext = $.getQuery($('li.next-page a.page-nav-result').attr('href'));
+      var queryLast = $.getQuery($('li.last-page a.page-nav-result').attr('href'));
+      query.sort = sortBy;
+      nextPageUri = location.pathname + '?' + $.param(queryNext);
+      lastPageUri = location.pathname + '?' + $.param(queryLast);
+      $('li.next-page a.page-nav-result').attr('href', nextPageUri);
+      $('li.last-page a.page-nav-result').attr('href', lastPageUri);
     });
 
-    
-    
-    
-    
     //click listener for the elements with class page-nav-result
     $('.page-nav-result').click(function(){
-      fetchResultsList(this.href);
+
+      var objectDetailWrapper = new ObjectDetailWrapper();
+      var queryString = $.parseQuery($(this).attr('href'));
+      var uri = $(this).attr('href');
+      var query = getUrlParam('query', uri);
+      var History = window.History;
+      var urlParameters = '?query=' + query +
+                  '&offset=' + queryString.offset +
+                  '&pagesize=' + queryString.pagesize +
+                  '&sort=' + queryString.sort +
+                  '&id=' + queryString.id + 
+                  '&isInstitution=' + queryString.isInstitution;
+      History.pushState('', document.title, decodeURI(urlParameters));
+
+      objectDetailWrapper.showNodeDetails(queryString.id, '.list-container');
       return false;
     });
+
+    function getUrlParam (name, uri){
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(uri);
+        if(results == null) {
+          return "";
+        }else{
+          return decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+    };
 
     function fetchResultsList(url){
 
@@ -155,7 +196,7 @@ $(function() {
 //        $('.search-results').append(divSearchResultsOverlayModal);
 //        $('.search-results').append(divSearchResultsOverlayWaiting);
 
-        var request = $.ajax({
+        $.ajax({
           type: 'GET',
           dataType: 'json',
           async: true,

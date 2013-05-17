@@ -25,9 +25,9 @@ $(function() {
     var objectTreeWrapper = new ObjectTreeWrapper();
     objectTreeWrapper.buildInitialTree('#institution-tree', '.list-container');
     objectTreeWrapper.loadInitialTreeNodes('#institution-tree');
-    
+
     var objectDetailWrapper = new ObjectDetailWrapper();
 //  objectDetailWrapper.initializePagination();
-    objectDetailWrapper.showNodeDetails('rootnode', '#institution-tree', '.list-container');
+    objectDetailWrapper.showNodeDetails('rootnode', '.list-container', '###');
   }
 });
