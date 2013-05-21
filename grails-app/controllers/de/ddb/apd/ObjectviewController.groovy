@@ -122,15 +122,4 @@ class ObjectviewController {
 
         render (contentType: ContentType.JSON.toString()) { ["id": id, "count": "-"] }
     }
-
-    //    //The method can be used in ajax requests to retrieve elements on second level
-    //    def getSecondLevelNodes(){
-    //        assert params.id!=null, "this method should not be called without an ID"
-    //        render institutionService.getTechtonicFirstLvlHierarchyChildren(params.id)
-    //    }
-    //    //The method can be used in ajax requests to retrieve all elements up to institution parent
-    //    def getTopParentInstitution(){
-    //        assert params.id!=null, "this method should not be called without an ID"
-    //        render institutionService.getInstitutionParent(params.id)
-    //    }
 }

@@ -109,10 +109,8 @@ class DetailviewController {
         Item mainItem = rootItem.getItemFromHierarchy(id)
         mainItem.setMainItem(true)
 
-        //Item institutionRootItem = new Item(['id': institution.id, 'label': institution.name, 'aggregationEntity': true])
+        //Build an empty node to function as the hidden root-node of the tree
         Item emptyStartItem = new Item()
-        //emptyStartItem.children.add(institutionRootItem)
-        //institutionRootItem.children.add(rootItem)
         emptyStartItem.children.add(rootItem)
 
         return emptyStartItem

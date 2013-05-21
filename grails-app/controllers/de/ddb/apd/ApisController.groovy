@@ -39,7 +39,7 @@ class ApisController {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
-            throw apiResponse.getException()
+            apiResponse.throwException(request)
         }
         def jsonResp = apiResponse.getResponse()
 
