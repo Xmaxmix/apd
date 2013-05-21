@@ -28,12 +28,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="span8 fields">
           <g:render template="fields" />
-        </div>
-        <div class="span4 binaries">
           <g:render template="binaries" />
-        </div>
       </div>
     </div>
   </body>
