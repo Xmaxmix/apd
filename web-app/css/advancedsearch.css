@@ -55,6 +55,7 @@
   box-shadow:none;
   background:none;
   background:url("../images/icons/adv_search_row_actions.png") no-repeat;
+  border: none;
 }
 
 #advanced-search .add-group-button {
