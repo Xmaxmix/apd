@@ -20,7 +20,7 @@ limitations under the License.
     <g:link class="back-to-list" controller="objectview" action="index" params="['query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.hitNumber]"><g:message code="apd.Back_ResultList" /></g:link>
   </div>
   <div class="search-nav-item">
-    <a class="page-link page-link-popup-anchor" href="${createLink(controller: "detailview", action: "index", params:['id': itemId, 'name': friendlyTitle,'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.hitNumber])}" title="<g:message code="apd.Page_Link" />">
+    <a class="page-link page-link-popup-anchor" href="${createLink(controller: "detailview", action: "index", params:['id': itemId, 'name': friendlyTitle,'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.hitNumber, 'searchId': itemId])}" title="<g:message code="apd.Page_Link" />">
       <span><g:message code="apd.Page_Link" /></span>
     </a>
   </div>
@@ -41,19 +41,19 @@ limitations under the License.
 
   <ul class="inline">
     <li class="first-item ${displayLeftPagination}">
-      <g:link controller="detailview" action="index" params="[id: navData.firstHit, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': 1]"><g:message code="apd.First_Label" /></g:link>
+      <g:link controller="detailview" action="index" params="[id: navData.firstHit, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': 1, 'searchId': navData.firstHit]"><g:message code="apd.First_Label" /></g:link>
     </li>
     <li class="prev-item br-white ${displayLeftPagination}">
-      <g:link controller="detailview" action="index" params="[id: navData.previousHit, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': (navData.hitNumber-1)]"><g:message code="apd.Previous_Label" /></g:link>
+      <g:link controller="detailview" action="index" params="[id: navData.previousHit, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': (navData.hitNumber-1), 'searchId': navData.previousHit]"><g:message code="apd.Previous_Label" /></g:link>
     </li>
     <li>
       <span class="result-label"><g:message code="apd.Hit" /> </span><span class="hit-number"><g:localizeNumber>${navData.hitNumber}</g:localizeNumber></span><span> <g:message code="apd.Of" /> </span><span class="hit-count"><g:localizeNumber>${navData.resultCount}</g:localizeNumber></span>
     </li>
     <li class="next-item bl-white ${displayRightPagination}">
-      <g:link controller="detailview" action="index" params="[id: navData.nextHit, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': (navData.hitNumber+1)]"><g:message code="apd.Next_Label" /></g:link>
+      <g:link controller="detailview" action="index" params="[id: navData.nextHit, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': (navData.hitNumber+1), 'searchId': navData.nextHit]"><g:message code="apd.Next_Label" /></g:link>
     </li>
     <li class="last-item ${displayRightPagination}">
-      <g:link controller="detailview" action="index" params="[id: navData.lastHit, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.resultCount]"><g:message code="apd.Last_Label" /></g:link>
+      <g:link controller="detailview" action="index" params="[id: navData.lastHit, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.resultCount, 'searchId': navData.lastHit]"><g:message code="apd.Last_Label" /></g:link>
     </li>
   </ul>
 
