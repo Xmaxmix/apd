@@ -28,19 +28,8 @@
         </div>
       </div>
       <div class="row">
-        <g:if test="${binaryList?.size() > 0}">
-          <div class="span8 fields">
-            <g:render template="fields" />
-          </div>
-          <div class="span4 binaries">
-            <g:render template="binaries" />
-          </div>
-        </g:if>
-        <g:else>
-          <div class="span12 fields">
-            <g:render template="fields" />
-          </div>
-        </g:else>
+          <g:render template="fields" />
+          <g:render template="binaries" />
       </div>
     </div>
   </body>
