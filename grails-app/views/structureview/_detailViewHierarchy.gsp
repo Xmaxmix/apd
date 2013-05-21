@@ -77,18 +77,18 @@
     <g:if test="${item}">
       <div class="row">
         <div class="span2"><strong><g:message code="apd.indexmeta_0002"/>: </strong></div>
-        <div class="value span4">${item.title}</div>
+        <div class="value span6">${item.title}</div>
       </div>
       <g:each in="${item.fields}">
         <div class="row">
           <div class="span2"><strong>${it.name}: </strong></div>
-          <div class="value span4">${it.value}</div>
+          <div class="value span6">${it.value}</div>
         </div>
       </g:each>
       </g:if>
     <g:else>
       <div class="row">
-        <div class="value span6">
+        <div class="value span8">
           <g:message code="apd.No_InstitutionItem_Data"/>
         </div>
       </div>
