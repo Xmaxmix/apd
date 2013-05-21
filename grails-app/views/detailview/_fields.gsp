@@ -1,12 +1,20 @@
+<g:if test="${binaryList?.size() > 0}">
+  <g:set var="spanSize" value="${"span4"}" />
+</g:if>
+<g:else>
+  <g:set var="spanSize" value="${"span10"}" />
+</g:else>
+
+
 <div class="fields">
   <div class="row">
     <div class="span2"><strong><g:message code="apd.indexmeta_0002"/>: </strong></div>
-    <div class="value span4">${title}</div>
+    <div class="value ${spanSize}">${title}</div>
   </div>
   <g:each in="${fields}">
     <div class="row">
       <div class="span2"><strong>${it.name}: </strong></div>
-      <div class="value span4">${it.value}</div>
+      <div class="value ${spanSize}">${it.value}</div>
     </div>
   </g:each>
   

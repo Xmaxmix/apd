@@ -19,7 +19,7 @@
       <p>
       <select name="id" size="1" id="siblings-dropdown">
         <g:each in="${siblingInformation.siblings}">
-          <option value="${createLink(controller: "detailview", action: "index", params: ['id': siblingInformation.previous.id, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.hitNumber, 'searchId': params.id])}" <g:if test="${itemId == it.id}">selected="selected"</g:if>>${it.label}</option>
+          <option value="${createLink(controller: "detailview", action: "index", params: ['id': it.id, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.hitNumber, 'searchId': params.id])}" <g:if test="${itemId == it.id}">selected="selected"</g:if>>${it.label}</option>
         </g:each>
       </select>
       <p>
