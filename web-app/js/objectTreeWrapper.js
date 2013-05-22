@@ -137,17 +137,23 @@ $(function() {
           var nodeTitle = "<div class='dynatree-apd-title'>" + data.count+" Objekte" + "</div>";
           var root = [{ title: nodeTitle, 
                         key: "rootnode", 
+                        numberOfItems: data.count,
                         isFolder: true, 
                         isLazy: true, 
                         children: childNodes,
                         isInstitution: false}
                       ];
-          
+
           $(treeDiv).dynatree("getRoot").addChild(root);
-          
+
           // Open root node
           var rootNodeTreeElement = $(treeDiv).dynatree("getTree").getNodeByKey("rootnode");
           rootNodeTreeElement.expand(true);
+
+          // Initialize the list pagination and navigation
+          var objectDetailWrapper = new ObjectDetailWrapper();
+          objectDetailWrapper.initializePagination(rootNodeTreeElement);
+
         }else{
           //No data from backend
         }

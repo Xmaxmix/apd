@@ -27,9 +27,8 @@ $(function() {
     init: function() {
     },
     
-    initializePagination: function(institutionId, treeDiv, detailView) {
-//        var rootNodeTreeElement = $(treeDiv).dynatree("getTree").getNodeByKey("rootnode");
-//        this.showNodeDetails('rootnode', '#institution-tree', '.list-container', rootNodeTreeElement.data.numberOfItems);
+    initializePagination: function(rootNode) {
+      this.showNodeDetails('rootnode', '.list-container', rootNode.data.numberOfItems);
     },
 
     showNodeDetails: function(institutionId, detailView, numberOfItems) {
@@ -58,16 +57,14 @@ $(function() {
 
       $('.result-count').text(numberOfItems);
 
-      if(institutionId != "rootnode"){
-        var History = window.History;
-        var urlParameters = '?query=' + query +
-                            '&offset=' + offset +
-                            '&pagesize=' + pagesize +
-                            '&sort=' + sortBy +
-                            '&id=' + institutionId + 
-                            '&isInstitution=' + isInstitution;
-        History.pushState('', document.title, decodeURI(urlParameters));
-      }
+      var History = window.History;
+      var urlParameters = '?query=' + query +
+                          '&offset=' + offset +
+                          '&pagesize=' + pagesize +
+                          '&sort=' + sortBy +
+                          '&id=' + institutionId + 
+                          '&isInstitution=' + isInstitution;
+      History.pushState('', document.title, decodeURI(urlParameters));
 
       var id = this.getUrlParam("id");
       if(id != "" && id != "rootnode"){
@@ -81,6 +78,10 @@ $(function() {
         // pagination numbers
         var fromPag = Math.ceil(pagesize*(offset / pagesize)+1);
         var toPag = Math.ceil(parseInt(offset) + parseInt(pagesize));
+        var maxNumber = parseInt($('.result-count').text(), 10);
+        if (toPag>=maxNumber) {
+          toPag = maxNumber;
+        }
         var currentPagination = fromPag+"-"+toPag;
         $('.results-overall-index').text(currentPagination);
 
@@ -109,6 +110,8 @@ $(function() {
         else {
           $('li.first-page a.page-nav-result').removeClass("off");
           $('li.prev-page a.page-nav-result').removeClass("off");
+          $('li.next-page a.page-nav-result').removeClass("off");
+          $('li.last-page a.page-nav-result').removeClass("off");
         }
 
         // last page
@@ -133,15 +136,6 @@ $(function() {
         $('li.next-page a.page-nav-result').attr('href', nextPageUri);
         $('li.last-page a.page-nav-result').attr('href', lastPageUri);
 
-        var History = window.History;
-        var urlParameters = '?query=' + query +
-                    '&offset=' + offset +
-                    '&pagesize=' + pagesize +
-                    '&sort=' + sortBy +
-                    '&id=' + institutionId + 
-                    '&isInstitution=' + isInstitution;
-        History.pushState('', document.title, decodeURI(urlParameters));
-
       });
     },
 
@@ -154,6 +148,9 @@ $(function() {
     buildPrevPageUri: function(pagesize) {
       var query = $.getQuery(window.location.href);
       query.offset = parseInt(query.offset, 10) - parseInt(pagesize, 10);
+      if (query.offset<=0){
+        query.offset = 0;
+      }
       return location.pathname + '?' + $.param(query);
     },
 
@@ -173,16 +170,16 @@ $(function() {
     },
 
     getUrlParam: function(name){
-        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var regexS = "[\\?&]" + name + "=([^&#]*)";
-        var regex = new RegExp(regexS);
-        var results = regex.exec(window.location.search);
-        if(results == null) {
-          return "";
-        }else{
-          return decodeURIComponent(results[1].replace(/\+/g, " "));
-        }
-      },
-    
+      name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.location.search);
+      if(results == null) {
+        return "";
+      }else{
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+    },
+
   });
 });

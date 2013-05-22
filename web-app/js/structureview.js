@@ -28,6 +28,5 @@ $(document).ready(function () {
     structureTreeWrapper.loadInitialTreeNodes('#institution-tree');
     structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
 
-  
   }
 });
