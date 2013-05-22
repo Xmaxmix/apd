@@ -5,10 +5,9 @@
 
   <div class="sibling-previous">
     <g:if test="${siblingInformation.previous}">
-      <g:link controller="detailview" action="index" 
-        params="[id: siblingInformation.previous.id, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.hitNumber, 'searchId': params.searchId]">
+      <g:apdLink controller="detailview" action="index" params="${params}" addOrUpdate="${[id: siblingInformation.previous.id] }">
         <div class="nav-button left-active" ></div>
-      </g:link>
+      </g:apdLink>
     </g:if>
     <g:else>
       <div class="nav-button left-inactive" ></div>
@@ -20,8 +19,7 @@
       <p>
       <select name="id" size="1" id="siblings-dropdown">
         <g:each in="${siblingInformation.siblings}">
-          <option value="${createLink(controller: "detailview", action: "index", 
-              params: ['id': it.id, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.hitNumber, 'searchId': params.searchId])}" 
+          <option value="<g:createApdLink controller="detailview" action="index" params="${params}" addOrUpdate="${['id': it.id]}"/>" 
               <g:if test="${itemId == it.id}">selected="selected"</g:if>>
                 ${it.label}
           </option>
@@ -33,10 +31,9 @@
 
   <div class="sibling-next">
     <g:if test="${siblingInformation.next}">
-      <g:link controller="detailview" action="index" 
-        params="[id: siblingInformation.next.id, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'nodeId': params.nodeId, 'hitNumber': navData.hitNumber, 'searchId': params.searchId]">
+      <g:apdLink controller="detailview" action="index" params="${params}" addOrUpdate="${[id: siblingInformation.next.id] }">
         <div class="nav-button right-active" ></div>
-      </g:link>
+      </g:apdLink>
     </g:if>
     <g:else>
       <div class="nav-button right-inactive" ></div>

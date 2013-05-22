@@ -208,7 +208,11 @@ class DetailviewController {
             }
         }
 
-        def newOffset = (int)((hitNumber - 1) / pagesize)
+        def offset = (int)((hitNumber - 1) / pagesize)
+        def firstOffset = 0
+        def previousOffset = (int)Math.max(((hitNumber - 2) / pagesize), 0d)
+        def nextOffset = (int)((hitNumber + 1) / pagesize)
+        def lastOffset = (int)(resultCount / pagesize)
 
         navData["resultCount"] = resultCount
         navData["hitNumber"] = hitNumber
@@ -217,7 +221,11 @@ class DetailviewController {
         navData["nextHit"] = nextHitId
         navData["firstHit"] = firstHitId
         navData["lastHit"] = lastHitId
-        navData["newOffset"] = newOffset
+        navData["newOffset"] = offset
+        navData["firstOffset"] = firstOffset
+        navData["previousOffset"] = previousOffset
+        navData["nextOffset"] = nextOffset
+        navData["lastOffset"] = lastOffset
 
         return navData
     }

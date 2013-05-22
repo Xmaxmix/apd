@@ -8,18 +8,9 @@
     </g:if>
     <g:else>
       <li>
-        <%-- 
-        <g:if test="${!hierarchyItem.aggregationEntity}">
-          <g:link url="${hierarchyItem.id}">${hierarchyItem.label}</g:link>
-        </g:if>
-        <g:else>
+        <g:apdLink controller="structureview" action="index" params="${params}" addOrUpdate="${[nodeId: hierarchyItem.id]}" remove="${['id','searchId','hitNumber','name']}">
           ${hierarchyItem.label}
-        </g:else>
-        --%>
-        <g:link controller="structureview" action="index" params="[nodeId: hierarchyItem.id, 'query': params.query, 'offset': navData.newOffset, 'pagesize': navData.pagesize, 'sort': params.sort, 'hitNumber': navData.hitNumber]">
-          ${hierarchyItem.label}
-        </g:link>
-        
+        </g:apdLink>
       </li>
     </g:else>
     <g:render template="hierarchy" />
