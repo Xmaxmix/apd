@@ -389,9 +389,13 @@ class InstitutionService {
      * @return
      */
     def getInstitutionParent(id){
-        def parent = itemService.getParent(id)
-        parent = getParentBasedOnSimilarity(parent)
-        return parent;
+        def parents = itemService.getParent(id)
+        if (parents.size()==0){
+            def item = itemService.findItemById(id)
+            parents=itemService.getParent(item.institution.id)
+        }
+        parents = getParentBasedOnSimilarity(parents)
+        return parents;
     }
 
     private getParentBasedOnSimilarity(parent) {
