@@ -16,6 +16,7 @@
 
 $(document).ready(function () {
   if(jsPageName == "structureview") {
+    
     var treeElement = $("#institution-tree");
     var detailViewElement = $(".institution-item-details");
     
@@ -29,15 +30,15 @@ $(document).ready(function () {
       //structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
     
     $(window).bind('statechange', function(e) {
-      var nodeId = getUrlParam("nodeId");
-      if(nodeId){
-        structureTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
-      }else{
-        //TODO Create a method for this
-        detailViewElement.empty();
-        //TODO Localize text
-        detailViewElement.html("<h1>Bitte wählen Sie ein Archiv</h1>");
-      }
+        var nodeId = getUrlParam("nodeId");
+        if(nodeId){
+          structureTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+        }else{
+          //TODO Create a method for this
+          detailViewElement.empty();
+          //TODO Localize text
+          detailViewElement.html("<h1>Bitte wählen Sie ein Archiv</h1>");
+        }
     });
   }
 });

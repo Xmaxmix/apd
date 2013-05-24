@@ -15,7 +15,6 @@
  */
 $(function() {
   if (jsPageName == 'objectview') {
-
     if ($('.search-widget-container').length > 0) {
       var searchWidgetContainer = $('#search-widget');
       searchWidget = new SearchWidget($('#search-widget-form'), searchWidgetContainer,
@@ -32,7 +31,11 @@ $(function() {
     var objectTreeManager = new TreeManager(treeElement, detailViewElement, false);
     
     $(window).bind('statechange', function(e) {
-      objectTreeManager.onPostInit(false);
-     });
+      var nodeId = getUrlParam("nodeId");
+      if(nodeId){
+        objectTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+      }
+    });
   }
 });
+

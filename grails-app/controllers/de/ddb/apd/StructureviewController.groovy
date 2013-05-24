@@ -61,8 +61,14 @@ class StructureviewController {
 
     def getTreeNodeParents() {
         def id = params.id
-        def parents = institutionService.getInstitutionParent(id)
-
+        
+        def parents = []
+        if(id == "rootnode"){
+            def rootNode = [id:"rootnode", parent:"<<null>>", label:"", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:true]
+            parents.add(rootNode)
+        }else{
+            parents = institutionService.getInstitutionParent(id)
+        }
         render (contentType: ContentType.JSON.toString()) { parents }
     }
 
