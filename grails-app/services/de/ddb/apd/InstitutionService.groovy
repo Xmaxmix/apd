@@ -147,7 +147,6 @@ class InstitutionService {
     }
 
     def searchArchivesForStructure(String query) {
-        println "########################## searchArchivesForStructure"
         //        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
         //        def backendUrl = configurationService.getBackendUrl()
         //        def parameters = [:]
@@ -444,14 +443,24 @@ class InstitutionService {
         institutionsList.each {
             if (it.name== cosines.first().toString()){
                 //Fix the different attributes for objects and institutions
-                it.label = it.name;
                 parent.last().parent = it.id
-                it["parent"] = ""
-                it["leaf"] = false
-                it["type"] = ""
-                it["aggregationEntity"] = true
-                it["children"] = []
-                parent << it
+                //                it.label = it.name
+                //                it["parent"] = ""
+                //                it["leaf"] = false
+                //                it["type"] = ""
+                //                it["aggregationEntity"] = true
+                //                it["children"] = []
+
+                def itCopy = [:]
+                itCopy["id"] = it.id
+                itCopy["label"] = it.name
+                itCopy["parent"] = ""
+                itCopy["leaf"] = false
+                itCopy["type"] = ""
+                itCopy["aggregationEntity"] = true
+                itCopy["children"] = []
+
+                parent << itCopy
             }
         }
         //Fix null types (causing JSON problems)
