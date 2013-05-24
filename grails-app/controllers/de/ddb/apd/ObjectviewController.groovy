@@ -57,12 +57,12 @@ class ObjectviewController {
         def pagesize = params.pagesize
         def sort = params.sort
 
-        log.info """Get tree node details for item with \n
-                the ID: ${id},\n
-                query: ${query}, \n
-                page size: ${pagesize}, \n
-                offset: ${offset}
-                sort: ${sort}"""
+        //        log.info """Get tree node details for item with \n
+        //                the ID: ${id},\n
+        //                query: ${query}, \n
+        //                page size: ${pagesize}, \n
+        //                offset: ${offset}
+        //                sort: ${sort}"""
 
         def resultsItems = institutionService.searchArchive(query, id, offset, pagesize, sort)?.results[0]?.docs
         resultsItems.each {
