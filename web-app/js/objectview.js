@@ -30,6 +30,9 @@ $(function() {
     console.log(detailViewElement)
     
     var objectTreeManager = new TreeManager(treeElement, detailViewElement, false);
-
+    
+    $(window).bind('statechange', function(e) {
+      objectTreeManager.onPostInit(false);
+     });
   }
 });

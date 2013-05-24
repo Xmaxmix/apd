@@ -105,14 +105,7 @@ $(function(){
               
               var nodeTitle = "<div class='dynatree-apd-title' id='" + data[i].id + "'>" + data[i].label + "</div>";
               
-              childNodes.push(
-                {title: nodeTitle, 
-                  key: data[i].id, 
-                  isFolder: true, 
-                  isLazy: false,
-                  children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
-                  isInstitution: data[i].institution}
-                );
+              $self.createAndPushNode(nodeTitle, childNodes, data[i].id, true, false, data[i].institution);
             }
             
             if(childNodes.length == 0){
