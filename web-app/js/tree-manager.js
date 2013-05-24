@@ -15,9 +15,6 @@
  */
 
 $(function(){
-  $(window).bind('statechange', function(e) {
-    console.log("POPSTATE")
-   });
   TreeManager = function(treeElement, detailViewElement, isStructure){
     this.isStructure = isStructure;
     this.buildTree(treeElement, detailViewElement);
