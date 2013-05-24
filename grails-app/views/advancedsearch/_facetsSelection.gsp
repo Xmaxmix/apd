@@ -21,7 +21,7 @@
 
   <!-- TODO: We don't need the non-JS version, remove it -->
   <!-- The non-JS version -->
-  <select class="facet facet-simple" name="facet-${group}-${row}">
+  <select class="facet facet-simple" name="facet-${group}-${row}" data-title="Select a filter" data-content="text">
     <g:each in="${facetSearchfields}">
       <g:if test="${it.searchType?.equals(textSearchType)}">
         <option value="${it.name}">
