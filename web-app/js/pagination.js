@@ -115,7 +115,32 @@ $(function() {
       paginationModule.showResults(id, pageSize, sortBy, offset);
       paginationModule.updateHistory(id, pageSize, sortBy, offset);
 
-      $('.results-overall-index').text('1 - ' + pageSize);
+      // pagination numbers
+      var fromPag = Math.ceil(pageSize*(offset / pageSize)+1);
+      var toPag = Math.ceil(parseInt(offset) + parseInt(pageSize));
+      var currentPagination = fromPag+"-"+toPag;
+      $('.results-overall-index').text(currentPagination);
+
+      var numberOfItems = parseInt($('.result-count').text(), 10);
+
+      // current page number for the navigation
+      var currentPage = Math.ceil((offset / pageSize)+1);
+      $('.current-page').text(currentPage);
+
+      var totalPage = Math.ceil(numberOfItems / pageSize);
+      if(totalPage) {
+        $('.total-pages').text(totalPage);
+      }
+      var contentManager = new ContentManager();
+      var firstPageUri = contentManager.buildFirstPageUri(pageSize);
+      var prevPageUri = contentManager.buildPrevPageUri(pageSize);
+      var nextPageUri = contentManager.buildNextPageUri(pageSize);
+      var lastPageUri = contentManager.buildLastPageUri(numberOfItems, pageSize);
+
+      $('li.first-page a.page-nav-result').attr('href', firstPageUri);
+      $('li.prev-page a.page-nav-result').attr('href', prevPageUri);
+      $('li.next-page a.page-nav-result').attr('href', nextPageUri);
+      $('li.last-page a.page-nav-result').attr('href', lastPageUri);
     });
 
     $resultSortBy.change(function(event) {
@@ -130,44 +155,52 @@ $(function() {
       // TODO: don't repeat your self.
       paginationModule.showResults(id, pageSize, sortBy, offset);
       paginationModule.updateHistory(id, pageSize, sortBy, offset);
+
+      var queryFirst = $.getQuery($('li.first-page a.page-nav-result').attr('href'));
+      var queryPrev = $.getQuery($('li.prev-page a.page-nav-result').attr('href'));
+      var queryNext = $.getQuery($('li.next-page a.page-nav-result').attr('href'));
+      var queryLast = $.getQuery($('li.last-page a.page-nav-result').attr('href'));
+      query.sort = sortBy;
+      firstPageUri = location.pathname + '?' + $.param(queryFirst);
+      prevPageUri = location.pathname + '?' + $.param(queryPrev);
+      nextPageUri = location.pathname + '?' + $.param(queryNext);
+      lastPageUri = location.pathname + '?' + $.param(queryLast);
+      $('li.first-page a.page-nav-result').attr('href', firstPageUri);
+      $('li.prev-page a.page-nav-result').attr('href', prevPageUri);
+      $('li.next-page a.page-nav-result').attr('href', nextPageUri);
+      $('li.last-page a.page-nav-result').attr('href', lastPageUri);
     });
 
+    //click listener for the elements with class page-nav-result
+    $('.page-nav-result').click(function(){
 
-    // TODO: add click listener to a.page-nav-result
-    $('a.page-nav-result').click(function(event) {
-      event.preventDefault();
-
+      var contentManager = new ContentManager();
       var queryString = $.parseQuery($(this).attr('href'));
+      var uri = $(this).attr('href');
+      var query = getUrlParam('query', uri);
+      var History = window.History;
+      var urlParameters = '?query=' + query +
+                  '&offset=' + queryString.offset +
+                  '&pagesize=' + queryString.pagesize +
+                  '&sort=' + queryString.sort +
+                  '&id=' + queryString.id + 
+                  '&isInstitution=' + queryString.isInstitution;
+      History.pushState('', document.title, decodeURI(urlParameters));
 
-      var fullUrl = jsContextPath + '/liste/detail/' + queryString.id;
-      fullUrl += '?query=' + queryString.query;
-      fullUrl += '&offset=' + queryString.offset;
-      fullUrl += '&pagesize=' + queryString.pagesize;
-      fullUrl += '&sort=' + queryString.sort;
-      var isAlready404 = false;
-
-      $.ajax({
-        type: 'GET',
-        dataType: 'html',
-        async: true,
-        cache: false,
-        url: fullUrl,
-        complete: function(data) {
-          if (isAlready404) { // prevent redirects after 404 answer
-            ///callback(null);
-            return;
-          }
-          $('.list-container').empty();
-          console.log(data.responseText);
-//          $('.list-container').append(data.responseText);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          isAlready404 = true;
-//          callback(null);
-        }
-      });
+      contentManager.showNodeDetails(queryString.id, $('.list-container'));
+      return false;
     });
-    // TODO: onSuccess replace the result list with the new HTML
-    // TODO: update the navigations
+
+    function getUrlParam (name, uri){
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(uri);
+        if(results == null) {
+          return "";
+        }else{
+          return decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+    };
   }
 });

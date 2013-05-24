@@ -12,7 +12,7 @@
 <div class="page-info-nav">
 
   <div class="page-info">
-    <span class="results-overall-index">1 - 20</span>
+    <span class="results-overall-index"></span>
     <span><g:message code="apd.Of" /></span>
     <span><b><span class="results-total" id="results-total">0</span></b></span>
     <g:if test="true">
@@ -34,7 +34,8 @@
       <li class="pages-overall-index">
         <span>
             <g:message code="apd.Page" />
-            <span>1</span>
+            <span class="current-page">
+            </span>
             <%--
             <input type="text" class="input-mini page-input off" maxlength="10" value="1" />
              --%>
@@ -46,7 +47,6 @@
             <%--
               <g:localizeNumber>totalPages</g:localizeNumber>
              --%>
-              500
             </span>
         </span>
       </li>

@@ -23,9 +23,10 @@ $(document).ready(function () {
       var searchWidgetContainer = $('#search-widget');
       searchWidget = new SearchWidget($('#search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
     }
-    
+
     var structureTreeManager = new TreeManager(treeElement, detailViewElement, true);
     console.log(structureTreeManager)
       //structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
+
   }
 });

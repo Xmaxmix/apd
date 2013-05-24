@@ -23,7 +23,7 @@ $(function(){
   
   $.extend(TreeManager.prototype, {
     
-    objectDetailWrapper: null,
+    objectContentManager: null,
     institutionsApiWrapper: new InstitutionsApiWrapper(),
     initialized: false,
     loadInitialTreeNodesStack: 0,
@@ -37,7 +37,7 @@ $(function(){
       // Initialize tree
       var $self = this;
       if(!this.isStructure){
-        this.objectDetailWrapper = new ObjectDetailWrapper();
+        this.objectContentManager = new ContentManager();
       }
       treeElement.dynatree({
         onClick: function(node, event) {
@@ -49,9 +49,9 @@ $(function(){
             $self.openTreeNode(node.data.key, treeElement, 2, emptyFunction, openCalls, emptyFunction);
           }
           if($self.isStructure){
-            $self.showNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
+            $self.showStructureNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
           }else{
-            $self.showNodeDetails(node.data.key, detailViewElement, detailViewElement);
+            $self.objectContentManager.showNodeDetails(node.data.key, detailViewElement, node.data.numberOfItems);
           }
         },
         onExpand: function(expand, node) {},
@@ -73,9 +73,6 @@ $(function(){
           $self.openPathToNode(nodeId, treeElement, detailViewElement);
         }
       });
-      if(!this.isStructure){
-        this.showNodeDetails('rootnode', treeElement, detailViewElement);
-      }
     },
     
     openTreeNode: function(institutionId, treeElement, recursionDepth, initialTreeNodesLoadedCallback, openCalls, isOpenedCallback){
@@ -187,15 +184,7 @@ $(function(){
         });
       }
     },
-    
-    showNodeDetails: function(institutionId, treeElement, detailViewElement, isInstitution){
-      if(this.isStructure){
-        this.showStructureNodeDetails(institutionId, treeElement, detailViewElement, isInstitution);
-      }else{
-        this.showObjectNodeDetails(institutionId, treeElement, detailViewElement);
-      }
-    },
-    
+
     showStructureNodeDetails: function(institutionId, treeElement, detailViewElement, isInstitution){
       var query = getUrlParam("query");
       var isInstitution = treeElement.dynatree("getTree").getNodeByKey(institutionId).data.isInstitution;
@@ -230,69 +219,7 @@ $(function(){
 
       });
     },
-    
-    showObjectNodeDetails: function(institutionId, treeElement, detailViewElement){
-      var $self = this;
-      
-      console.log('id', institutionId);
-      console.log('treeElement', treeElement);
-      console.log('detail view', detailViewElement);
 
-      var query = getUrlParam('query');
-      if (query === '') {
-        query = '*';
-      }
-
-      var offset = getUrlParam('offset');
-      if (offset === '') {
-        offset = '0';
-      }
-      var pagesize = getUrlParam('pagesize');
-      if (pagesize === '') {
-        pagesize = '20';
-      }
-
-      var sortBy = getUrlParam('sort');
-      if (sortBy === '') {
-        sortBy = 'RELEVANCE';
-      }
-      
-      var isInstitution = false;
-      
-      if(institutionId != "rootnode"){
-        var History = window.History;
-        var urlParameters = '?query=' + query +
-                            '&offset=' + offset +
-                            '&pagesize=' + pagesize +
-                            '&sort=' + sortBy +
-                            '&nodeId=' + institutionId + 
-                            '&isInstitution=' + isInstitution;
-        History.pushState('', document.title, decodeURI(urlParameters));
-      }
-
-      var id = getUrlParam("nodeId");
-      if(id != "" && id != "rootnode"){
-        institutionId = id;
-      }
-
-      this.institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
-        detailViewElement.empty();
-        detailViewElement.append(data);
-        
-        $self.objectDetailWrapper.nodeDetailsLoaded();
-
-        var History = window.History;
-        var urlParameters = '?query=' + query +
-                    '&offset=' + offset +
-                    '&pagesize=' + pagesize +
-                    '&sort=' + sortBy +
-                    '&nodeId=' + institutionId + 
-                    '&isInstitution=' + isInstitution;
-        History.pushState('', document.title, decodeURI(urlParameters));
-        
-      });
-    },
-    
     loadInitialTreeNodes: function(treeElement, initialTreeNodesLoadedCallback) {
       if(this.isStructure){
         this.loadStructureInitialTreeNodes(treeElement, initialTreeNodesLoadedCallback);
@@ -354,7 +281,7 @@ $(function(){
           var childNodes = [];
           for(var i=0; i<data.institutions.length; i++) {
             var tmpNodeTitle = "<div class='dynatree-apd-title'>" + data.institutions[i].name+" ("+data.institutions[i].count+")" + "</div>";
-            $self.createAndPushNode(tmpNodeTitle, childNodes, data.institutions[i].id, true, false, data.institutions[i].institution);
+            $self.createAndPushNode(tmpNodeTitle, childNodes, data.institutions[i].id, true, false, data.institutions[i].institution, data.institutions[i].count);
           }
           
           for(var i=0; i<data.institutions.length; i++) {
@@ -365,9 +292,10 @@ $(function(){
 
           var rootNodeTitle = "<div class='dynatree-apd-title'>" + data.count+" Objekte" + "</div>";
           var root = [{ title: rootNodeTitle, 
-                        key: "rootnode", 
-                        isFolder: true, 
-                        isLazy: true, 
+                        key: "rootnode",
+                        numberOfItems: data.count,
+                        isFolder: true,
+                        isLazy: true,
                         children: childNodes,
                         isInstitution: false}
                       ];
@@ -377,6 +305,10 @@ $(function(){
           // Open root node
           var rootNodeTreeElement = treeElement.dynatree("getTree").getNodeByKey("rootnode");
           rootNodeTreeElement.expand(true);
+
+          // Initialize the list pagination and navigation
+          $self.objectContentManager.initializePagination(rootNodeTreeElement);
+
         }else{
           //No data from backend
         }
@@ -420,14 +352,15 @@ $(function(){
       }
     },
     
-    createAndPushNode: function(nodeTitle, nodesArray, key, isFolder, isLazy, isInstitution){ 
+    createAndPushNode: function(nodeTitle, nodesArray, key, isFolder, isLazy, isInstitution, numberOfItems){ 
       nodesArray.push(
           {title: nodeTitle, 
             key: key, 
             isFolder: isFolder, 
             isLazy: isLazy,
             children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
-            isInstitution: isInstitution}
+            isInstitution: isInstitution,
+            numberOfItems: numberOfItems}
       );
     }
   });
