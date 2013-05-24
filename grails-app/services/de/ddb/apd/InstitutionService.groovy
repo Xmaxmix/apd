@@ -147,26 +147,36 @@ class InstitutionService {
     }
 
     def searchArchivesForStructure(String query) {
-        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
-        def backendUrl = configurationService.getBackendUrl()
-        def parameters = [:]
-        parameters["query"] = query
-        parameters["sector"] = "sec_01"
-        def searchWrapper = ApiConsumer.getJson(backendUrl, "/institutions", parameters)
+        //        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
+        //        def backendUrl = configurationService.getBackendUrl()
+        //        def parameters = [:]
+        //        parameters["query"] = query
+        //        parameters["sector"] = "sec_01"
+        //        def searchWrapper = ApiConsumer.getJson(backendUrl, "/institutions", parameters)
+        //
+        //        if(!searchWrapper.isOk()){
+        //            log.error "searchArchives(): search returned an error"
+        //        }
+        //
+        //
+        //        //Getting result institutions for search
+        //        def searchResponse = searchWrapper.getResponse()
 
-        if(!searchWrapper.isOk()){
-            log.error "searchArchives(): search returned an error"
-        }
+        //        // Getting ID for institutions
+        //        //println searchResponse.get(0)
+        //        searchResponse.each {
+        //            resultList.add(["id": it.id, "name": it.name, "count": 0, "institution": true])
+        //        }
 
-
-        //Getting result institutions for search
-        def searchResponse = searchWrapper.getResponse()
-
-        // Getting ID for institutions
-        //println searchResponse.get(0)
         def resultList = []
-        searchResponse.each {
-            resultList.add(["id": it.id, "name": it.name, "count": 0, "institution": true])
+
+        def allInstitutes = findAll()
+
+        for(int i=0; i<allInstitutes.size(); i++){
+            def currentInstitute = allInstitutes.get(i)
+            if(isInstitutionOrChildAnArchive(currentInstitute)) {
+                resultList.add(["id": currentInstitute.id, "name": currentInstitute.name, "count": 0, "institution": true])
+            }
         }
 
         def resultObject = [:]
@@ -175,6 +185,21 @@ class InstitutionService {
 
         return resultObject
 
+    }
+
+    private def isInstitutionOrChildAnArchive(def currentInstitution){
+        if(currentInstitution.sector == "sec_01"){
+            return true
+        }else{
+            if(currentInstitution.children){
+                for(int i=0; i<currentInstitution.children.size(); i++){
+                    if(isInstitutionOrChildAnArchive(currentInstitution.children.get(i))){
+                        return true
+                    }
+                }
+            }
+        }
+        return false
     }
 
     def searchArchive(query, institutionId, offset, pagesize, sort) {
@@ -389,9 +414,25 @@ class InstitutionService {
      * @return
      */
     def getInstitutionParent(id){
-        def parent = itemService.getParent(id)
-        parent = getParentBasedOnSimilarity(parent)
-        return parent;
+
+        def parents = itemService.getParent(id)
+        if (parents.size() == 0){
+            def item = itemService.findItemById(id)
+            parents = itemService.getParent(item.institution.id)
+
+            def replacementItem = [:]
+            replacementItem["id"] = id
+            replacementItem["parent"] = item.institution.id.toString()
+            replacementItem["label"] = item.item.title.toString()
+            replacementItem["type"] = ""
+            replacementItem["position"] = -1
+            replacementItem["leaf"] = true
+            replacementItem["aggregationEntity"] = true
+
+            parents.add(0,replacementItem)
+        }
+        parents = getParentBasedOnSimilarity(parents)
+        return parents;
     }
 
     private getParentBasedOnSimilarity(parent) {
@@ -402,14 +443,24 @@ class InstitutionService {
         institutionsList.each {
             if (it.name== cosines.first().toString()){
                 //Fix the different attributes for objects and institutions
-                it.label = it.name;
                 parent.last().parent = it.id
-                it["parent"] = ""
-                it["leaf"] = false
-                it["type"] = ""
-                it["aggregationEntity"] = true
-                it["children"] = []
-                parent << it
+                //                it.label = it.name
+                //                it["parent"] = ""
+                //                it["leaf"] = false
+                //                it["type"] = ""
+                //                it["aggregationEntity"] = true
+                //                it["children"] = []
+
+                def itCopy = [:]
+                itCopy["id"] = it.id
+                itCopy["label"] = it.name
+                itCopy["parent"] = ""
+                itCopy["leaf"] = false
+                itCopy["type"] = ""
+                itCopy["aggregationEntity"] = true
+                itCopy["children"] = []
+
+                parent << itCopy
             }
         }
         //Fix null types (causing JSON problems)
