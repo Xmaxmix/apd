@@ -25,8 +25,17 @@ $(document).ready(function () {
     }
 
     var structureTreeManager = new TreeManager(treeElement, detailViewElement, true);
-    console.log(structureTreeManager)
-      //structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
-
+    
+    $(window).bind('statechange', function(e) {
+        var nodeId = getUrlParam("nodeId");
+        if(nodeId){
+          structureTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+        }else{
+          //TODO Create a method for this
+          detailViewElement.empty();
+          //TODO Localize text
+          detailViewElement.html("<h1>Bitte wählen Sie ein Archiv</h1>");
+        }
+    });
   }
 });

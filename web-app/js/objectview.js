@@ -70,13 +70,13 @@ $(function() {
                               '&offset=' + offset +
                               '&pagesize=' + pagesize +
                               '&sort=' + sortBy +
-                              '&id=' + institutionId + 
+                              '&nodeId=' + institutionId + 
                               '&isInstitution=' + isInstitution;
           History.pushState('', document.title, decodeURI(urlParameters));
 
-          var id = getUrlParam("id");
-          if(id != "" && id != "rootnode"){
-            institutionId = id;
+          var nodeId = getUrlParam("nodeId");
+          if(nodeId != "" && nodeId != "rootnode"){
+            institutionId = nodeId;
           }
 
           this.institutionsApiWrapper.getObjectTreeNodeDetails(institutionId, query, offset, pagesize, sortBy, function(data) {
@@ -183,5 +183,12 @@ $(function() {
       var detailViewElement = $(".list-container");
 
       var objectTreeManager = new TreeManager(treeElement, detailViewElement, false);
+      
+      $(window).bind('statechange', function(e) {
+        var nodeId = getUrlParam("nodeId");
+        if(nodeId){
+          objectTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+        }
+      });
   }
 });

@@ -15,7 +15,6 @@
  */
 
 $(function(){
-  
   TreeManager = function(treeElement, detailViewElement, isStructure){
     this.isStructure = isStructure;
     this.buildTree(treeElement, detailViewElement);
@@ -54,7 +53,8 @@ $(function(){
             $self.objectContentManager.showNodeDetails(node.data.key, detailViewElement, node.data.numberOfItems);
           }
         },
-        onExpand: function(expand, node) {},
+        onExpand: function(expand, node) {
+        },
         onPostInit: function(isReloading, isError){
           if(!isReloading && this.isStructure){
             $self.initialized = true;
@@ -67,6 +67,7 @@ $(function(){
           }
         }
       });
+      //TODO Remember to remove it and check the duplicated calls on the openPathToNode in the Objecttree after a search
       this.loadInitialTreeNodes(treeElement, function(){
         var nodeId = getUrlParam("nodeId");
         if(nodeId){
@@ -79,7 +80,7 @@ $(function(){
       if(this.isStructure){
         this.openStructureTreeNode(institutionId, treeElement, recursionDepth, initialTreeNodesLoadedCallback, openCalls, isOpenedCallback);
       }else{
-        this.openObjectTreeNode(institutionId, treeElement, recursionDepth);
+        this.openObjectTreeNode(institutionId, treeElement, recursionDepth, initialTreeNodesLoadedCallback, openCalls, isOpenedCallback);
       }
     },
     
@@ -100,14 +101,7 @@ $(function(){
               
               var nodeTitle = "<div class='dynatree-apd-title' id='" + data[i].id + "'>" + data[i].label + "</div>";
               
-              childNodes.push(
-                {title: nodeTitle, 
-                  key: data[i].id, 
-                  isFolder: true, 
-                  isLazy: false,
-                  children: [{title:"<div class='dynatree-apd-title'>Loading...</div>", key: "empty"}],
-                  isInstitution: data[i].institution}
-                );
+              $self.createAndPushNode(nodeTitle, childNodes, data[i].id, true, false, data[i].institution);
             }
             
             if(childNodes.length == 0){
@@ -140,10 +134,12 @@ $(function(){
       }
     },
     
-    openObjectTreeNode: function(institutionId, treeElement, recursionDepth){
+    openObjectTreeNode: function(institutionId, treeElement, recursionDepth, initialTreeNodesLoadedCallback, openCalls, isOpenedCallback){
       
       var $self = this;
       recursionDepth = recursionDepth - 1;
+      $self.loadInitialTreeNodesStack ++;
+      openCalls.open = openCalls.open + 1;
 
       var query = getUrlParam('query');
       if (query === '') {
@@ -174,13 +170,23 @@ $(function(){
               });
 
               if(recursionDepth > 0){
-                $self.openTreeNode(data[i].id, treeElement, recursionDepth);
+                $self.openTreeNode(data[i].id, treeElement, recursionDepth, initialTreeNodesLoadedCallback, openCalls, isOpenedCallback);
               }
             }
 
           }else{
             // No response data from backend
           }
+          
+          $self.loadInitialTreeNodesStack --;
+          if($self.loadInitialTreeNodesStack == 0){
+            initialTreeNodesLoadedCallback();
+          }
+          
+          openCalls.open = openCalls.open - 1;
+          
+          isOpenedCallback(openCalls);
+          
         });
       }
     },
@@ -224,7 +230,7 @@ $(function(){
       if(this.isStructure){
         this.loadStructureInitialTreeNodes(treeElement, initialTreeNodesLoadedCallback);
       }else{
-        this.loadObjectInitialTreeNodes(treeElement);
+        this.loadObjectInitialTreeNodes(treeElement, initialTreeNodesLoadedCallback);
       }
     },
     
@@ -268,12 +274,15 @@ $(function(){
       }
     },
     
-    loadObjectInitialTreeNodes: function(treeElement){
+    loadObjectInitialTreeNodes: function(treeElement, initialTreeNodesLoadedCallback){
       var $self = this;
       var query = getUrlParam("query");
       if(query === ""){
         query = "*"
       }
+      
+      $self.loadInitialTreeNodesStack = 0;
+      $self.loadInitialTreeNodesStack ++;
 
       this.institutionsApiWrapper.getObjectTreeRootNodes(query, function(data){
         
@@ -286,7 +295,7 @@ $(function(){
           
           for(var i=0; i<data.institutions.length; i++) {
             if(data.institutions[i].id){
-              $self.openTreeNode(data.institutions[i].id, treeElement, 1);
+              $self.openTreeNode(data.institutions[i].id, treeElement, 1, initialTreeNodesLoadedCallback, {'open':0}, function(openCalls){});
             }
           }
 
@@ -312,8 +321,17 @@ $(function(){
         }else{
           //No data from backend
         }
-
+        
+        $self.loadInitialTreeNodesStack --;
+        if($self.loadInitialTreeNodesStack == 0){
+          initialTreeNodesLoadedCallback();
+        }
       });
+      
+      $self.loadInitialTreeNodesStack --;
+      if($self.loadInitialTreeNodesStack == 0){
+        initialTreeNodesLoadedCallback();
+      }
     },
     
     openPathToNode: function(nodeId, treeElement, detailViewElement) {
@@ -345,7 +363,11 @@ $(function(){
         var node = treeElement.dynatree("getTree").getNodeByKey(nodeId);
         node.select(true);
         
-        $self.showNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
+        if($self.isStructure){
+          $self.showNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
+        }else{
+          $self.objectContentManager.showNodeDetails(node.data.key, detailViewElement, node.data.numberOfItems);
+        }
         
         var nodeAnchor = $(nodeId);
         nodeAnchor.scrollIntoView();
