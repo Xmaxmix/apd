@@ -49,14 +49,17 @@ class ApdLinkTagLib {
         attrs.remove("addOrUpdate")
         attrs.remove("remove")
 
-        if(addOrUpdate){
-            params << addOrUpdate
-        }
-
         if(remove){
+            if(remove.size() == 1 && remove.get(0) == "*") {
+                params = [:]
+            }
             for(int i=0; i<remove.size(); i++){
                 params.remove(remove.get(i))
             }
+        }
+
+        if(addOrUpdate){
+            params << addOrUpdate
         }
 
         attrs["params"] = params

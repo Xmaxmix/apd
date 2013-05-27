@@ -29,12 +29,22 @@
       <div class="span4">
         <div class="row">
           <div class="span4">
+            <%-- 
             <g:link controller="struktur">
               <div class="selector"><g:message code="apd.Structure"/></div>
             </g:link>
+            --%>
+            <g:apdLink controller="struktur" action="index" params="${params}">
+              <div class="selector"><g:message code="apd.Structure"/></div>
+            </g:apdLink>
+            <%-- 
             <g:link controller="liste">
               <div class="selector active"><g:message code="apd.Object"/></div>
             </g:link>
+            --%>
+            <g:apdLink controller="liste" action="index" params="${params}">
+              <div class="selector active"><g:message code="apd.Object"/></div>
+            </g:apdLink>
           </div>
         </div>
         <div class="row">
