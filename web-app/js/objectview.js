@@ -187,7 +187,9 @@ $(function() {
       $(window).bind('statechange', function(e) {
         var nodeId = getUrlParam("nodeId");
         if(nodeId){
-          objectTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+          if(!objectTreeManager.initialized){
+            objectTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+          }
         }
       });
   }

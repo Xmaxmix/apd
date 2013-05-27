@@ -29,7 +29,9 @@ $(document).ready(function () {
     $(window).bind('statechange', function(e) {
         var nodeId = getUrlParam("nodeId");
         if(nodeId){
-          structureTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+          if(!structureTreeManager.initialized){
+            structureTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+          }
         }else{
           //TODO Create a method for this
           detailViewElement.empty();

@@ -56,8 +56,7 @@ $(function(){
         onExpand: function(expand, node) {
         },
         onPostInit: function(isReloading, isError){
-          if(!isReloading && this.isStructure){
-            $self.initialized = true;
+          if(!isReloading){
             $self.loadInitialTreeNodes(treeElement, function(){
               var nodeId = getUrlParam("nodeId");
               if(nodeId){
@@ -65,15 +64,17 @@ $(function(){
               }
             });
           }
+          $self.initialized = true;
         }
       });
       //TODO Remember to remove it and check the duplicated calls on the openPathToNode in the Objecttree after a search
-      this.loadInitialTreeNodes(treeElement, function(){
-        var nodeId = getUrlParam("nodeId");
-        if(nodeId){
-          $self.openPathToNode(nodeId, treeElement, detailViewElement);
-        }
-      });
+//      this.loadInitialTreeNodes(treeElement, function(){
+//        console.log("######################## 3 loadInitialTreeNodes");
+//        var nodeId = getUrlParam("nodeId");
+//        if(nodeId){
+//          $self.openPathToNode(nodeId, treeElement, detailViewElement);
+//        }
+//      } );
     },
     
     openTreeNode: function(institutionId, treeElement, recursionDepth, initialTreeNodesLoadedCallback, openCalls, isOpenedCallback){
@@ -145,14 +146,14 @@ $(function(){
       if (query === '') {
         query = '*';
       }
-      
+     
       if(institutionId != "rootnode"){
         this.institutionsApiWrapper.getObjectTreeNodeChildren(institutionId, function(data) {
 
           if(data){
             var childNodes = [];
             for(var i=0; i<data.length; i++) {
-              var nodeTitle = "<div class='dynatree-apd-title'>" + data[i].label + " (?)</div>";
+              var nodeTitle = "<div class='dynatree-apd-title' id='" + data[i].id + "'>" + data[i].label + " (?)</div>";
               $self.createAndPushNode(nodeTitle, childNodes, data[i].id, true, false, data[i].institution);
             }
             
@@ -289,7 +290,7 @@ $(function(){
         if(data){
           var childNodes = [];
           for(var i=0; i<data.institutions.length; i++) {
-            var tmpNodeTitle = "<div class='dynatree-apd-title'>" + data.institutions[i].name+" ("+data.institutions[i].count+")" + "</div>";
+            var tmpNodeTitle = "<div class='dynatree-apd-title' id='" + data.institutions[i].id + "'>" + data.institutions[i].name+" ("+data.institutions[i].count+")" + "</div>";
             $self.createAndPushNode(tmpNodeTitle, childNodes, data.institutions[i].id, true, false, data.institutions[i].institution, data.institutions[i].count);
           }
           
@@ -364,13 +365,16 @@ $(function(){
         node.select(true);
         
         if($self.isStructure){
-          $self.showNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
+          $self.showStructureNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
         }else{
           $self.objectContentManager.showNodeDetails(node.data.key, detailViewElement, node.data.numberOfItems);
         }
         
-        var nodeAnchor = $(nodeId);
-        nodeAnchor.scrollIntoView();
+        if($self.isStructure){
+          var nodeAnchor = $("#"+nodeId)[0];
+          console.log(nodeAnchor);
+          nodeAnchor.scrollIntoView();
+        }
       }
     },
     
