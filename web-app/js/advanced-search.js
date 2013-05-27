@@ -550,13 +550,18 @@ var page = {};
 
     // contextual help
     bindContextualHelp();
+    $(".value").popover({trigger: 'hover',
+                         content: function(){return $(this).attr("data-content");}
+    });
+    
+    $(".facet-simple").change(function() {
+      $(this).parent().parent().find(".value").attr("data-content", $(this).val());
+    });
+
   };
 }
 (jQuery));
 
 if ($('#advanced-search')) {
   page.init($('#advanced-search').get(0));
-
-  // contextual help
-  $(".facet-simple").popover({trigger: 'hover', title: 'Select a filter' });
 }

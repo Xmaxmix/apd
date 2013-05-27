@@ -2,8 +2,7 @@
 
   <!-- The JS version -->
   <!-- TODO: remove inline style -->
-  <select class="facet facet-js" id="facet-js-${group}-${row}" name="facet-${group}-${row}"
-    style="display: none" disabled="disabled">
+  <select class="facet facet-js" id="facet-js-${group}-${row}" name="facet-${group}-${row}" style="display: none" disabled="disabled">
     <g:each in="${facetSearchfields}">
       <g:if test="${it.searchType?.equals(enumSearchType)}">
         <option value="${it.name}"
@@ -21,7 +20,7 @@
 
   <!-- TODO: We don't need the non-JS version, remove it -->
   <!-- The non-JS version -->
-  <select class="facet facet-simple" name="facet-${group}-${row}" data-title="Select a filter" data-content="text">
+  <select class="facet facet-simple" name="facet-${group}-${row}">
     <g:each in="${facetSearchfields}">
       <g:if test="${it.searchType?.equals(textSearchType)}">
         <option value="${it.name}">
