@@ -47,7 +47,7 @@ var page = {};
       facetValues: 'select.facet-values',
       facetValueIdAttribute: 'data-inputid',
       contextualHelp: 'span.contextual-help',
-      contextualHelpTooltip: 'div.tooltip',
+      contextualHelpTooltip: 'div.tooltip'
 
     };
 
