@@ -47,7 +47,8 @@ var page = {};
       facetValues: 'select.facet-values',
       facetValueIdAttribute: 'data-inputid',
       contextualHelp: 'span.contextual-help',
-      contextualHelpTooltip: 'div.tooltip'
+      contextualHelpTooltip: 'div.tooltip',
+
     };
 
     // TODO: why we declare functions in the init method?
@@ -488,6 +489,12 @@ var page = {};
     //contextual help
     function bindContextualHelp() {
       var fader;
+      var textContent;
+      var generalContent = $("#value-1-0").attr("data-content");
+      var titleContent = $("#value-0-0").attr("data-content");
+      var signatureContent = $("#value-0-1").attr("data-content");
+      var descriptionContent = $("#value-0-2").attr("data-content");
+      var archivTypeContent = $("#value-0-3").attr("data-content");
 
       $(selectors.contextualHelp, root)
       .removeAttr('title')
@@ -509,6 +516,30 @@ var page = {};
         fader = setTimeout(function() {
           $(selectors.contextualHelpTooltip, root).fadeOut();
         }, 3000);
+      });
+
+      $(".value").popover({trigger: 'hover',
+          content: function(){return $(this).attr("data-content");}
+      });
+
+      $(".facet-simple").change(function() {
+
+        if($(this).val()=="title"){
+          textContent = titleContent;
+        }
+        else if($(this).val()=="signature"){
+          textContent = signatureContent;
+        }
+        else if($(this).val()=="description"){
+          textContent = descriptionContent;
+        }
+        else if($(this).val()=="archieve_type"){
+          textContent = archivTypeContent;
+        } else {
+          textContent = generalContent;
+        }
+
+        $(this).parent().parent().find(".value").attr("data-content", textContent);
       });
     }
 
@@ -550,13 +581,6 @@ var page = {};
 
     // contextual help
     bindContextualHelp();
-    $(".value").popover({trigger: 'hover',
-                         content: function(){return $(this).attr("data-content");}
-    });
-    
-    $(".facet-simple").change(function() {
-      $(this).parent().parent().find(".value").attr("data-content", $(this).val());
-    });
 
   };
 }
