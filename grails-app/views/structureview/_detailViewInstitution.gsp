@@ -11,18 +11,7 @@
            <h2>${selectedOrgXML.name}
              <g:if test="${(countObjcs > 0)}">
                <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
-               <%-- 
-               <g:link class="count" controller="objectview" action="index" title="${message(code: 'apd.InstitutionItem_IngestedObjectCountTitleText')}">
-                 <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
-                 <g:if test="${(countObjcs == 1)}">
-                   <g:message args="${flashArgs}" code="apd.InstitutionItem_IngestedObjectCountFormat" />
-                 </g:if>
-                 <g:if test="${(countObjcs > 1)}">
-                   <g:message args="${flashArgs}" code="apd.InstitutionItem_IngestedObjectCountFormat_Plural" />
-                 </g:if>
-               </g:link>
-               --%>
-               <g:apdLink class="count" controller="objectview" action="index" params="${params}" 
+               <g:apdLink class="count" controller="objectview" params="${params}" 
                   title="${message(code: 'apd.InstitutionItem_IngestedObjectCountTitleText')}">
                  <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                  <g:if test="${(countObjcs == 1)}">

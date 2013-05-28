@@ -6,12 +6,7 @@
   <div class="container">
     <div class="row">
       <div class="span4">
-        <%-- 
-        <g:link controller="index">
-          <g:img dir="images" file="archivportal.png" width="423" height="123" />
-        </g:link>
-        --%>
-        <g:apdLink controller="index" action="index" params="${params}" remove="${["*"]}">
+        <g:apdLink controller="index" params="${params}" remove="${["*"]}">
           <g:img dir="images" file="archivportal.png" width="423" height="123" />
         </g:apdLink>
       </div>
@@ -28,13 +23,13 @@
               <div class="nav-collapse collapse navbar-responsive-collapse">
                 <ul class="nav">
                   <li class="root dropdown<g:isMappingActive context="${params}" testif="${[[controller: "index"], [controller: "advancedsearch"], [controller: "structureview"]]}"> active-default</g:isMappingActive>">
-                    <g:apdLink controller="index" action="index" params="${params}" remove="${["page"]}" class="dropdown-toggle"><g:message code="apd.Home"/></g:apdLink>
+                    <g:apdLink controller="index" params="${params}" remove="${["page"]}" class="dropdown-toggle"><g:message code="apd.Home"/></g:apdLink>
                     <ul class="dropdown-menu inline">
                       <li class="<g:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</g:isMappingActive>">
-                        <g:apdLink controller="advancedsearch" action="index" params="${params}" remove="${["page"]}"><g:message code="apd.Advanced_Search"/></g:apdLink>
+                        <g:apdLink controller="advancedsearch" params="${params}" remove="${["page"]}"><g:message code="apd.Advanced_Search"/></g:apdLink>
                       </li>
                       <li class="<g:isMappingActive context="${params}" testif="${[[controller: "structureview"]]}">active-default</g:isMappingActive>">
-                        <g:apdLink controller="structureview" action="index" params="${params}" remove="${["page"]}"><g:message code="apd.Tree_View"/></g:apdLink>
+                        <g:apdLink controller="structureview" params="${params}" remove="${["page"]}"><g:message code="apd.Tree_View"/></g:apdLink>
                       </li>
                     </ul>
                   <li>
@@ -62,9 +57,9 @@
                   <li>
                 </ul>
                 <g:if test="${!isStart}">
-                  <g:form url="[controller:'liste', action:'']" class="navbar-search pull-right" method="GET">
+                  <g:apdForm controller="liste" params="${params}" remove="${["page"]}" class="navbar-search pull-right" method="GET">
                     <input id="query" name="query" type="text" class="search-query span2" placeholder="<g:message code="apd.Search_Placeholder"/>">
-                  </g:form>
+                  </g:apdForm>
                 </g:if>
               </div>
               <%--  

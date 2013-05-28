@@ -9,9 +9,6 @@
         </g:if>
         <g:else>
           <i class="icon-child-institution"></i>
-          <%-- 
-          <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: it.id]">${it.label}</g:link>
-          --%>
           <g:apdLink controller="institution" action="showInstitutionsTreeByItemId" params="${params}" addOrUpdate="${[id: it.id]}">${it.label}</g:apdLink>
         </g:else>
         <g:if test="${!(it.aggregationEntity)}">

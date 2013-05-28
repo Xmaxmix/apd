@@ -1,10 +1,5 @@
 <div class="thumbnail-wrapper span2">
   <div class="thumbnail">
-    <%-- 
-    <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: item.id]">
-      <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="${item.preview.title}" />
-    </g:link>
-    --%>
     <g:apdLink class="persist" controller="${ controller }" action="${ action }" params="${params}" addOrUpdate="${[id: item.id]}">
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="${item.preview.title}" />
     </g:apdLink>

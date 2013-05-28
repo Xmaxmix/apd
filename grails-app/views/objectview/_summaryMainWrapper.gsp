@@ -1,14 +1,7 @@
 <div class="summary-main-wrapper span6">
   <div class="summary-main">
     <h2 class="title">
-      <%-- 
-      <g:link class="persist" controller="detailview" action="index" 
-        params="['id': item.id, 'name': item.preview.urlFriendlyTitle, 'query': params.query, 'offset': params.offset, 'pagesize': params.pagesize, 'sort': params.sort, 'nodeId': params.id, 'hitNumber': hitNumber, 'searchId': item.id]" 
-        title="${truncateHovercardTitle(title: item.label, length: 350)}">
-        <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
-      </g:link>
-      --%>
-      <g:apdLink class="persist" controller="detailview" action="index" params="${params}"
+      <g:apdLink class="persist" controller="detailview" params="${params}"
           addOrUpdate="${['id': item.id, 'name': item.preview.urlFriendlyTitle, 'nodeId': params.id, 'hitNumber': hitNumber, 'searchId': item.id]}">
         <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
       </g:apdLink>
