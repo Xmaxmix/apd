@@ -79,7 +79,7 @@ var paginationModule = (function(History) {
       if (History) {
       var newUri = '?query=' + encodeURI(query) + '&offset=' + offset + '&pagesize=' +
         pageSize + '&id=' + id + '&sort=' + sortBy;
-      History.pushState('', encodeURI(document.title), newUri);
+      History.pushState('', document.title, newUri);
       } else {
         // TODO: use History.js, when the History API is not available.
       }
@@ -183,11 +183,12 @@ $(function() {
                   '&offset=' + queryString.offset +
                   '&pagesize=' + queryString.pagesize +
                   '&sort=' + queryString.sort +
-                  '&id=' + queryString.id + 
+                  '&nodeId=' + queryString.nodeId + 
                   '&isInstitution=' + queryString.isInstitution;
+
       History.pushState('', document.title, decodeURI(urlParameters));
 
-      contentManager.showNodeDetails(queryString.id, $('.list-container'));
+      contentManager.showNodeDetails(queryString.nodeId, $('.list-container'));
       return false;
     });
 
