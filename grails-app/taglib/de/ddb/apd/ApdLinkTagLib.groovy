@@ -101,9 +101,7 @@ class ApdLinkTagLib {
             if(remove.size() == 1 && remove.get(0) == "*") {
                 params = [:]
             }
-            for(int i=0; i<remove.size(); i++){
-                params.remove(remove.get(i))
-            }
+            remove.each { params.remove(it) }
         }
 
         // If attribute "addOrUpdate" is set, add or update all the parameters in the map
