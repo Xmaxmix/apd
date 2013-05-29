@@ -8,7 +8,7 @@
     </g:if>
     <g:else>
       <li>
-        <g:apdLink controller="structureview" action="index" params="${params}" addOrUpdate="${[nodeId: hierarchyItem.id]}" remove="${['id','searchId','hitNumber','name']}">
+        <g:apdLink controller="structureview" params="${params}" addOrUpdate="${[nodeId: hierarchyItem.id]}" remove="${['id','searchId','hitNumber','name']}">
           ${hierarchyItem.label}
         </g:apdLink>
       </li>

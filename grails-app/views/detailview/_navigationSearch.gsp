@@ -17,10 +17,10 @@ limitations under the License.
 
 <div class="span6 search-nav">
   <div class="search-nav-item">
-    <g:apdLink class="back-to-list" controller="objectview" action="index" params="${params}" remove="${['id','searchId','hitNumber','name']}"><g:message code="apd.Back_ResultList" /></g:apdLink>
+    <g:apdLink class="back-to-list" controller="objectview" params="${params}" remove="${['id','searchId','hitNumber','name']}"><g:message code="apd.Back_ResultList" /></g:apdLink>
   </div>
   <div class="search-nav-item">
-    <a class="page-link page-link-popup-anchor" href="<g:createApdLink controller="detailview" action="index" params="${params}" addOrUpdate="${['id': itemId, 'name': friendlyTitle, 'hitNumber': navData.hitNumber, 'searchId': itemId]}" />" title="<g:message code="apd.Page_Link" />">
+    <a class="page-link page-link-popup-anchor" href="<g:createApdLink controller="detailview" params="${params}" addOrUpdate="${['id': itemId, 'name': friendlyTitle, 'hitNumber': navData.hitNumber, 'searchId': itemId]}" />" title="<g:message code="apd.Page_Link" />">
       <span><g:message code="apd.Page_Link" /></span>
     </a>
   </div>
@@ -41,19 +41,19 @@ limitations under the License.
 
   <ul class="inline">
     <li class="first-item ${displayLeftPagination}">
-      <g:apdLink controller="detailview" action="index" params="${params}" addOrUpdate="${[id: navData.firstHit, 'offset': navData.firstOffset, 'hitNumber': 1, 'searchId': navData.firstHit]}"><g:message code="apd.First_Label" /></g:apdLink>
+      <g:apdLink controller="detailview" params="${params}" addOrUpdate="${[id: navData.firstHit, 'offset': navData.firstOffset, 'hitNumber': 1, 'searchId': navData.firstHit]}"><g:message code="apd.First_Label" /></g:apdLink>
     </li>
     <li class="prev-item br-white ${displayLeftPagination}">
-      <g:apdLink controller="detailview" action="index" params="${params}" addOrUpdate="${[id: navData.previousHit, 'offset': navData.previousOffset, 'hitNumber': (navData.hitNumber-1), 'searchId': navData.previousHit]}"><g:message code="apd.Previous_Label" /></g:apdLink>
+      <g:apdLink controller="detailview" params="${params}" addOrUpdate="${[id: navData.previousHit, 'offset': navData.previousOffset, 'hitNumber': (navData.hitNumber-1), 'searchId': navData.previousHit]}"><g:message code="apd.Previous_Label" /></g:apdLink>
     </li>
     <li>
       <span class="result-label"><g:message code="apd.Hit" /> </span><span class="hit-number"><g:localizeNumber>${navData.hitNumber}</g:localizeNumber></span><span> <g:message code="apd.Of" /> </span><span class="hit-count"><g:localizeNumber>${navData.resultCount}</g:localizeNumber></span>
     </li>
     <li class="next-item bl-white ${displayRightPagination}">
-      <g:apdLink controller="detailview" action="index" params="${params}" addOrUpdate="${[id: navData.nextHit, 'offset': navData.nextOffset, 'hitNumber': (navData.hitNumber+1), 'searchId': navData.nextHit]}"><g:message code="apd.Next_Label" /></g:apdLink>
+      <g:apdLink controller="detailview" params="${params}" addOrUpdate="${[id: navData.nextHit, 'offset': navData.nextOffset, 'hitNumber': (navData.hitNumber+1), 'searchId': navData.nextHit]}"><g:message code="apd.Next_Label" /></g:apdLink>
     </li>
     <li class="last-item ${displayRightPagination}">
-      <g:apdLink controller="detailview" action="index" params="${params}" addOrUpdate="${[id: navData.lastHit, 'offset': navData.lastOffset, 'hitNumber': navData.resultCount, 'searchId': navData.lastHit]}"><g:message code="apd.Last_Label" /></g:apdLink>
+      <g:apdLink controller="detailview" params="${params}" addOrUpdate="${[id: navData.lastHit, 'offset': navData.lastOffset, 'hitNumber': navData.resultCount, 'searchId': navData.lastHit]}"><g:message code="apd.Last_Label" /></g:apdLink>
     </li>
   </ul>
 

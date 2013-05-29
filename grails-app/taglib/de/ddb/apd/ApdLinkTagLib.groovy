@@ -16,7 +16,6 @@
 
 package de.ddb.apd
 
-import org.h2.command.ddl.CreateLinkedTable;
 
 class ApdLinkTagLib {
 
@@ -24,42 +23,14 @@ class ApdLinkTagLib {
      * Custom link taglib based on g:link but with some additional features.
      * 
      * @attr controller REQUIRED the controller
-     * @attr action REQUIRED the action
+     * @attr action the action
      * @attr params REQUIRED the params object of the view
      * @attr addOrUpdate a map of new url parameters to add or to update
      * @attr remove a list of url parameters to remove from the url
      */
     def apdLink = { attrs, body ->
 
-        def controller = attrs.controller
-        def action = attrs.action
-        if(!controller){
-            controller = attrs.params["controller"]
-        }
-        if(!action){
-            action = attrs.params["action"]
-        }
-
-        def params = attrs.params.clone()
-        params.remove("controller")
-        params.remove("action")
-
-        def addOrUpdate = attrs.addOrUpdate
-        def remove = attrs.remove
-        attrs.remove("addOrUpdate")
-        attrs.remove("remove")
-
-        if(addOrUpdate){
-            params << addOrUpdate
-        }
-
-        if(remove){
-            for(int i=0; i<remove.size(); i++){
-                params.remove(remove.get(i))
-            }
-        }
-
-        attrs["params"] = params
+        attrs = handleTagAttributes(attrs)
 
         def applicationTagLib = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
         applicationTagLib.link.call(attrs, body)
@@ -69,42 +40,80 @@ class ApdLinkTagLib {
      * Custom link taglib based on g:createLink but with some additional features.
      * 
      * @attr controller REQUIRED the controller
-     * @attr action REQUIRED the action
+     * @attr action the action
      * @attr params REQUIRED the params object of the view
      * @attr addOrUpdate a map of new url parameters to add or to update
      * @attr remove a list of url parameters to remove from the url
      */
     def createApdLink = { attrs, body ->
+
         def controller = attrs.controller
         def action = attrs.action
+
+        attrs = handleTagAttributes(attrs)
+
+        out << createLink("controller": controller, "action": action, "params":attrs.params)
+    }
+
+    /**
+     * Custom link taglib based on g:form but with some additional features.
+     * 
+     * @attr controller REQUIRED the controller
+     * @attr action the action
+     * @attr params REQUIRED the params object of the view
+     * @attr addOrUpdate a map of new url parameters to add or to update
+     * @attr remove a list of url parameters to remove from the url
+     */
+    def apdForm = { attrs, body ->
+
+        attrs = handleTagAttributes(attrs)
+
+        def applicationTagLib = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+        applicationTagLib.form.call(attrs, body)
+    }
+
+    private def handleTagAttributes(attrs) {
+
+        def controller = attrs.controller
+        def action = attrs.action
+
+        // If no controller explicitly set -> take the controller of the current request (aka view)
         if(!controller){
             controller = attrs.params["controller"]
         }
-        if(!action){
-            action = attrs.params["action"]
-        }
 
+        // Clone the params so the current request will not be influenced
         def params = attrs.params.clone()
+
+        // Remove the controller/action from the params, they are not needed there
         params.remove("controller")
         params.remove("action")
 
         def addOrUpdate = attrs.addOrUpdate
         def remove = attrs.remove
+
+        // Remove the addOrUpdate/remove values from the attrs list, they are needed to manipulate the params values
         attrs.remove("addOrUpdate")
         attrs.remove("remove")
 
-        if(addOrUpdate){
-            params << addOrUpdate
-        }
-
+        // If attribute "remove" is set, remove all the parameters in the list. If only "*" is set -> remove all
         if(remove){
+            if(remove.size() == 1 && remove.get(0) == "*") {
+                params = [:]
+            }
             for(int i=0; i<remove.size(); i++){
                 params.remove(remove.get(i))
             }
         }
 
+        // If attribute "addOrUpdate" is set, add or update all the parameters in the map
+        if(addOrUpdate){
+            params << addOrUpdate
+        }
+
+        // update the manipulated params-map in the attributes
         attrs["params"] = params
 
-        out << createLink("controller": controller, "action": action, "params":params)
+        return attrs
     }
 }
