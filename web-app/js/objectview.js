@@ -189,6 +189,12 @@ $(function() {
         if(nodeId){
           if(!objectTreeManager.initialized){
             objectTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+          }else{
+            objectTreeManager.highlightNode(nodeId, treeElement);
+            var node = treeElement.dynatree("getTree").getNodeByKey(nodeId);
+            if(node){
+              objectTreeManager.objectContentManager.showNodeDetails(node.data.key, detailViewElement, node.data.numberOfItems);
+            }
           }
         }
       });

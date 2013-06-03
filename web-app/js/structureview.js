@@ -31,6 +31,12 @@ $(document).ready(function () {
         if(nodeId){
           if(!structureTreeManager.initialized){
             structureTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+          }else{
+            structureTreeManager.highlightNode(nodeId, treeElement);
+            var node = treeElement.dynatree("getTree").getNodeByKey(nodeId);
+            if(node){
+              structureTreeManager.showStructureNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
+            }
           }
         }else{
           //TODO Create a method for this
