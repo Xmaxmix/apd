@@ -169,7 +169,10 @@ class ApiConsumer {
                                 }catch(Throwable t){
                                     log.error "requestServer(): Could not copy streams in binary request: ", t
                                     return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Could not copy streams -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
+                                }finally{
+                                    IOUtils.closeQuietly(output)
                                 }
+
                                 return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, ["Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
                             }else{
                                 // We don't want to stream
