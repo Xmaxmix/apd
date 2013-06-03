@@ -69,7 +69,6 @@ $(function(){
       });
       //TODO Remember to remove it and check the duplicated calls on the openPathToNode in the Objecttree after a search
 //      this.loadInitialTreeNodes(treeElement, function(){
-//        console.log("######################## 3 loadInitialTreeNodes");
 //        var nodeId = getUrlParam("nodeId");
 //        if(nodeId){
 //          $self.openPathToNode(nodeId, treeElement, detailViewElement);
@@ -133,6 +132,7 @@ $(function(){
 
         });
       }
+      
     },
     
     openObjectTreeNode: function(institutionId, treeElement, recursionDepth, initialTreeNodesLoadedCallback, openCalls, isOpenedCallback){
@@ -193,6 +193,7 @@ $(function(){
     },
 
     showStructureNodeDetails: function(institutionId, treeElement, detailViewElement, isInstitution){
+
       var query = getUrlParam("query");
       var isInstitution = treeElement.dynatree("getTree").getNodeByKey(institutionId).data.isInstitution;
 
@@ -218,11 +219,11 @@ $(function(){
           detailViewElement.append("Bitte wählen Sie ein Archiv");
         }
         
-        var History = window.History;
-        var urlParameters = "?query=" + query + 
-                            "&nodeId=" + institutionId + 
-                            "&isInstitution=" + isInstitution;
-        History.pushState("", document.title, decodeURI(urlParameters));
+//        var History = window.History;
+//        var urlParameters = "?query=" + query + 
+//                            "&nodeId=" + institutionId + 
+//                            "&isInstitution=" + isInstitution;
+//        History.pushState("", document.title, decodeURI(urlParameters));
 
       });
     },
@@ -361,9 +362,9 @@ $(function(){
           }
         });
       }else{ // Last node
-        var node = treeElement.dynatree("getTree").getNodeByKey(nodeId);
-        node.select(true);
+        $self.highlightNode(nodeId, treeElement);
         
+        var node = treeElement.dynatree("getTree").getNodeByKey(nodeId);
         if($self.isStructure){
           $self.showStructureNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
         }else{
@@ -371,9 +372,7 @@ $(function(){
         }
         
         if($self.isStructure){
-          var nodeAnchor = $("#"+nodeId)[0];
-          console.log(nodeAnchor);
-          nodeAnchor.scrollIntoView();
+          $self.scrollToNode(nodeId);
         }
       }
     },
@@ -388,6 +387,28 @@ $(function(){
             isInstitution: isInstitution,
             numberOfItems: numberOfItems}
       );
+    },
+    
+    highlightNode: function(nodeId, treeElement) {
+      
+      // Deselect all
+      treeElement.dynatree("getRoot").visit(function(node){
+        node.select(false);
+      });
+      
+      // Select single node
+      var node = treeElement.dynatree("getTree").getNodeByKey(nodeId);
+      if(node){
+        node.select(true);
+        treeElement.dynatree("getTree").activateKey(nodeId);
+      }
+      
+    },
+    
+    scrollToNode: function(nodeId){
+      var nodeAnchor = $("#"+nodeId)[0];
+      nodeAnchor.scrollIntoView();
     }
+    
   });
 });
