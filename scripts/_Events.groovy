@@ -28,6 +28,20 @@ eventWebXmlEnd = {String tmpfile ->
     
     def root = new XmlSlurper().parse(webXmlFile)
     
+    log.info "Adding security filter (de.ddb.apd.security.ApdSecurityFilter) to web.xml"
+    root.appendNode {
+        'filter' {
+            'filter-name' ('ApdSecurityFilter')
+            'filter-class' ('de.ddb.apd.security.ApdSecurityFilter')
+        }
+    }
+    root.appendNode {
+        'filter-mapping' {
+            'filter-name' ('ApdSecurityFilter')
+            'url-pattern' ('/*')
+        }
+    }
+
     log.info "Adding session listener (de.ddb.apd.ApdSessionListener) to web.xml"
     root.appendNode {
         'listener' {
