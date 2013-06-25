@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
  /*
  * Accessibility
  */
@@ -175,5 +175,5 @@ footer .legal ul li+li, .footer .legal ul li+li {
 }
 
 .off {
-  display: none;
+  display: none !important;
 }

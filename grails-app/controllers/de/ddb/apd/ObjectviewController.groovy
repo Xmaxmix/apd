@@ -16,7 +16,7 @@
 package de.ddb.apd
 
 import net.sf.json.JSONNull;
-import groovyx.net.http.ContentType;
+import groovyx.net.http.ContentType
 
 
 class ObjectviewController {
@@ -26,59 +26,87 @@ class ObjectviewController {
     def configurationService
 
     def index() {
-
         render(view: "objectview", model: [:])
     }
 
+    /**
+     * TODO: what does this method do? Who call it? JavaScript client?
+     * */
     def getTreeRootItems() {
         def query = params.query
+        log.info "Query: ${query}"
 
         def searchResult = institutionService.searchArchives(query)
 
         render (contentType: ContentType.JSON.toString()) { searchResult}
     }
 
+    /**
+     * When the user clicks a node in the object tree, then the JavaScipt
+     * client send a HTTP GET Request via AJAX to get the tree node details.
+     *
+     * Tree Node Details is the view on the right side of the application.
+     * It lists items that matched the query.
+     *
+     * TODO: why we name it treeNodeDetails? Suggestion: findItemsById
+     */
     def getTreeNodeDetails() {
         def id = params.id
         def query = params.query
         def offset = params.offset
         def pagesize = params.pagesize
+        def sort = params.sort
 
-        def resultsItems = institutionService.searchArchive(query, id, offset, pagesize)
+        //        log.info """Get tree node details for item with \n
+        //                the ID: ${id},\n
+        //                query: ${query}, \n
+        //                page size: ${pagesize}, \n
+        //                offset: ${offset}
+        //                sort: ${sort}"""
 
+        def resultsItems = institutionService.searchArchive(query, id, offset, pagesize, sort)?.results[0]?.docs
         resultsItems.each {
-
             def title
             def subtitle
             def thumbnail
             def media = []
 
+
             def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
-            if (titleMatch)
+            if (titleMatch) {
                 title= titleMatch[0][3]
+            }
 
             def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
-            subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
+            subtitle = (subtitleMatch)?subtitleMatch[0][3]:""
 
             def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
-            if (thumbnailMatch){
+            if (thumbnailMatch) {
                 thumbnail= thumbnailMatch[0][2]
             }
+
             def mediaMatch = it.preview.toString() =~ /(?m)<div (.*?)data-media="(.*?)"/
-            if (mediaMatch){
+            if (mediaMatch) {
                 mediaMatch[0][2].split (",").each{ media.add(it) }
             }
 
-            it["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
-        }
+            HtmlParser htmlParser = new HtmlParser(title)
+            def urlFriendlyTitle = StringManipulation.getFriendlyUrlString(htmlParser.getTextWithoutTags())
 
+            it["preview"] = ['title':title,
+                'subtitle': subtitle,
+                'media': media,
+                'thumbnail': thumbnail,
+                'urlFriendlyTitle': urlFriendlyTitle]
+        }
 
         render(
                 template: "resultsListContainer",
                 model: [
-                    "results":resultsItems,
+                    "results": resultsItems,
                     "offset": offset
                 ])
+
     }
 
     def getTreeNodeChildren() {
@@ -94,11 +122,5 @@ class ObjectviewController {
         def query = params.query
 
         render (contentType: ContentType.JSON.toString()) { ["id": id, "count": "-"] }
-    }
-
-    //The method can be used in ajax requests to retrieve elements on second level
-    def getSecondLevelNodes(){
-        assert params.id!=null, "this method should not be called without an ID"
-        render institutionService.getTechtonicFirstLvlHierarchyChildren(params.id);
     }
 }

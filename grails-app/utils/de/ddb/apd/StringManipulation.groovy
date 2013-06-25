@@ -43,16 +43,17 @@ class StringManipulation {
             return ""
         }
         String keepUmlauteInputString = inputString.replaceAll("ä", "ae")
-        keepUmlauteInputString = inputString.replaceAll("Ä", "Ae")
-        keepUmlauteInputString = inputString.replaceAll("ö", "oe")
-        keepUmlauteInputString = inputString.replaceAll("Ö", "Oe")
-        keepUmlauteInputString = inputString.replaceAll("ü", "ue")
-        keepUmlauteInputString = inputString.replaceAll("Ü", "Ue")
-        keepUmlauteInputString = inputString.replaceAll("ß", "ss")
+        keepUmlauteInputString = keepUmlauteInputString.replaceAll("Ä", "Ae")
+        keepUmlauteInputString = keepUmlauteInputString.replaceAll("ö", "oe")
+        keepUmlauteInputString = keepUmlauteInputString.replaceAll("Ö", "Oe")
+        keepUmlauteInputString = keepUmlauteInputString.replaceAll("ü", "ue")
+        keepUmlauteInputString = keepUmlauteInputString.replaceAll("Ü", "Ue")
+        keepUmlauteInputString = keepUmlauteInputString.replaceAll("ß", "ss")
         String onlyAlphanumericalCharacters = keepUmlauteInputString.replaceAll("[^\\p{Alnum}]","-")
         String urlEncodedInputString = URLEncoder.encode(onlyAlphanumericalCharacters, "UTF-8")
         int maxStringLength = Math.min(FRIENDLY_URL_STRING_MAX_LENGTH, urlEncodedInputString.length())
         String cappedInputString = urlEncodedInputString.substring(0, maxStringLength)
-        return cappedInputString;
+        String minifiedInputString = cappedInputString.replaceAll("-+", "-")
+        return minifiedInputString;
     }
 }

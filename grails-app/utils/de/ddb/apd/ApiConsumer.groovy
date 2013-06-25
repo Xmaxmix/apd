@@ -43,6 +43,7 @@ class ApiConsumer {
      * This String will be appended as a parameter to all backend calls. For example: http://aaa.bbb.ccc/ddd?client=APD
      */
     public static final String APD_CLIENT_NAME = "APD"
+    private static int BINARY_BACKEND_TIMEOUT = 5000 // 5s timeout for binary backend requests // TODO move to apd-properties
 
     private static final log = LogFactory.getLog(this)
     private static Pattern nonProxyHostsPattern
@@ -132,7 +133,12 @@ class ApiConsumer {
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
-            http.request(method, content) {
+            http.request(method, content) { req ->
+
+                if(content == ContentType.BINARY){
+                    setTimeout(req)
+                }
+
                 uri.path = path
                 uri.query = query
 
@@ -169,7 +175,10 @@ class ApiConsumer {
                                 }catch(Throwable t){
                                     log.error "requestServer(): Could not copy streams in binary request: ", t
                                     return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Could not copy streams -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
+                                }finally{
+                                    IOUtils.closeQuietly(output)
                                 }
+
                                 return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, ["Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'])
                             }else{
                                 // We don't want to stream
@@ -296,4 +305,19 @@ class ApiConsumer {
             http.setProxy(proxyHost, new Integer(proxyPort), 'http')
         }
     }
+
+    /**
+     * Sets explicit timeout parameters to requests.
+     * @param req the requests object
+     * @return void
+     */
+    private static def setTimeout(def req){
+        try {
+            req.getParams().setParameter("http.connection.timeout", new Integer(BINARY_BACKEND_TIMEOUT));
+            req.getParams().setParameter("http.socket.timeout", new Integer(BINARY_BACKEND_TIMEOUT))
+        } catch(Exception e) {
+            log.error "setTimeout(): Could not set the timeout to the binary request"
+        }
+    }
+
 }

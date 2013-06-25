@@ -30,6 +30,7 @@ $(document).ready(function() {
     createGallery($("#gallery-all"));
     updateGalleryPagination(0,"#gallery-all li");
   });
+
   function updateGalleryPagination(pag,list) {
     var pos;
     var tot=$(list).size();
@@ -122,7 +123,7 @@ $(document).ready(function() {
           width: w,
           height: h,
           image: poster,
-          skin: jsContextPath+"/js/vendor/jwplayer/skins/five.xml", 
+          skin: jsContextPath+"/js/vendor/jwplayer/skins/five.xml",
           modes: [{
               type: "html5"
           }, {
@@ -139,7 +140,7 @@ $(document).ready(function() {
                     $("#jwplayer-container_wrapper").remove();
                   if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
                     $("binary-viewer-flash-upgrade").removeClass("off");
-                  }else{ 
+                  }else{
                     $("div.binary-viewer-error").removeClass("off");
                   }
               },

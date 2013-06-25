@@ -15,83 +15,42 @@
  */
 package de.ddb.apd
 
-import groovyx.net.http.ContentType;
+import groovyx.net.http.ContentType
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse
+
+import de.ddb.apd.exception.ItemNotFoundException;
 
 class StructureviewController {
 
     def institutionService
     def configurationService
+    def itemService
 
     def index() {
 
         def query = params.query
 
         render (view: 'structureview',  model: [:])
-
     }
 
     def getTreeRootItems() {
         def query = params.query
         def searchResult = institutionService.searchArchivesForStructure(query)
 
-        render (contentType: ContentType.JSON.toString()) {searchResult}
+        render (contentType: ContentType.JSON.toString()) { searchResult}
     }
 
     def getTreeNodeDetails() {
-        def id = params.id
-        def query = params.query
+        def isInstitution = params.isInstitution
 
-        //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
-
-        //def foundInstitution = institutionService.findInstitutionForId(id)
-
-        def itemId = id;
-        def vApiInstitution = new ApiInstitution();
-        log.debug("read insitution by item id: ${id}");
-        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
-
-        if (selectedOrgXML) {
-            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
-            log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
-            if (jsonOrgParentHierarchy.size() == 1) {
-                if (jsonOrgParentHierarchy[0].id != id) {
-                    log.error("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}");
-                    forward controller: 'error', action: "ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}"
-                }
-            }
-            else if (jsonOrgParentHierarchy.size() > 1) {
-                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
-            }
-            log.debug("root itemId = ${itemId}");
-            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
-            log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
-            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
-            int countObjectsForProv = 0;
-            if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
-                try {
-                    countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-                }
-                catch (NumberFormatException ex) {
-                    countObjectsForProv = -1;
-                }
-            }
-            render(
-                    template: "detailView",
-                    model: [
-                        itemId: itemId,
-                        selectedItemId: id,
-                        selectedOrgXML: selectedOrgXML,
-                        subOrg: jsonOrgSubHierarchy,
-                        parentOrg: jsonOrgParentHierarchy,
-                        countObjcs: countObjectsForProv,
-                        vApiInst: vApiInstitution
-                    ])
-        } else {
-            forward controller: 'error', action: "notfound"
+        if(isInstitution == "true") {
+            getTreeNodeDetailsForInstitution(params)
+        }else{
+            getTreeNodeDetailsForHierarchy(params)
         }
     }
+
 
     def getTreeNodeChildren() {
         def id = params.id
@@ -100,36 +59,140 @@ class StructureviewController {
         render (contentType: ContentType.JSON.toString()) { children }
     }
 
-    def ajaxDetails() {
-        def id = params.id;
-        def itemId = id;
-        def vApiInstitution = new ApiInstitution();
-        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
-        if (selectedOrgXML) {
-            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
-            if (jsonOrgParentHierarchy.size() == 1) {
-                if (jsonOrgParentHierarchy[0].id != id) {
-                    forward controller: 'error', action: "ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}"
-                }
-            }
-            else if (jsonOrgParentHierarchy.size() > 1) {
-                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
-            }
-            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
-            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
-            int countObjectsForProv = 0;
-            if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
-                try {
-                    countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-                }
-                catch (NumberFormatException ex) {
-                    countObjectsForProv = -1;
-                }
-            }
-            render(template: "ajaxDetails", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
+    def getTreeNodeParents() {
+        def id = params.id
+        
+        def parents = []
+        if(id == "rootnode"){
+            def rootNode = [id:"rootnode", parent:"<<null>>", label:"", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:true]
+            parents.add(rootNode)
+        }else{
+            parents = institutionService.getInstitutionParent(id)
         }
-        else {
-            forward controller: 'error', action: "notfound"
-        }
+        render (contentType: ContentType.JSON.toString()) { parents }
     }
+
+    private def getTreeNodeDetailsForInstitution(def params) {
+        def id = params.id
+        def query = params.query
+
+        //def searchResults = institutionService.searchArchive(query, id, offset, pagesize)
+
+        //def foundInstitution = institutionService.findInstitutionForId(id)
+
+        def itemId = id
+        def vApiInstitution = new ApiInstitution()
+        log.debug("read insitution by item id: ${id}")
+
+        def selectedOrgXML = null
+        try{
+            selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
+        }catch(ItemNotFoundException e){
+            log.info "getTreeNodeDetailsForHierarchy(): no existing item in backend"
+        }
+
+        def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
+        log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}")
+        if (jsonOrgParentHierarchy.size() == 1) {
+            if (jsonOrgParentHierarchy[0].id != id) {
+                log.error("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}")
+                forward controller: 'error', action: "ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}"
+            }
+        }
+        else if (jsonOrgParentHierarchy.size() > 1) {
+            itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
+        }
+        log.debug("root itemId = ${itemId}")
+        def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
+        log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
+        def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
+        int countObjectsForProv = 0
+        if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
+            try {
+                countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
+            }
+            catch (NumberFormatException ex) {
+                countObjectsForProv = -1
+            }
+        }
+        render(
+                template: "detailViewInstitution",
+                model: [
+                    itemFound: true,
+                    itemId: itemId,
+                    selectedItemId: id,
+                    selectedOrgXML: selectedOrgXML,
+                    subOrg: jsonOrgSubHierarchy,
+                    parentOrg: jsonOrgParentHierarchy,
+                    countObjcs: countObjectsForProv,
+                    vApiInst: vApiInstitution
+                ])
+
+    }
+
+    private def getTreeNodeDetailsForHierarchy(def params) {
+        def id = params.id
+
+        def parentInstitution = null
+        try{
+            def parents = institutionService.getInstitutionParent(id)
+            if(parents.size() > 0){
+                def root = parents.get(parents.size()-1)
+
+                def vApiInstitution = new ApiInstitution()
+                parentInstitution = vApiInstitution.getInstitutionViewByItemId(root.id, configurationService.getBackendUrl())
+            }
+
+        }catch(ItemNotFoundException e){
+            log.info "getTreeNodeDetailsForHierarchy(): no parent institution existing in backend: "+id
+        }
+
+        def item = null
+        try{
+            item = itemService.findItemById(id)
+        }catch(ItemNotFoundException e){
+            log.info "getTreeNodeDetailsForHierarchy(): no institutionitem existing in backend: "+id
+        }
+
+        def hierarchyRootItem = null
+        def binaryList = null
+        def binariesCounter = null
+        def binaryInformation = null
+        def fields = []
+
+        if(item){
+
+            DetailviewController detailview = new DetailviewController()
+
+            binaryList = itemService.findBinariesById(id)
+            binariesCounter = itemService.binariesCounter(binaryList)
+
+            binaryInformation = [:]
+            binaryInformation.all = [binaryList.size]
+            binaryInformation.images = [binariesCounter.images]
+            binaryInformation.audios = [binariesCounter.audios]
+            binaryInformation.videos = [binariesCounter.videos]
+
+            if (item.pageLabel?.isEmpty()) {
+                item.pageLabel= itemService.getItemTitle(id)
+            }
+
+            fields = detailview.translate(item.fields)
+
+        }
+        render(
+                template: "detailViewHierarchy",
+                model: [
+                    'itemId': id,
+                    'item': item,
+                    'fields': fields,
+                    'binaryList': binaryList,
+                    'binaryInformation': binaryInformation,
+                    'countObjcs': 0,
+                    'parentInstitution': parentInstitution]
+                )
+
+    }
+
+
 }

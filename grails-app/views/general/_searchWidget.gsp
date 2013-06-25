@@ -45,12 +45,11 @@
       </select>
     </div>
     <div class="span1">
-      <g:form id="search-widget-form"
-        url="[controller: 'structureview', action:' ']" method="GET">
+      <g:apdForm id="search-widget-form" controller="structureview" params="${params}" method="GET">
         <button type="submit" class="btn">
           <i class="icon-search"></i>
         </button>
-      </g:form>
+      </g:apdForm>
     </div>
   </div>
   <ul>

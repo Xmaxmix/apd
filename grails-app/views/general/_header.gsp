@@ -6,9 +6,9 @@
   <div class="container">
     <div class="row">
       <div class="span4">
-        <g:link controller="index">
+        <g:apdLink controller="index" params="${params}" remove="${["*"]}">
           <g:img dir="images" file="archivportal.png" width="423" height="123" />
-        </g:link>
+        </g:apdLink>
       </div>
       <div class="span8">
         <div class="navbar">
@@ -23,43 +23,43 @@
               <div class="nav-collapse collapse navbar-responsive-collapse">
                 <ul class="nav">
                   <li class="root dropdown<g:isMappingActive context="${params}" testif="${[[controller: "index"], [controller: "advancedsearch"], [controller: "structureview"]]}"> active-default</g:isMappingActive>">
-                    <g:link controller="index" class="dropdown-toggle"><g:message code="apd.Home"/></g:link>
+                    <g:apdLink controller="index" params="${params}" remove="${["page"]}" class="dropdown-toggle"><g:message code="apd.Home"/></g:apdLink>
                     <ul class="dropdown-menu inline">
                       <li class="<g:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</g:isMappingActive>">
-                        <g:link controller="advancedsearch"><g:message code="apd.Advanced_Search"/></g:link>
+                        <g:apdLink controller="advancedsearch" params="${params}" remove="${["page"]}"><g:message code="apd.Advanced_Search"/></g:apdLink>
                       </li>
                       <li class="<g:isMappingActive context="${params}" testif="${[[controller: "structureview"]]}">active-default</g:isMappingActive>">
-                        <g:link controller="structureview"><g:message code="apd.Tree_View"/></g:link>
+                        <g:apdLink controller="structureview" params="${params}" remove="${["page"]}"><g:message code="apd.Tree_View"/></g:apdLink>
                       </li>
                     </ul>
                   <li>
                   <li class="root dropdown<g:isMappingActive context="${params}" testif="${[[controller: "info", page:"ueber"],[controller: "info", page:"neues"],[controller: "info", page:"ddb"]]}"> active-default</g:isMappingActive>">
-                    <g:link controller="info" action="ueber" class="dropdown-toggle"><g:message code="apd.About_Us"/></g:link>
+                    <g:apdLink controller="info" action="ueber" params="${params}" remove="${["page"]}" class="dropdown-toggle"><g:message code="apd.About_Us"/></g:apdLink>
                     <ul class="dropdown-menu inline">
                       <li class="<g:isMappingActive context="${params}" testif="${[[controller: "info", page:"neues" ]]}">active-default</g:isMappingActive>">
-                        <g:link controller="info" action="neues"><g:message code="apd.News"/></g:link>
+                        <g:apdLink controller="info" action="neues" params="${params}" remove="${["page"]}"><g:message code="apd.News"/></g:apdLink>
                       </li>
                       <li class="<g:isMappingActive context="${params}" testif="${[[controller: "info", page:"ddb" ]]}">active-default</g:isMappingActive>">
-                        <g:link controller="info" action="ddb"><g:message code="apd.DDB"/></g:link>
+                        <g:apdLink controller="info" action="ddb" params="${params}" remove="${["page"]}"><g:message code="apd.DDB"/></g:apdLink>
                       </li>
                     </ul>
                   <li>
                   <li class="root dropdown<g:isMappingActive context="${params}" testif="${[[controller: "info", page: "hilfe"],[controller: "info", page:"glossar"],[controller: "info", page:"faq"]]}"> active-default</g:isMappingActive>">
-                    <g:link controller="info" action="hilfe" class="dropdown-toggle"><g:message code="apd.Help"/></g:link>
+                    <g:apdLink controller="info" action="hilfe" params="${params}" remove="${["page"]}" class="dropdown-toggle"><g:message code="apd.Help"/></g:apdLink>
                     <ul class="dropdown-menu inline">
                       <li class="<g:isMappingActive context="${params}" testif="${[[controller: "info", page:"glossar" ]]}">active-default</g:isMappingActive>">
-                        <g:link controller="info" action="glossar"><g:message code="apd.Glossary"/></g:link>
+                        <g:apdLink controller="info" action="glossar" params="${params}" remove="${["page"]}"><g:message code="apd.Glossary"/></g:apdLink>
                       </li>
                       <li class="<g:isMappingActive context="${params}" testif="${[[controller: "info", page:"faq" ]]}">active-default</g:isMappingActive>">
-                        <g:link controller="info" action="faq"><g:message code="apd.FAQ"/></g:link>
+                        <g:apdLink controller="info" action="faq" params="${params}" remove="${["page"]}"><g:message code="apd.FAQ"/></g:apdLink>
                       </li>
                     </ul>
                   <li>
                 </ul>
                 <g:if test="${!isStart}">
-                  <g:form url="[controller:'liste', action:'']" class="navbar-search pull-right" method="GET">
+                  <g:apdForm controller="liste" params="${params}" remove="${["page"]}" class="navbar-search pull-right" method="GET">
                     <input id="query" name="query" type="text" class="search-query span2" placeholder="<g:message code="apd.Search_Placeholder"/>">
-                  </g:form>
+                  </g:apdForm>
                 </g:if>
               </div>
               <%--  

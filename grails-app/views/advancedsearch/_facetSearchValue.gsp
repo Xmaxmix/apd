@@ -17,6 +17,12 @@
       </select>
     </g:if>
   </g:each>
-  <input class="value" type="text" id="value-${group}-${row}"
-    name="value-${group}-${row}" />
+  <g:if test="${group.equals(0)}">
+    <input class="value" type="text" id="value-${group}-${row}" name="value-${group}-${row}" 
+      title="" data-content="<g:message code="apd.Contextual_Help_${group}_${row}"/>" data-original-title="some text"/>
+  </g:if>
+  <g:else>
+    <input class="value" type="text" id="value-${group}-${row}" name="value-${group}-${row}" 
+      title="" data-content="<g:message code="apd.Contextual_Help"/>" data-original-title="some text"/>
+  </g:else>
 </div><!-- /end of .span5 -->

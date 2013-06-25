@@ -13,8 +13,7 @@
 </head>
 <body>
   <div id="home-search-container">
-    <g:form id="home-search-form" url="[controller:'liste', action:'']"
-      class="form-search" method="GET">
+    <g:apdForm id="home-search-form" controller="liste" params="${params}" class="form-search" method="GET">
       <div class="input-append">
         <input type="text" id="query" name="query"
           class="input-xlarge search-query"
@@ -23,7 +22,7 @@
           <i class="icon-search"></i>
         </button>
       </div>
-    </g:form>
+    </g:apdForm>
     <div>
       <g:searchWidgetRender></g:searchWidgetRender>
     </div>

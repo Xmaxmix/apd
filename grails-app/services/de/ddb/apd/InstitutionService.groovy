@@ -16,7 +16,8 @@ package de.ddb.apd
  */
 
 
-import de.ddb.apd.institutions.InstitutionsCache;
+import de.ddb.apd.institutions.InstitutionsCache
+import grails.util.CosineSimilarity;
 import groovyx.net.http.HTTPBuilder
 import net.sf.json.JSONObject
 
@@ -52,26 +53,6 @@ class InstitutionService {
             def firstChar = it?.name[0]?.toUpperCase()
             it.firstChar = firstChar
 
-            //                def firstChar = it?.name[0]?.toUpperCase()
-            //                it.firstChar = firstChar
-            //
-            //                /*
-            //                 * mark an institution as the first one that start with the
-            //                 * character. We will use it for assigning the id in the HTML.
-            //                 * See: views/institutions/_listItem.gsp
-            //                 * */
-            //                if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
-            //                    it.isFirst = true
-            //                }
-            //
-            //                it.sectorLabelKey = 'apd.' + it.sector
-            //                buildChildren(it, totalInstitution)
-            //                institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
-            /*
-             * mark an institution as the first one that start with the
-             * character. We will use it for assigning the id in the HTML.
-             * See: views/institutions/_listItem.gsp
-             * */
             if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
                 it.isFirst = true
             }
@@ -155,7 +136,7 @@ class InstitutionService {
 
         def resultList = []
         foundProviders.each {
-            resultList.add(["id": it.id, "name": it.value, "count": it.count])
+            resultList.add(["id": it.id, "name": it.value, "count": it.count, "institution": true])
         }
 
         def resultObject = [:]
@@ -163,30 +144,39 @@ class InstitutionService {
         resultObject["institutions"] = resultList
 
         return resultObject
-
     }
-    
+
     def searchArchivesForStructure(String query) {
-        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
-        def backendUrl = configurationService.getBackendUrl()
-        def parameters = [:]
-        parameters["query"] = query
-        parameters["sector"] = "sec_01"
-        def searchWrapper = ApiConsumer.getJson(backendUrl, "/institutions", parameters)
+        //        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
+        //        def backendUrl = configurationService.getBackendUrl()
+        //        def parameters = [:]
+        //        parameters["query"] = query
+        //        parameters["sector"] = "sec_01"
+        //        def searchWrapper = ApiConsumer.getJson(backendUrl, "/institutions", parameters)
+        //
+        //        if(!searchWrapper.isOk()){
+        //            log.error "searchArchives(): search returned an error"
+        //        }
+        //
+        //
+        //        //Getting result institutions for search
+        //        def searchResponse = searchWrapper.getResponse()
 
-        if(!searchWrapper.isOk()){
-            log.error "searchArchives(): search returned an error"
-        }
+        //        // Getting ID for institutions
+        //        //println searchResponse.get(0)
+        //        searchResponse.each {
+        //            resultList.add(["id": it.id, "name": it.name, "count": 0, "institution": true])
+        //        }
 
-
-        //Getting result institutions for search
-        def searchResponse = searchWrapper.getResponse()
-
-        // Getting ID for institutions
-        println searchResponse.get(0)
         def resultList = []
-        searchResponse.each {
-            resultList.add(["id": it.id, "name": it.name, "count": 0])
+
+        def allInstitutes = findAll()
+
+        for(int i=0; i<allInstitutes.size(); i++){
+            def currentInstitute = allInstitutes.get(i)
+            if(isInstitutionOrChildAnArchive(currentInstitute)) {
+                resultList.add(["id": currentInstitute.id, "name": currentInstitute.name, "count": 0, "institution": true])
+            }
         }
 
         def resultObject = [:]
@@ -197,22 +187,39 @@ class InstitutionService {
 
     }
 
-    def searchArchive(String query, String institutionId, String offset, String pagesize) {
-        // http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?
-        // query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01&provider_fct=Landesarchiv+Baden-W%C3%BCrttemberg
+    private def isInstitutionOrChildAnArchive(def currentInstitution){
+        if(currentInstitution.sector == "sec_01"){
+            return true
+        }else{
+            if(currentInstitution.children){
+                for(int i=0; i<currentInstitution.children.size(); i++){
+                    if(isInstitutionOrChildAnArchive(currentInstitution.children.get(i))){
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
 
-        if(!offset){
+    def searchArchive(query, institutionId, offset, pagesize, sort) {
+        if(!offset) {
             offset = "0"
         }
-        if(!pagesize){
+
+        if(!pagesize) {
             pagesize = "20"
+        }
+
+        if(!sort) {
+            sort = 'RELEVANCE'
         }
 
         def allInstitutions = findAll()
 
         def institutionName = ""
         for(int i=0; i<allInstitutions.size(); i++){
-            if(allInstitutions[i].id == institutionId){
+            if(allInstitutions[i].id == institutionId) {
                 institutionName = allInstitutions[i].name
                 break
             }
@@ -232,35 +239,16 @@ class InstitutionService {
         }
         parameters["offset"] = offset
         parameters["rows"] = pagesize
+        parameters["sort"] = sort
         def searchWrapper = ApiConsumer.getJson(backendUrl, "/search", parameters)
 
         if(!searchWrapper.isOk()){
             log.error "searchArchive(): search returned an error"
         }
 
-        return searchWrapper.getResponse()?.results[0]?.docs
+        //return searchWrapper.getResponse()?.results[0]?.docs
+        return searchWrapper.getResponse()
     }
-
-    //    def findInstitutionForId(String id){
-    //        def fullInstitutionsList = this.findAll()
-    //        return findInstitutionForIdRecursion(id, fullInstitutionsList)
-    //    }
-    //
-    //    private def findInstitutionForIdRecursion(String id, List institutions){
-    //        for(int i=0; i<institutions.size(); i++){
-    //            if(institutions[i].id == id){
-    //                return institutions[i]
-    //            }
-    //            if(institutions[i].children){
-    //                def foundInstitution = findInstitutionForIdRecursion(id, institutions[i].children)
-    //                if(foundInstitution) {
-    //                    return foundInstitution
-    //                }
-    //            }
-    //        }
-    //        return null
-    //    }
-
 
     private getTotal(rootList) {
         def total = rootList.size()
@@ -347,18 +335,18 @@ class InstitutionService {
      * 3. Get all children for our institution and return a hierarchy if succesfull
      * @return JSONObject
      */
-    private def getTechtonicFirstLvlHierarchyChildren(id){
+    def getTechtonicFirstLvlHierarchyChildren(id){
         def JSONObject hierarchy = [:]
-        def children=getInstitutionChildren(id);
+
+        def children=getInstitutionChildren(id)
         //TODO throw exception if response if not JSON
         assert children instanceof JSONObject
-        def objectResults = children.results.docs[0];
+        def objectResults = children.results.docs[0]
         if(!hierarchy.children){
             hierarchy.children = []
         }
 
         if (objectResults.size()>0){
-            log.info "Object Results has something ";
             def parentList = itemService.getParent(objectResults[0].id)
             if(parentList && parentList.size() > 0){
                 def parent = itemService.getParent(objectResults[0].id).last()
@@ -369,7 +357,7 @@ class InstitutionService {
                     parent.type = "<<null>>"
                 }
                 if(!parent?.institution || parent?.institution == "null"){
-                    parent.instutition = false
+                    parent.institution = false
                 }
                 if(!hierarchy.children){
                     hierarchy.children = []
@@ -378,7 +366,21 @@ class InstitutionService {
             }
         }
         hierarchy.id = id
-        hierarchy.children.addAll(getChildren(id).getAt("children"));
+        hierarchy.children.addAll(getChildren(id).getAt("children"))
+
+        if(id == "XYMQPA4OHAYDDFYWHV6Q4RFUIISTLQJV"){ // Special case for Landesarchiv BW with its 7 tectonics
+            def tectonics = [
+                [id:"A7DCNBBFPDAZHS7ESXK3Q76ZAGJ2W6H7", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Hauptstaatsarchiv Stuttgart", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"HOEPZL253TB56GXLCPJ6QVNY4X5QCOJF", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Staatsarchiv Ludwigsburg", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"SCVLIRRGBA66IBT4YXOZ2GJHERYX7Q2U", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Staatsarchiv Freiburg", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"GVOQN7F2CZCHWRKJE2RKRHBIERX23TGA", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Hohenlohe-Zentralarchiv Neuenstein", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"36BF267YNTQVVLZDC6IKZ66KMIRJT4YZ", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Generallandesarchiv Karlsruhe", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"YSUXYV6ZN7577VESVIMJQNOZFMCODOGJ", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Staatsarchiv Wertheim", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false],
+                [id:"3NNKFXSDLL3BVHKI5R62PVAYUJTTJODG", parent:"<<null>>", label:"Landesarchiv Baden-Württemberg Abt. Staatsarchiv Sigmaringen", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:false]
+            ]
+            hierarchy.children.remove(0) // remove old tectonic
+            hierarchy.children.addAll(0,tectonics)
+        }
 
         return hierarchy
     }
@@ -388,7 +390,7 @@ class InstitutionService {
         def children = itemService.getChildren(id)
         HashMap jsonMap = new HashMap()
         jsonMap.children = children.collect {child ->
-            return ["id": child.id, label: child.label, parent:child.parent, leaf: child.leaf, aggregationEntity:child.aggregationEntity,institute:false]
+            return ["id": child.id, label: child.label, parent:child.parent, leaf: child.leaf, aggregationEntity:child.aggregationEntity,institution:false]
 
         }
         return jsonMap
@@ -403,8 +405,77 @@ class InstitutionService {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), searchPath,query)
         if(!apiResponse.isOk()){
             log.error "institutionService.getInstitutionChildren(): Server returned no parents -> " + id
-
         }
         return apiResponse.getResponse()
     }
+    /**
+     * This method is also temporary until proper support is provided by backend software
+     * @param id
+     * @return
+     */
+    def getInstitutionParent(id){
+
+        def parents = itemService.getParent(id)
+        if (parents.size() == 0){
+            def item = itemService.findItemById(id)
+            parents = itemService.getParent(item.institution.id)
+
+            def replacementItem = [:]
+            replacementItem["id"] = id
+            replacementItem["parent"] = item.institution.id.toString()
+            replacementItem["label"] = item.item.title.toString()
+            replacementItem["type"] = ""
+            replacementItem["position"] = -1
+            replacementItem["leaf"] = true
+            replacementItem["aggregationEntity"] = true
+
+            parents.add(0,replacementItem)
+        }
+        parents = getParentBasedOnSimilarity(parents)
+        return parents;
+    }
+
+    private getParentBasedOnSimilarity(parent) {
+        def institutionsList = findAll()
+        def candidates = []
+        institutionsList.each { candidates << it.name }
+        def cosines = CosineSimilarity.mostSimilar(parent.last().label, candidates);
+        institutionsList.each {
+            if (it.name== cosines.first().toString()){
+                //Fix the different attributes for objects and institutions
+                parent.last().parent = it.id
+                //                it.label = it.name
+                //                it["parent"] = ""
+                //                it["leaf"] = false
+                //                it["type"] = ""
+                //                it["aggregationEntity"] = true
+                //                it["children"] = []
+
+                def itCopy = [:]
+                itCopy["id"] = it.id
+                itCopy["label"] = it.name
+                itCopy["parent"] = ""
+                itCopy["leaf"] = false
+                itCopy["type"] = ""
+                itCopy["aggregationEntity"] = true
+                itCopy["children"] = []
+
+                parent << itCopy
+            }
+        }
+        //Fix null types (causing JSON problems)
+        parent.each {
+            if(it.type){
+                it.type = ""
+            }
+        }
+        //Remove entries that contain themselfs as parents
+        for(int i=parent.size()-1; i>=0; i--){
+            if(parent.get(i).id == parent.get(i).parent){
+                parent.remove(i);
+            }
+        }
+        return parent
+    }
+
 }

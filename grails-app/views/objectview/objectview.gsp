@@ -1,16 +1,15 @@
 <html>
   <head>
     <title><g:message code="apd.Object"/> - <g:message code="apd.ArchivportalD"/></title>
-    
+
     <meta name="page" content="objectview" />
     <meta name="layout" content="main" />
-    
+
   </head>
   <body>
     <div class="row">
-      <div class="span12 search-widget-container border">
-        <g:form id="home-search-form" url="[controller:'liste', action:'']"
-          class="form-search" method="GET">
+      <div class="span12 search-widget-container">
+        <g:apdForm id="home-search-form" controller="liste" params="${params}" class="form-search" method="GET">
           <div class="input-append">
             <input type="text" id="query" name="query"
               class="input-xlarge search-query"
@@ -19,7 +18,7 @@
               <i class="icon-search"></i>
             </button>
           </div>
-        </g:form>
+        </g:apdForm>
         <div>
           <g:searchWidgetRender></g:searchWidgetRender>
         </div>
@@ -29,12 +28,12 @@
       <div class="span4">
         <div class="row">
           <div class="span4">
-            <g:link controller="struktur">
+            <g:apdLink controller="struktur" params="${params}">
               <div class="selector"><g:message code="apd.Structure"/></div>
-            </g:link>
-            <g:link controller="liste">
+            </g:apdLink>
+            <g:apdLink controller="liste" params="${params}">
               <div class="selector active"><g:message code="apd.Object"/></div>
-            </g:link>
+            </g:apdLink>
           </div>
         </div>
         <div class="row">
@@ -44,7 +43,13 @@
           </div>
         </div>
       </div>
-      <div class="span8">
+      <div class="span8 search-noresults-content off">
+        <g:render template="noResults" />
+      </div>
+      <div class="span8 search-results-content">
+        <div class="off result-count"></div>
+        <g:render template="pagination" />
+        <g:render template="navigation" />
         <div class="list-container">
         </div>
       </div>

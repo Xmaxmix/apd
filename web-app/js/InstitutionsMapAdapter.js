@@ -21,12 +21,14 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
     //var osmTileServer = "openstreetmap.org";
     //var osmTileServer = "opencyclemap.org/cycle";
+    //var osmTileServer = "maps.deutsche-digitale-bibliothek.de";
 
-    var osmTileServer = "maps.deutsche-digitale-bibliothek.de";
+    var osmTileServer = "openstreetmap.org";
     var osmTileset = [ "http://a.tile." + osmTileServer + "/${z}/${x}/${y}.png",
                        "http://b.tile." + osmTileServer + "/${z}/${x}/${y}.png",
                        "http://c.tile." + osmTileServer + "/${z}/${x}/${y}.png" ];
 
+    
     var institutionsMapOptions = {
         resetMap: true,
         mapHeight: false,

@@ -15,14 +15,14 @@
  */
 package de.ddb.apd
 
-import de.ddb.apd.StringManipulation;
-import de.ddb.apd.exception.ItemNotFoundException;
-import de.ddb.apd.hierarchy.Item;
+import de.ddb.apd.hierarchy.Item
 
 class DetailviewController {
 
     def itemService
     def configurationService
+    def institutionService
+
 
     def index() {
         //Check if Item-Detail was called from search-result and fill parameters
@@ -48,47 +48,37 @@ class DetailviewController {
             item.pageLabel= itemService.getItemTitle(id)
         }
 
-        // TODO: handle 404 and failure separately. HTTP Status Code 404, should
-        // to `not found` page _and_ Internal Error should go to `internal server
-        // error` page. We should send also the HTTP Status Code 404 or 500 to the
-        // Client.
-        if(item == '404' || item?.failure) {
-            redirect(controller: 'error')
-        } else {
-            def itemUri = request.forwardURI
-            def ddbUri = configurationService.getDDBUrl() + "/item/" + id
-            def fields = translate(item.fields)
+        def siblingInformation = getSiblingInformation(id, item.title)
 
-            //                if(params.print){
-            //                    renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
-            //                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
-            //                        binaryList: binaryList, pageLabel: item.pageLabel,
-            //                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-            //                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation],
-            //                    filename: "Item-Detail.pdf")
-            //                }else{
-            render(
-                    view: "detailview",
-                    model: ['itemUri': itemUri,
-                        'ddbUri': ddbUri,
-                        'viewerUri': item.viewerUri,
-                        'title': item.title,
-                        'friendlyTitle': friendlyTitle,
-                        'item': item.item,
-                        'itemId': id,
-                        'institution': item.institution,
-                        'fields': fields,
-                        'binaryList': binaryList,
-                        'pageLabel': item.pageLabel,
-                        'hierarchyRoot': hierarchyRootItem,
-                        //'firstHit': searchResultParameters["searchParametersMap"]["firstHit"],
-                        //'lastHit': searchResultParameters["searchParametersMap"]["lastHit"],
-                        //'hitNumber': params["hitNumber"],
-                        //'results': searchResultParameters["resultsItems"],
-                        //'searchResultUri': searchResultParameters["searchResultUri"],
-                        'binaryInformation': binaryInformation]
-                    )
-        }
+        def navData = buildNavigationData(params)
+
+        def itemUri = request.forwardURI
+        def ddbUri = configurationService.getDDBUrl() + "/item/" + id
+        def fields = translate(item.fields)
+
+        render(
+                view: "detailview",
+                model: ['itemUri': itemUri,
+                    'ddbUri': ddbUri,
+                    'viewerUri': item.viewerUri,
+                    'title': item.title,
+                    'friendlyTitle': friendlyTitle,
+                    'item': item.item,
+                    'itemId': id,
+                    'institution': item.institution,
+                    'fields': fields,
+                    'binaryList': binaryList,
+                    'pageLabel': item.pageLabel,
+                    'hierarchyRoot': hierarchyRootItem,
+                    //'firstHit': searchResultParameters["searchParametersMap"]["firstHit"],
+                    //'lastHit': searchResultParameters["searchParametersMap"]["lastHit"],
+                    //'hitNumber': params["hitNumber"],
+                    //'results': searchResultParameters["resultsItems"],
+                    //'searchResultUri': searchResultParameters["searchResultUri"],
+                    'binaryInformation': binaryInformation,
+                    'siblingInformation': siblingInformation,
+                    'navData': navData]
+                )
     }
 
     def translate(fields) {
@@ -107,7 +97,9 @@ class DetailviewController {
     def buildItemHierarchy(id, label, institution) {
 
         // Build the hierarchy from the item to the root element. The root element is kept.
-        def parentList = itemService.getParent(id)
+        //def parentList = itemService.getParent(id)
+        def parentList = institutionService.getInstitutionParent(id)
+
 
         def startItem = new Item(['id': id, 'label': label])
 
@@ -115,15 +107,127 @@ class DetailviewController {
 
         // Get the mainItem
         Item mainItem = rootItem.getItemFromHierarchy(id)
-        mainItem.setMainItem(true);
+        mainItem.setMainItem(true)
 
-        Item institutionRootItem = new Item(['id': institution.id, 'label': institution.name, 'aggregationEntity': true])
-
+        //Build an empty node to function as the hidden root-node of the tree
         Item emptyStartItem = new Item()
-        emptyStartItem.children.add(institutionRootItem)
-        institutionRootItem.children.add(rootItem)
+        emptyStartItem.children.add(rootItem)
 
         return emptyStartItem
+    }
+
+    def getSiblingInformation(id, name) {
+        def siblingInformation = [:]
+
+        def siblings = []
+        def parentList = itemService.getParent(id)
+        if(parentList.size() > 1){
+            def parentId = parentList.get(0).parent
+            def childList = itemService.getChildren(parentId)
+            siblings.addAll(childList)
+        }else if(parentList.size() == 1){
+            siblings.add(parentList.get(0))
+        }else{
+            siblings.add(['id': id, 'label': name])
+        }
+        siblingInformation["siblings"] = siblings
+
+        for(int i=0; i<siblings.size(); i++){
+            if(siblings[i].id == id){
+                if(i==0 && i==siblings.size()-1){
+                    siblingInformation["previous"] = null
+                    siblingInformation["next"] = null
+                }else if(i==0){
+                    siblingInformation["previous"] = siblings[siblings.size()-1]
+                    siblingInformation["next"] = siblings[i+1]
+                }else if(i==siblings.size()-1){
+                    siblingInformation["previous"] = siblings[i-1]
+                    siblingInformation["next"] = siblings[0]
+                }else{
+                    siblingInformation["previous"] = siblings[i-1]
+                    siblingInformation["next"] = siblings[i+1]
+                }
+            }
+        }
+
+        return siblingInformation
+    }
+
+    def buildNavigationData(def params) {
+        def navData = [:]
+
+        def hitNumber = 1
+        if(params.hitNumber){
+            hitNumber = params.hitNumber.toInteger()
+        }
+        def currentId = params.id
+        if(params.searchId){
+            currentId = params.searchId
+        }
+        def pagesize = 1
+        if(params.pagesize) {
+            pagesize = params.pagesize.toInteger()
+        }
+        def searchOffset = 0
+        if(hitNumber > 1) {
+            searchOffset = hitNumber - 2
+        }
+        def sort = "RELEVANCE"
+        if(params.sort){
+            sort = params.sort
+        }
+        def nodeId = "rootnode"
+        if(params.nodeId) {
+            nodeId = params.nodeId
+        }
+
+        //def resultsItems = institutionService.searchArchive(params.query, params.id, params.offset, params.pagesize, params.sort)
+        def firstResultItem = institutionService.searchArchive(params.query, nodeId, 0, 1, sort)
+        def resultCount = firstResultItem["numberOfResults"]
+        def lastResultItem = institutionService.searchArchive(params.query, nodeId, resultCount-1, 1, sort)
+        def resultsItems = institutionService.searchArchive(params.query, nodeId, searchOffset, 3, sort)
+
+
+        def firstHitId = firstResultItem.results[0]["docs"]?.get(0)?.id
+        def lastHitId = lastResultItem.results[0]["docs"]?.get(0)?.id
+        def previousHitId = "none"
+        if(hitNumber > 1){
+            previousHitId = resultsItems.results[0]["docs"]?.get(0)?.id
+        }
+        def nextHitId = "none"
+        if(hitNumber < resultCount){
+            def currentIdIndex = Integer.MAX_VALUE;
+            for(int i=0; i<resultsItems.results[0]["docs"].size(); i++){
+                if(resultsItems.results[0]["docs"].getAt(i).id == currentId){
+                    currentIdIndex = i
+                    break;
+                }
+            }
+            if(currentIdIndex < resultsItems.results[0]["docs"].size() - 1) {
+                nextHitId = resultsItems.results[0]["docs"]?.get(currentIdIndex + 1)?.id
+            }
+        }
+
+        def offset = (int)((hitNumber - 1) / pagesize)
+        def firstOffset = 0
+        def previousOffset = (int)Math.max(((hitNumber - 2) / pagesize), 0d)
+        def nextOffset = (int)((hitNumber + 1) / pagesize)
+        def lastOffset = (int)(resultCount / pagesize)
+
+        navData["resultCount"] = resultCount
+        navData["hitNumber"] = hitNumber
+        navData["pagesize"] = pagesize
+        navData["previousHit"] = previousHitId
+        navData["nextHit"] = nextHitId
+        navData["firstHit"] = firstHitId
+        navData["lastHit"] = lastHitId
+        navData["newOffset"] = offset
+        navData["firstOffset"] = firstOffset
+        navData["previousOffset"] = previousOffset
+        navData["nextOffset"] = nextOffset
+        navData["lastOffset"] = lastOffset
+
+        return navData
     }
 
 }

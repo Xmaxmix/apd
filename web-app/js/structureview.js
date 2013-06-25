@@ -16,18 +16,34 @@
 
 $(document).ready(function () {
   if(jsPageName == "structureview") {
-
+    var treeElement = $("#institution-tree");
+    var detailViewElement = $(".institution-item-details");
+    
     if ($('.search-widget-container').length > 0) {
       var searchWidgetContainer = $('#search-widget');
       searchWidget = new SearchWidget($('#search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
     }
 
-    var structureTreeWrapper = new StructureTreeWrapper();
-
-    structureTreeWrapper.buildInitialTree('#institution-tree', '.institution-item-details');
-    structureTreeWrapper.loadInitialTreeNodes('#institution-tree');
-    structureTreeWrapper.showNodeDetails('rootnode', '#institution-tree', '.institution-item-details');
-
-  
+    var structureTreeManager = new TreeManager(treeElement, detailViewElement, true);
+    
+    $(window).bind('statechange', function(e) {
+        var nodeId = getUrlParam("nodeId");
+        if(nodeId){
+          if(!structureTreeManager.initialized){
+            structureTreeManager.openPathToNode(nodeId, treeElement, detailViewElement);
+          }else{
+            structureTreeManager.highlightNode(nodeId, treeElement);
+            var node = treeElement.dynatree("getTree").getNodeByKey(nodeId);
+            if(node){
+              structureTreeManager.showStructureNodeDetails(node.data.key, treeElement, detailViewElement, node.data.institution);
+            }
+          }
+        }else{
+          //TODO Create a method for this
+          detailViewElement.empty();
+          //TODO Localize text
+          detailViewElement.html("<h1>Bitte wählen Sie ein Archiv</h1>");
+        }
+    });
   }
 });

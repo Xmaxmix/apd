@@ -9,8 +9,9 @@
           <h2>${selectedOrgXML.name}
             <g:if test="${(countObjcs > 0)}">
               <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
-              <g:link class="count" controller="search" action="results" params="[query: '', offset: '0',
-                rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'apd.InstitutionItem_IngestedObjectCountTitleText')}">
+              <g:apdLink class="count" controller="search" action="results" params="${params}" 
+                addOrUpdate="${['query': '', 'offset': '0', 'rows': '20', 'facetValues[]': facetvalue]}" 
+                title="${message(code: 'apd.InstitutionItem_IngestedObjectCountTitleText')}">
                 <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                 <g:if test="${(countObjcs == 1)}">
                   <g:message args="${flashArgs}" code="apd.InstitutionItem_IngestedObjectCountFormat" />
@@ -18,7 +19,7 @@
                 <g:if test="${(countObjcs > 1)}">
                   <g:message args="${flashArgs}" code="apd.InstitutionItem_IngestedObjectCountFormat_Plural" />
                 </g:if>
-              </g:link>
+              </g:apdLink>
             </g:if>
           </h2>
         </div>

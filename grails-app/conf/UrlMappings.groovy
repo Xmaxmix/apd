@@ -17,8 +17,7 @@
 class UrlMappings {
 
     static mappings = {
-        "/$controller/$action?/$id?"{ constraints {
-                // apply constraints here
+        "/$controller/$action?/$value?"{ constraints { // apply constraints here
             } }
 
         "/" {
@@ -51,6 +50,11 @@ class UrlMappings {
             action="getTreeNodeChildren"
         }
 
+        "/struktur/parents/$id" {
+            controller="structureview"
+            action="getTreeNodeParents"
+        }
+
         "/struktur/root" {
             controller="structureview"
             action="getTreeRootItems"
@@ -81,10 +85,15 @@ class UrlMappings {
             action="getTreeNodeObjectCount"
         }
 
-        "/liste/getLowerLevel/$id" {
-            controller="objectview"
-            action="getSecondLevelNodes"
-        }
+        //        "/liste/getLowerLevel/$id" {
+        //            controller="objectview"
+        //            action="getSecondLevelNodes"
+        //        }
+
+        //        "/liste/getinstitutionparent/$id" {
+        //            controller="objectview"
+        //            action="getTopParentInstitution"
+        //        }
 
         "/institutions/$action/$hashId?" {
             controller="institutions"
