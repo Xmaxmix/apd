@@ -112,6 +112,15 @@ class ApiConsumer {
         return requestServer(baseUrl, path, [ client: APD_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, optionalHeaders, false, streamingOutputStream)
     }
 
+    static def setApiKey(optionalHeaders, baseUrl) {
+        def grailsApplication = Holders.getGrailsApplication()
+        println "LOG INFO " + grailsApplication.config.apd.backend.apikey + grailsApplication.config.apd.advancedSearch.defaultRows
+        if (grailsApplication.config.apd.backend.url == baseUrl && grailsApplication.config.apd.backend.apikey) {
+            optionalHeaders.put("Authorization", 'OAuth oauth_consumer_key="'
+                    + grailsApplication.config.apd.backend.apikey + '"')
+        }
+    }
+    
     /**
      * Central method to call the backend, all other methods just delegate.
      * @param baseUrl The base REST-server url (e.g. "http://backend.escidoc.org")
@@ -132,7 +141,9 @@ class ApiConsumer {
         try {
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-
+            
+            setApiKey(optionalHeaders, baseUrl)
+            
             http.request(method, content) { req ->
 
                 if(content == ContentType.BINARY){

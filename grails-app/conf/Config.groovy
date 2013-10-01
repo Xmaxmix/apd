@@ -140,6 +140,7 @@ apd.advancedSearch.searchGroupCount="3"
 apd.advancedSearch.searchFieldCount="5"
 apd.advancedSearch.defaultOffset="0"
 apd.advancedSearch.defaultRows="20"
+apd.backend.apikey="OleZGFgt5rJTfx9FghOhd76Mk9XTEor2nujXIxxSwU5R7QnQltn1380096757802"
 
 // log4j configuration
 log4j = {
