@@ -16,10 +16,9 @@ package de.ddb.apd
  */
 
 
-import de.ddb.apd.institutions.InstitutionsCache
-import grails.util.CosineSimilarity;
-import groovyx.net.http.HTTPBuilder
+import grails.util.CosineSimilarity
 import net.sf.json.JSONObject
+import de.ddb.apd.institutions.InstitutionsCache
 
 
 class InstitutionService {
@@ -39,6 +38,12 @@ class InstitutionService {
     def itemService
 
 
+    /**
+     * Creates an index map which holds all institutions. 
+     * The key of the index is a letter/number and the value a list of institutes that belongs to the key. 
+     *  
+     * @return an index map of all institutions in alphabetical order
+     */
     def findAllAlphabetical(){
         def institutionList = findAll()
 
@@ -68,6 +73,11 @@ class InstitutionService {
         return allInstitutions
     }
 
+    /**
+     * Retrieves all institutions from the backend
+     * 
+     * @return all institutions stored in the backend
+     */
     def findAll() {
         // Get the last known Etag (empty on first request)
         def pendingEtag = institutionsCache.etag
@@ -95,6 +105,17 @@ class InstitutionService {
     }
 
 
+    /**
+     * Search for a given string in the archives. The search is implemented in two steps:
+     * <ul>
+     *  <li>Make a backend search for the given query. Add request parameters for sector and provider facets. 
+     *  <li>Adjust the institution found in the search with the complete institution list
+     * </ul>
+     * 
+     * @param query The query to search for archives
+     * 
+     * @return A list of institutions that match the search query
+     */
     def searchArchives(String query) {
         //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
         def backendUrl = configurationService.getBackendUrl()
@@ -146,28 +167,13 @@ class InstitutionService {
         return resultObject
     }
 
+    /**
+     * Searches for archives in the complete institutions list
+     * 
+     * @param query The query to search for archives
+     * @return A list of archives
+     */
     def searchArchivesForStructure(String query) {
-        //        //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
-        //        def backendUrl = configurationService.getBackendUrl()
-        //        def parameters = [:]
-        //        parameters["query"] = query
-        //        parameters["sector"] = "sec_01"
-        //        def searchWrapper = ApiConsumer.getJson(backendUrl, "/institutions", parameters)
-        //
-        //        if(!searchWrapper.isOk()){
-        //            log.error "searchArchives(): search returned an error"
-        //        }
-        //
-        //
-        //        //Getting result institutions for search
-        //        def searchResponse = searchWrapper.getResponse()
-
-        //        // Getting ID for institutions
-        //        //println searchResponse.get(0)
-        //        searchResponse.each {
-        //            resultList.add(["id": it.id, "name": it.name, "count": 0, "institution": true])
-        //        }
-
         def resultList = []
 
         def allInstitutes = findAll()
@@ -187,6 +193,11 @@ class InstitutionService {
 
     }
 
+    /**
+     * Checks for the facet value sec_01 in the given institutions and it's child institutions
+     * @param currentInstitution the institution to ckeck for archives
+     * @return <code>true</code> if the institution is or includes an archive 
+     */
     private def isInstitutionOrChildAnArchive(def currentInstitution){
         if(currentInstitution.sector == "sec_01"){
             return true
@@ -202,6 +213,17 @@ class InstitutionService {
         return false
     }
 
+    /**
+     * Search for specific items for a given institute
+     * 
+     * @param query the query to search for
+     * @param institutionId search the items of this institute
+     * @param offset the search offset
+     * @param pagesize the pagination size
+     * @param sort the sort order
+     * 
+     * @return the items which maps the given search criterias
+     */
     def searchArchive(query, institutionId, offset, pagesize, sort) {
         if(!offset) {
             offset = "0"
@@ -217,6 +239,8 @@ class InstitutionService {
 
         def allInstitutions = findAll()
 
+        //Get the institution by its id
+        //TODO maybe it would be nice to hold an hashmap of the institutions with its id as a key. So we don not need to iterate over the whole list!
         def institutionName = ""
         for(int i=0; i<allInstitutions.size(); i++){
             if(allInstitutions[i].id == institutionId) {
@@ -225,10 +249,10 @@ class InstitutionService {
             }
         }
 
+        //Search for items related to the given institution
         def backendUrl = configurationService.getBackendUrl()
         def parameters = [:]
         parameters["query"] = query
-        //parameters["facet"] = ["sector_fct", "provider_fct"]
         parameters["facet"] = ["sector_fct"]
         if(institutionName.length() > 0){
             parameters["facet"].add("provider_fct")
@@ -246,10 +270,15 @@ class InstitutionService {
             log.error "searchArchive(): search returned an error"
         }
 
-        //return searchWrapper.getResponse()?.results[0]?.docs
         return searchWrapper.getResponse()
     }
 
+    /**
+     * Get the total number of institutions in the given list
+     * 
+     * @param rootList the list on which to calculate the total number of institutions
+     * @return the total number of institutions in a given list
+     */
     private getTotal(rootList) {
         def total = rootList.size()
 
@@ -263,6 +292,12 @@ class InstitutionService {
         return total
     }
 
+    /**
+     * Get the total number of descendants in the given children list
+     *
+     * @param rootList the list on which to calculate the total number of descendants
+     * @return the total number of descendants in a given children list
+     */
     private countDescendants(children) {
         def totalDescendants = 0
 
@@ -275,6 +310,16 @@ class InstitutionService {
         return totalDescendants
     }
 
+    /**
+     * Puts an institute on the given index.
+     * Implements some special logic for german umlauts.
+     * 
+     * @param institutionByFirstLetter the index where to put the institution
+     * @param institutionWithUri the institute represented by an uri
+     * @param firstLetter the first letter oft the institute
+     * 
+     * @return an updated version of the index
+     */
     private putToIndex(institutionByFirstLetter, institutionWithUri, firstLetter) {
         switch(firstLetter) {
             case 'Ä':
@@ -292,6 +337,12 @@ class InstitutionService {
         return institutionByFirstLetter
     }
 
+    /**
+     * Recursive method which appends data to the children of a given institute
+     * 
+     * @param institution the parent institute
+     * @param counter TODO it seems that this parameter is never used in the method
+     */
     private buildChildren(institution, counter) {
         if(institution.children?.size() > 0 ) {
             institution.children.each { child ->
@@ -304,6 +355,12 @@ class InstitutionService {
         }
     }
 
+    /**
+     * Prepares an index map that holds as key the letter a-z and a special NUMBER_KEY.
+     * Each key gets an empty list assigned that will store institutes.
+     *  
+     * @return an index map for institutes
+     */
     private def buildIndex() {
         // create a map with empty arrays as initial values.
         def institutionByFirstLetter = [:].withDefault{ []}
@@ -319,11 +376,21 @@ class InstitutionService {
         return institutionByFirstLetter
     }
 
+    /**
+     * Adds an uri to the detail view of an institution to the given json
+     * @param json the json where to add the uri
+     * @return an uri to the detail view of an institution to the given json
+     */
     private def addUri(json) {
         json.uri = buildUri(json.id)
         return json
     }
 
+    /**
+     * Builds an uri to show the details for the given institution id
+     * @param id the institution id
+     * @return an uri to show the details for the given institution id
+     */
     private def buildUri(id) {
         grailsLinkGenerator.link(url: [controller: 'structureview', action: 'show', id: id ])
     }
@@ -385,7 +452,10 @@ class InstitutionService {
         return hierarchy
     }
 
-
+    /**
+     * Used in the getTechtonicFirstLvlHierarchyChildren
+     * @return JSONObject
+     */
     private def getChildren(id){
         def children = itemService.getChildren(id)
         HashMap jsonMap = new HashMap()
@@ -395,6 +465,7 @@ class InstitutionService {
         }
         return jsonMap
     }
+
     /**
      * Used in the getTechtonicFirstLvlHierarchyChildren
      * @return JSONObject
@@ -444,12 +515,6 @@ class InstitutionService {
             if (it.name== cosines.first().toString()){
                 //Fix the different attributes for objects and institutions
                 parent.last().parent = it.id
-                //                it.label = it.name
-                //                it["parent"] = ""
-                //                it["leaf"] = false
-                //                it["type"] = ""
-                //                it["aggregationEntity"] = true
-                //                it["children"] = []
 
                 def itCopy = [:]
                 itCopy["id"] = it.id
