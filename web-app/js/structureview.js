@@ -21,7 +21,7 @@ $(document).ready(function () {
     
     if ($('.search-widget-container').length > 0) {
       var searchWidgetContainer = $('#search-widget');
-      searchWidget = new SearchWidget($('#search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
+      searchWidget = new SearchWidget($('.search-widget-form'),searchWidgetContainer, searchWidgetContainer.find('.controls-container'));
     }
 
     var structureTreeManager = new TreeManager(treeElement, detailViewElement, true);

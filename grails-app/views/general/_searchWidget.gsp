@@ -8,11 +8,11 @@
         <g:each in="${filters.sector}">
           <g:if test="${ it instanceof List}">
             <g:each in="${it}" var="subfilter">
-              <option value="${subfilter}">- ${subfilter}</option>
+              <option value="sector:${subfilter}">- ${subfilter}</option>
             </g:each>
           </g:if>
           <g:else>
-            <option value="${it}">${it}</option>
+            <option value="sector:${it}">${it}</option>
           </g:else>
         </g:each>
       </select>
@@ -25,11 +25,11 @@
         <g:each in="${filters.state}">
           <g:if test="${ it instanceof List}">
             <g:each in="${it}" var="subfilter">
-              <option value="${subfilter}">- ${subfilter}</option>
+              <option value="state:${subfilter}">- ${subfilter}</option>
             </g:each>
           </g:if>
           <g:else>
-            <option value="${it}">${it}</option>
+            <option value="state:${it}">${it}</option>
           </g:else>
         </g:each>
       </select>
@@ -40,12 +40,12 @@
           A-Z
         </option>
         <g:each in="${filters.alphabet}">
-          <option value="${it}">${it}</option>
+          <option value="alphabet:${it}">${it}</option>
         </g:each>
       </select>
     </div>
     <div class="span1">
-      <g:apdForm id="search-widget-form" controller="structureview" params="${params}" method="GET">
+      <g:apdForm class="search-widget-form" id="search-widget-form" controller="structureview" params="${params}" method="GET">
         <button type="submit" class="btn">
           <i class="icon-search"></i>
         </button>

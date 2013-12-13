@@ -26,7 +26,7 @@ $.extend(SearchWidget.prototype, {
           $(this).removeClass('empty');
         }
         var filterValue = $(this).find('option:selected').attr('value');
-        var content = this.value;
+        var content = $(this).find('option:selected').text();
         if (jQuery.inArray(filterValue, currObjInstance.selectedValues) == -1) {
           currObjInstance.renderSelection(filterValue, content);
           currObjInstance.selectedValues.push(filterValue);

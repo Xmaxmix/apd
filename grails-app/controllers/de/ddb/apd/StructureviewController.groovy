@@ -27,12 +27,15 @@ class StructureviewController {
     def index() {
 
         def query = params.query
+        def filter = params.filter
+        println "filter params: " +  filter
 
         render (view: 'structureview',  model: [:])
     }
 
     def getTreeRootItems() {
         def query = params.query
+
         def searchResult = institutionService.searchArchivesForStructure()
 
         render (contentType: ContentType.JSON.toString()) { searchResult}

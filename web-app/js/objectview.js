@@ -18,7 +18,7 @@ $(function() {
 
     if ($('.search-widget-container').length > 0) {
       var searchWidgetContainer = $('#search-widget');
-      searchWidget = new SearchWidget($('#search-widget-form'), searchWidgetContainer,
+      searchWidget = new SearchWidget($('.search-widget-form'), searchWidgetContainer,
         searchWidgetContainer.find('.controls-container'));
     }
     
