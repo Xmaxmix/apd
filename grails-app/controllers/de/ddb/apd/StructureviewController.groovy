@@ -16,10 +16,7 @@
 package de.ddb.apd
 
 import groovyx.net.http.ContentType
-
-import javax.servlet.http.HttpServletResponse
-
-import de.ddb.apd.exception.ItemNotFoundException;
+import de.ddb.apd.exception.ItemNotFoundException
 
 class StructureviewController {
 
@@ -36,7 +33,7 @@ class StructureviewController {
 
     def getTreeRootItems() {
         def query = params.query
-        def searchResult = institutionService.searchArchivesForStructure(query)
+        def searchResult = institutionService.searchArchivesForStructure()
 
         render (contentType: ContentType.JSON.toString()) { searchResult}
     }
@@ -61,7 +58,7 @@ class StructureviewController {
 
     def getTreeNodeParents() {
         def id = params.id
-        
+
         def parents = []
         if(id == "rootnode"){
             def rootNode = [id:"rootnode", parent:"<<null>>", label:"", type:"<<null>>", position:-1, leaf:false, aggregationEntity:true, institution:true]

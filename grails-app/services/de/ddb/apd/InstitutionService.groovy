@@ -18,6 +18,9 @@ package de.ddb.apd
 
 import grails.util.CosineSimilarity
 import net.sf.json.JSONObject
+
+import org.junit.Test
+
 import de.ddb.apd.institutions.InstitutionsCache
 
 
@@ -39,7 +42,7 @@ class InstitutionService {
 
 
     /**
-     * Creates an index map which holds all institutions. 
+     * Creates an index map which holds all institutions without children. 
      * The key of the index is a letter/number and the value a list of institutes that belongs to the key. 
      *  
      * @return an index map of all institutions in alphabetical order
@@ -52,9 +55,6 @@ class InstitutionService {
         def institutionByFirstChar = buildIndex()
 
         institutionList.each { it ->
-
-            totalInstitution++
-
             def firstChar = it?.name[0]?.toUpperCase()
             it.firstChar = firstChar
 
@@ -63,7 +63,7 @@ class InstitutionService {
             }
 
             it.sectorLabelKey = 'apd.' + it.sector
-            buildChildren(it, totalInstitution)
+            buildChildren(it)
             institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
         }
 
@@ -106,15 +106,15 @@ class InstitutionService {
 
 
     /**
-     * Search for a given string in the archives. The search is implemented in two steps:
+     * Search for institutions that have items that match the search query. The search is implemented in two steps:
      * <ul>
-     *  <li>Make a backend search for the given query. Add request parameters for sector and provider facets. 
+     *  <li>A backend search with the given query. Add request parameters for sector (archive) and provider facets. 
      *  <li>Adjust the institution found in the search with the complete institution list
      * </ul>
      * 
-     * @param query The query to search for archives
+     * @param query the query to search teh backend
      * 
-     * @return A list of institutions that match the search query
+     * @return A list of institutions that have items that match the search query
      */
     def searchArchives(String query) {
         //http://backend-p1.deutsche-digitale-bibliothek.de:9998/search?query=gutenberg&facet=sector_fct&facet=provider_fct&sector_fct=sec_01
@@ -173,7 +173,7 @@ class InstitutionService {
      * @param query The query to search for archives
      * @return A list of archives
      */
-    def searchArchivesForStructure(String query) {
+    def searchArchivesForStructure() {
         def resultList = []
 
         def allInstitutes = findAll()
@@ -279,7 +279,7 @@ class InstitutionService {
      * @param rootList the list on which to calculate the total number of institutions
      * @return the total number of institutions in a given list
      */
-    private getTotal(rootList) {
+    def getTotal(rootList) {
         def total = rootList.size()
 
         for (root in rootList) {
@@ -343,14 +343,14 @@ class InstitutionService {
      * @param institution the parent institute
      * @param counter TODO it seems that this parameter is never used in the method
      */
-    private buildChildren(institution, counter) {
+    private buildChildren(institution) {
         if(institution.children?.size() > 0 ) {
             institution.children.each { child ->
                 child.uri = buildUri(child.id)
                 child.sectorLabelKey = 'apd.' + child.sector
                 child.parentId = institution.id
                 child.firstChar = child?.name[0]?.toUpperCase()
-                buildChildren(child, counter)
+                buildChildren(child)
             }
         }
     }
@@ -370,7 +370,7 @@ class InstitutionService {
             institutionByFirstLetter[it] = []
         }
 
-        // add the '0-9' as the last key for institutions start with a number.
+        // add the '0-9' as the key for institutions start with a number.
         institutionByFirstLetter[NUMBER_KEY] = []
 
         return institutionByFirstLetter
@@ -543,4 +543,52 @@ class InstitutionService {
         return parent
     }
 
+    /**
+     * Requests the backend for an institution item.
+     * 
+     * @param id the id of the institution item
+     * @return view details of an institution item 
+     */
+    def findInstitutionViewById(id) {
+        final def componentsPath = "/access/" + id + "/components/"
+        final def path = componentsPath + "view"
+
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), path)
+        if(!apiResponse.isOk()){
+            log.error "findItemById(): Server returned no results -> " + id
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+
+        def response = apiResponse.getResponse()
+
+        def uri = response.uri.text()
+        def name = response.name.text()
+        def fields = response.fields.field.findAll()
+
+        return [
+            'uri': uri,
+            'name': name,
+            'fields': fields
+        ]
+    }
+
+
+    /**
+     * Return the state for a given institution id 
+     * @param id the id of the institution item
+     * 
+     * @return the state for the given institution id
+     */
+    @Test public String getInstitutionState(id) {
+        def institution = findInstitutionViewById(id)
+        def state = null
+
+        institution?.fields.each {
+            if (it.name =="state") {
+                state = it.value
+            }
+        }
+
+        return state
+    }
 }

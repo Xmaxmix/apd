@@ -122,6 +122,12 @@ environments {
             "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties"
         ]
     }
+    test {
+        grails.logging.jul.usebridge = true
+        grails.config.locations = [
+            "file:${userHome}/.grails/${appName}.properties"
+        ]
+    }
 }
 
 //APD SPECIFIC Configuration variables
