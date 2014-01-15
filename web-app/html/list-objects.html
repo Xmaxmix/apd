@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+	<!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Archivportal</title>
+		<link href="../css/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../css/apd.css" rel="stylesheet" media="screen">
+		<link href="../css/vendor/dynatree/skin/ui.dynatree.css" rel="stylesheet" media="screen">
+		<link href="../css/dynatree-apd.css" rel="stylesheet" media="screen">
+		<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body class="">
+		<header class="container">
+			<h1 class="invisible-but-readable">Website-Kopfzeile</h1>
+			<a id="brand" class="span4" href="index.html">Archivportal D</a>
+			<ul class="nav nav-pills pull-right">
+				<li>
+					<a href="about.html">Über uns</a>
+				</li>
+				<li>
+					<a href="glossary.html">Glossar</a>
+				</li>
+				<li>
+					<a href="help.html">Hilfe</a>
+				</li>
+				<li>
+					<a href="login.html">Login</a>
+				</li>
+			</ul>
+			<a id="merkliste" class="affix-top" data-spy="affix" data-offset-top="0"> <i class="apd-icon apd-icon-merkliste"></i> Merkliste <span>0 Objekte gemerkt</span> </a>
+		</header>
+		<div role="main" id="main-container" class="container">
+			<form class="well" method="get" action="#">
+				<!-- /apd/liste?id=home-search-form -->
+				<div id="search-widget" class="row-fluid">
+					<div class="span8 offset2 input-append">
+						<input type="text" placeholder="" class="span11 input-xlarge" name="query" id="query">
+						<button class="btn btn-primary" type="submit">
+							Suchen
+						</button>
+					</div>
+				</div>
+			</form>
+			<ul class="nav nav-tabs">
+				<li>
+					<a href="list-archive.html">Archive</a>
+				</li>
+				<li class="active">
+					<a href="list-objects.html">Objekte</a>
+				</li>
+			</ul>
+			<div class="row-fluid">
+				<div id="tree-panel" class="span4">
+					<div class="well">
+						<div class="btn-group">
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Action <span class="caret"></span> </a>
+							<ul class="dropdown-menu">
+								<!-- dropdown menu links -->
+							</ul>
+						</div>
+						<div class="btn-group">
+							<span class="facette-label"> Bundesland </span><span class="facette-value"> Hessen
+								<button type="button" class="close" data-dismiss="alert">
+									×
+								</button> </span>
+						</div>
+					</div>
+					<!-- <div style="padding: 10px; background: #D1D9DE">
+					TREE
+					<a class="btn pull-right" id="toogle-tree-size">Vergrößern</a>
+					</div> -->
+					<div id="tree-scrollpane">
+						<div class="scrollbar">
+							<div class="track">
+								<div class="thumb">
+									<div class="end"></div>
+								</div>
+							</div>
+						</div>
+						<div class="viewport">
+							<div class="overview">
+								<div id="institution-tree">
+									<ul class="dynatree-container">
+										<li>
+											<span ><a href="#">
+												<div id="JQADKD72P4O67OG7KERDZB4OQY4P5FRP">
+													Alt-Arnstorf-Haus
+												</div> </a></span>
+											<ul style="display: none;">
+												<li>
+													<span><a href="#">
+														<div id="UP63QLFLIUQHB2KXMOHBLHGVXBBLICRZ">
+															Gollwitzer-Photoglasplattensammlung
+														</div> </a></span>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="W4KFMZWKY2PQRE7NUF75J437A2ULDHPQ">
+													Antifaschistisches Pressearchiv und Bildungszentrum Berlin
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UYUQX7NJYTPJKK2QUTCMXGALFXBKYZ5S">
+													Arbeiter-Samariter-Bund Deutschland e.V., Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4TM67YTV44OG77HNA6AMLLUKLSYDVFX3">
+													Archivberatungsstelle Hessen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="Z3NK5X6LD3MAYTHUL46UFFGU3OR4PPA6">
+													Archiv der deutschen Frauenbewegung
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YGALC5ZF7PGZ24USUHP5UIVNLFRK7EOT">
+													Archiv der Hansestadt Lübeck
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZYDP3SGUUVCR2Y5XD43PHPPO7F2AYHJ6">
+													Archiv der Hansestadt Wismar
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PEVUWPVT44MHVRD4HU7TBLSTWUMYWZ3P">
+													Archiv der Region Hannover
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZNQZSCJ6AUALFN2NDNJLFX3UIRY6EKSV">
+													Archiv der Stadt Troisdorf
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FYYZIDDLNCHR3LAFSXUXSZ6ZZYPKCMY4">
+													Archiv der Stadtverwaltung Neu-Isenburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="IBTY3NTPEV5J5FACFTHMYZET4DQ3OPB5">
+													Archiv der Vereinten Dienstleistungsgewerkschaft (ver.di)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FAOTQ47L7ESJLF3OOR4HQOXVRKFOA2F4">
+													Archiv des Bistums Passau
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="K4QHLBZUSDH3U5DKZSPC67SWP3H2RCQL">
+													Archiv des Deutschen Caritasverbandes e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="CPPHYT7E4YNTI5ZLZWS7NXHPGEJ4MVFZ">
+													Archiv des Ev.-Luth. Kirchenkreises Hamburg-Ost
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LYPMAY4PNOZM35GU5MNQ27PNR4YQB5WM">
+													Archiv des Landkreises Cuxhaven
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2MK3EFOXNUNOKZ2HQIYRW4CG2A56H7L2">
+													Archiv des Main-Tauber-Kreises
+												</div> </a></span>
+										</li>
+										<li>
+											<span class="   dynatree-selected dynatree-active  f"><a href="#">
+												<div id="MTFTYW2XC7HPCOMSKHPH26YYXCQ57UOZ">
+													Archiv für Christlich-Soziale Politik (ACSP) der Hanns-Seidel-Stiftung e.V.
+												</div> </a></span>
+											<ul style="display: none;">
+												<li>
+													<span><a href="#">
+														<div id="MVEZAY7CVRPPCDIGLHD7GCTKNVJIYZCK">
+															Politisch-historische Fachbibliothek der Hanns-Seidel-Stiftung
+														</div> </a></span>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZYOO3VYRZC5YZZIKP35RXQDLHYG2LUYO">
+													Archiv Künstlerische Bücher
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UNXLQP6VDPESRIDQFYDQFMHLNYC42EY7">
+													Archiv Mission EineWelt, Centrum für Partnerschaft, Entwicklung und Mission der Evangelisch-Lutherischen Kirche in Bayern
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="677CUAXM5DI4OI73BKCNDQ7CH5C7AOTB">
+													Archivschule Marburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="IFNX4C7IU5O3T336MEM3IOXQ2G4OPTIF">
+													Archiv soziale Bewegungen in Baden e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZBXKB6BJ765N6TOSLB5WTIVAEP7VGA3W">
+													Archiv und Dokumentationszentrum für Alphabetisierung und Grundbildung
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZGNECNRN4J7KROLARZHX2WPRC4ESKHSK">
+													Archiv- und Museumsstiftung der VEM. Stiftung für interkulturelle Forschung, Missions- und Religionswissenschaft
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VNY5SRGFIGFBGAJLOVUMCLIYXPLDF4O6">
+													Archivverbund Stadtarchiv/Staatsfilialarchiv Bautzen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="EGUYE4OKPPXJSLMXPCJDV3TXLBI33K6V">
+													Bayerischer Landtag. Referat Bibliothek, Dokumentation, Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2232YVSIZTZYDAZIBI25LW3TZUY6DZVH">
+													Bayerisches Hauptstaatsarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="OYOVAXJJJJLHWDJBDGQR4QKCBMVH54LU">
+													Beethoven-Haus Bonn
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BHNXOOEEMRNTQ67FHSVXYPIQBTQZKL4J">
+													belladonna Kultur, Bildung und Wirtschaft für Frauen e.V. / Bremer Frauenarchiv und Dokumentationszentrum belladonna
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="HVSPX7GJEILJH3XAWHKZQ66MSGOK6IJC">
+													Bezirksmuseum Friedrichshain-Kreuzberg, Archiv und Bibliothek
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="7UTVDEBY4JEOSBPBBX7STKK7DXGDU4MV">
+													Bilfinger Berger SE
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="MDHIGNSP535HKPSAPGGOBZO3UQB7FCAS">
+													Bistum Münster. Bischöflich Münstersches Offizialat Vechta, Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2VZFJ67IKLIRJIUZQ244SBAVIAIMPFJ7">
+													Bremer Landesmuseum, Focke-Museum. Bibliothek, Bildarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FDKRUXMK52M2OQVKBURXICWRVM3IES6V">
+													Bremische Evangelische Kirche. Landeskirchliches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VSHJWG7QLS7Y3NS2HKE43E5Q5NJ7OCLS">
+													Bundesarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="IDCLDTPWRR562432BBN4TIUAKMAGTSEW">
+													Bunkermuseum Hamburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="O3SFYICIR4GPYV2N4GS7MUDKAKO6TIYE">
+													Commerzbank Aktiengesellschaft. Group Communications. Historisches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZD5G7JN7LXSMJOGWLYQNH7ZWSSMWWOYH">
+													Der Bundesbeauftragte für die Unterlagen des Staatssicherheitsdienstes der ehemaligen Deutschen Demokratischen Republik
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YFJPZVRFKZX75QHPVCRJPOT6WRK7JXTH">
+													Der Tagesspiegel. Redaktionsarchiv &amp; Dokumentation
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5">
+													Deutsche Nationalbibliothek
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="AMVXX3RHD4WEVXXEFGWJRCXQJFOBPT24">
+													Deutsches Albert-Schweitzer-Zentrum mit Archiv und Museum
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DHZY6PQBJ3IWAQDCCCW66HUGEL2LZVA6">
+													Deutsches Literaturarchiv Marbach
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="L7EDUHSZRZC7D5RVA3LSCF7KMGEWHCWB">
+													Deutsches Museum von Meisterwerken der Naturwissenschaft und Technik
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="X4LUBFD7B36N4DLSX4U7YUZ53AQ6TYQT">
+													Deutsches Musikgeschichtliches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VCNH6RDT7U4IRBI5GXYVMRECYUVZ526H">
+													Deutsches Tagebucharchiv e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="KHHVWQWU4N2IEOYZ4JMML36KDCZRVUSN">
+													Deutsches Tanzarchiv Köln
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SEJFS4PLOGILIVNX2S4U4SBCA4DSNMY4">
+													Diözesanbibliothek Aachen im Katechetischen Institut des Bistums Aachen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="RHHC2NWM5Z5QCNPYEHYRS2WTGQ3PAFEO">
+													documenta Archiv für die Kunst des 20. und 21. Jahrhunderts
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="D2DIVDHJWVQWWM2P5F2DIWQ3OAP3THB3">
+													Domstiftsarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="KPNDYMA4YXT7EDIXWN6CDCLBIJ2KSCYU">
+													Domstiftsarchiv Brandenburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2U667VYSXTTW3PCIXVTD7M7TBW2JRS4A">
+													Dresdner Druck- u. Verlagshaus GmbH &amp; Co.KG. Unternehmensbereich Zeitungen, Archiv Sächsische Zeitung und Morgenpost Sachsen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZLAWODX4ZBYML7SPWT56UYNZTQ5MICGH">
+													Dr.-Ing. h.c. F. Porsche AG. Historisches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="Z2ZLZVMSRLMMFWXGHZ4224QYSS63BXO4">
+													Eberhard-Karls-Universität Tübingen, Universitätsarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BTF7ZCXUJJBBPUJFKAHHNADKMMWIFN3U">
+													Erzbistum Paderborn. Erzbistumsarchiv Paderborn
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="7WJ6FER3TSPBOT7B232HVKWRKIWULJP7">
+													Evangelische Kirche von Kurhessen-Waldeck. Landeskirchliches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="RCAI77YGV4BYFQOUSLRFYRUT72KGCSNL">
+													Evangelisches Landeskirchliches Archiv in Berlin
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VEU7QGGBBDTBVLHPTFH6476C7LRZ3G47">
+													Evangelisch-Lutherische Landeskirche Mecklenburgs. Landeskirchliches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JFD4RXZMQTAAC6TGXOOT6SGHPIUQESJ5">
+													FFBIZ Frauenforschungs-, -bildungs- und -informationszentrum e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="WTLA7RRWITLRF2MPDK4M5RF2IJ4ZUPH6">
+													Filmmuseum der Landeshaupstadt Düsseldorf
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LPYJSGZAJMQF562JJNUFAGXNNTAY6XAQ">
+													Filmmuseum Potsdam
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="CLELTYIEQZZMAYTTNY6TN4BV3KH6OXMT">
+													Franckesche Stiftungen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VDP77DLFITP4WNE2LO6OCUVOXBSLO2SA">
+													Frankfurter Neue Presse. Zentrale Dienste Redaktion/Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="S5GQWWGZNMHCVNSDQFT5EKCCBFFSHZWS">
+													Franz Haniel &amp; Cie. GmbH, Zentralabteilung Gesellschafter + Nachhaltigkeit, Archiv &amp; Dokumentation
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YZ7HPCCQRQE3WCE7PQTKM5L7JHRDTPJP">
+													FrauenMediaTurm
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="APT5OMPRH4PFMCD4XZE5PKO45IGAVTFI">
+													Freie und Hansestadt Hamburg. Kulturbbehörde - Staatsarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UFCBMES7C2ZCG4FMHDQQWO657XKDMZYJ">
+													Freundeskreis Deutsches Auswandererhaus e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BDML5G6LJE7KZ6W3YIV2WWREU57V24RZ">
+													Friedrich-Alexander-Universität Erlangen-Nürnberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JKOJO7WFWSD2L34RWWHWZ43WWSZ4IVH5">
+													Friedrich-Naumann-Stiftung für die Freiheit. Archiv des Liberalismus
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="HT7BJUKDAZGV6RUDJFEDOTBOYTCH55UR">
+													Fürst Thurn und Taxis Zentralarchiv/Hofbibliothek
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DPKAWM2FWBUO4ZH5J3MGPAS5TCFDEQOM">
+													Gemeindearchiv Assamstadt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="6TGMCSLU7P3SLBMWO5ACRSAEIILPIQ5U">
+													Gemeindearchiv Bedburg-Hau
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="J6TCXLD6DNRXIOQA6AR6RP32TEBSUU5L">
+													Gemeindearchiv Kranenburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="6U7TOF3OCM4D2ZE55BFDNVDEZEVXPEV6">
+													Gemeindearchiv Südlohn
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VQJPS5WWP5KMUKOBJBQU4YJQVCIPCFYH">
+													Gemeindearchiv Werbach
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="IFKIYUTE2IUQL3TTWCOP3VSDPONEEMGD">
+													Generaldirektion der Staatlichen Archive Bayerns
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4HY43NN3VDY3K6RJVJOHPOI7NS7SVVIJ">
+													Hamburger Institut für Sozialforschung. Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="57YUX7PTSMMPLMXNWWTJNIY5EY4J6OTH">
+													Hamburgisches Architektur-Archiv d. Hamburgischen Architektenkammer
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="IB5WANNJWDFXQXNEAZ36I3PRRJ5G4APH">
+													Heinrich-Heine-Institut
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="Z7IRBH3PLEV624PQJZLPYKVPQM3QGAMG">
+													Hessische Hausstiftung. Archiv und Bibliothek
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="N76VRCVD2PKDRIEVUCFHSSIXN3VWDPAB">
+													Hessischer Landtag. Archiv, Bibliothek, Dokumentation
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="Q27K4MH5FZFJ4PXVESKRQWQYDE4HKRX5">
+													Hessisches Hauptstaatsarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="52JXMM3SAY6FGUY6I43XR3SXETATZ3HN">
+													Hessisches Ministerium für Wissenschaft und Kunst
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UEF3H2TTTZXZAR4MMW6YCCXRAKYCWKGR">
+													Hessisches Staatsarchiv Darmstadt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="OAMCPGDT5BMQX7H7AC3XFUBAKNFUFPTK">
+													Hessisches Staatsarchiv Marburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GBYK5CV4JLYSTNMPI7DDJBHTFK7DL5F4">
+													Historisches Centrum Hagen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="I3IY57KSZXEBCKMXUYF6DWDAJ5CRMDWU">
+													Historisches Museum am Hohen Ufer, Bibliothek
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ES7HXKJ24GZPJ5JWC7ISGOPYGUUDMZ7U">
+													HNF Heinz Nixdorf MuseumsForum GmbH
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DF35LDLPGB3ABGWAT7PKSZNZB43JX6HY">
+													Hochschule für Technik, Wirtschaft und Kultur Leipzig. Hochschularchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="5PVQNTPRX4VXFB4IJC6ZZPZFR562LA5B">
+													Informationsbüro Nicaragua e.V. Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4E6BBTPDTFSGCCXY5L63FXGGPFNOGC5U">
+													Initiativgruppe Lager Mühlberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FPEFGLA7NJWTNQKM4CXHQIGIAPHMOQSW">
+													Institut für Deutsche Sprache
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3RSIMSHPSYKDN666LTROSPAXOZYJBMCO">
+													Institut für moderne Kunst Nürnberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="D7S6JXBYRZWUVG6DHDWGRO35XOS52DMS">
+													Institut für Sportgeschichte Baden-Württemberg e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZNIRIMTRLJIHFAIHASATLHU433NNG73D">
+													Internationales Zeitungsmuseum der Stadt Aachen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YRQZSZJVVEEEXVLDEGNK2N5UL55DNDRY">
+													Karbe-Wagner-Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LO4XLZ5ZHJDPL27BIHEZ2CWWVGV7IC5F">
+													Karlsruher Institut für Technologie, KIT-Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BW47JOVOPEKG5VZSSQKRHBZPFQDZS667">
+													Klaus-Kuhnke-Archiv für Populäre Musik
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="OATHXJ725NL5NMZJ3ZGN4ZAD3KLGTLDO">
+													Kleist-Archiv Sembdner
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZAVJF3SLKCCOXHGH3XJVZ6Q6J6JG2WMA">
+													Kommunalarchiv Herford, Archiv der Stadt und des Kreises Herford
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="HNIBZNLVX5QOUXA6JXTHIFRE74FS666I">
+													Kommunalarchiv Minden (Archiv der Stadt Minden und des Kreises Minden-Lübbecke)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="EQ6CLXJTPFX72MPHLXLIZBDB42MLMIJF">
+													Konrad-Adenauer-Stiftung
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="6YYJOFTYVDRTZIEDXKVPMFLUVADQHBWN">
+													Kreisarchiv Esslingen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="63WLNYFVJD7AVVWQLWSUEPAH36WZVRK4">
+													Kreisarchiv Euskirchen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="M5GQWSQ4GVCYYCASGPJR3QTSOB3R7JNB">
+													Kreisarchiv Neckar-Odenwald-Kreis
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="6MUZMALRKKYZYQX77STOA76DBPGEYI7Z">
+													Kreis Kleve. Kreisarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="32OPVTJLUTWP3HX2XHORRWGBWPWP3HPL">
+													Kreis Mettmann - Kreisarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="F7AQWUFPP3MYKAFDRWX7YLGL4QNCCK4C">
+													Kreis Siegen-Wittgenstein. Kreisarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PWO2DTNKHHMGDTULNQVXZMSCHCXQM6O7">
+													Kreis Unna. Fachbereich Kultur - Kreisarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UJ27BGHG2ZQY4XOIJALHMQ2QAOXLI4HF">
+													Kunstsammlungen und Museen Augsburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YGYKGAYTXCWL54BDQYCNVNX6VJ3ZPPVX">
+													Landesamt für Kultur- und Denkmalpflege, Abt. Landesarchiv, Landeshauptarchiv Schwerin
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BB47TFDCN3JQBDVXAGWKVRDUKDF7UPDG">
+													Landesamt für Kultur- und Denkmalpflege. Landesarchiv Greifswald
+												</div> </a></span>
+										</li>
+										<li>
+											<span class="  dynatree-expanded  dynatree-exp-e dynatree-ico-ef"><a href="#">
+												<div id="XYMQPA4OHAYDDFYWHV6Q4RFUIISTLQJV">
+													Landesarchiv Baden-Württemberg
+												</div> </a></span>
+											<ul style="">
+												<li>
+													<span><a href="#">
+														<div id="A7DCNBBFPDAZHS7ESXK3Q76ZAGJ2W6H7">
+															Landesarchiv Baden-Württemberg Abt. Hauptstaatsarchiv Stuttgart
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="HOEPZL253TB56GXLCPJ6QVNY4X5QCOJF">
+															Landesarchiv Baden-Württemberg Abt. Staatsarchiv Ludwigsburg
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="SCVLIRRGBA66IBT4YXOZ2GJHERYX7Q2U">
+															Landesarchiv Baden-Württemberg Abt. Staatsarchiv Freiburg
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="GVOQN7F2CZCHWRKJE2RKRHBIERX23TGA">
+															Landesarchiv Baden-Württemberg Abt. Hohenlohe-Zentralarchiv Neuenstein
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="36BF267YNTQVVLZDC6IKZ66KMIRJT4YZ">
+															Landesarchiv Baden-Württemberg Abt. Generallandesarchiv Karlsruhe
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="YSUXYV6ZN7577VESVIMJQNOZFMCODOGJ">
+															Landesarchiv Baden-Württemberg Abt. Staatsarchiv Wertheim
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="3NNKFXSDLL3BVHKI5R62PVAYUJTTJODG">
+															Landesarchiv Baden-Württemberg Abt. Staatsarchiv Sigmaringen
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="PM354GTOYOLJTGJDFV4KMC72XPJ7OTE4">
+															Landesarchiv Baden-Württemberg. Abt. 1: Verwaltung
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="ACU2MG4DQZP335OCHDKUHFERHKXJP4S6">
+															Landesarchiv Baden-Württemberg. Abt. 2: Fachprogramme und Bildungsarbeit
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="Y25NL67XMWL3BPN46DJGZFWPCYUOBYKZ">
+															Landesarchiv Baden-Württemberg. Abt. 2: Grundbuchzentralarchiv
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="TX2FQ77N5YACCJWZ7HKICYAIOHHW4PXA">
+															Landesarchiv Baden-Württemberg. Abt. 3: Staatsarchiv Freiburg
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="GZLZSHPIBU5V37BJPJKM3NW5LJFK67CA">
+															Landesarchiv Baden-Württemberg. Abt. 4: Generallandesarchiv Karlsruhe
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="QPQJFV3ZOCCJM5DYJVEBOU6CAB5GFCGS">
+															Landesarchiv Baden-Württemberg. Abt. 5: Außenstelle Hohenlohe - Zentralarchiv Neuenstein
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="CXJ4BSIGUOKFRVHWFN24C2JEHXSTZKHP">
+															Landesarchiv Baden-Württemberg. Abt. 5: Staatsarchiv Ludwigsburg
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="ZJXSQ2WBGS5ITAE43NZJZFLYRABOQH7C">
+															Landesarchiv Baden-Württemberg. Abt. 6: Staatsarchiv Sigmaringen
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="BK4TL6WN32LHK4KQ5SJK4MUFC4S5757A">
+															Landesarchiv Baden-Württemberg. Abt. 7: Hauptstaatsarchiv Stuttgart
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="KOGPVMUDJQHC76KACXJZRDGRVQOTP56I">
+															Landesarchiv Baden-Württemberg. Abt. 8: Staatsarchiv Wertheim
+														</div> </a></span>
+												</li>
+												<li>
+													<span><a href="#">
+														<div id="QCEIRIEOZOKR7TLQEY6VMAZ76FRNT5LP">
+															Landesarchiv Baden-Württemberg. Abt. 9: Institut für Erhaltung von Archiv- und Bibliotheksgut
+														</div> </a></span>
+												</li>
+												<li>
+													<span class="     f"><a href="#">
+														<div id="JF2NLWDTKIA67F7SJO7D7UIDJIM6DCQP">
+															Landesarchiv Baden-Württemberg. Abteilung Staatsarchiv Sigmaringen
+														</div> </a></span>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VFI7JZCKNLAEQLKIGW4Z4HPYIZBYY4NZ">
+													Landesarchiv Nordrhein-Westfalen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZTHJMWM62TMWEDSFK66C5J5EP54S2Y4E">
+													Landesarchiv Saarbrücken
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VWFOB74NBYT3Q3YWO3X6UMHTJ74PT635">
+													Landesarchiv Speyer
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="IK2Z37Q5MU4ECC4P5J7IRSEDXXHAIE47">
+													Landeshauptarchiv Koblenz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4GASVTWJRDMLSBYBFXCXK3AIBNK6YIAQ">
+													Landeshauptarchiv Sachsen-Anhalt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="RLD22AVANNV2ZSINA3I5372Y3SPC6IVC">
+													Landeskirchliches Archiv Stuttgart
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3BXNTE27UU3U6COXGQCKNXACRGILVSGX">
+													Landkreis Böblingen. Kreisarchiv Böblingen, Landratsamt Böblingen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2HY3ZS5GHP7OLASDEM5NIJZNA5UP63OF">
+													Landkreis Börde. Kreis- und Stadtarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VX3EW4DP4BGPQUB45QIWWJ6ZQXRJ3UG2">
+													Landkreis Emsland. Kreisarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="A4GZNDLCHECPJVR3W3G52GXACMRVTYC3">
+													Landkreis Freudenstadt. Landratsamt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SQ6B7EZIOSF2ALOEX5BJF24YCWRF4E4Q">
+													Landkreis Gießen. Kreisarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GLGTVB7MK5UGYRCKYX5UMGT6Z3JBYW2Z">
+													Landkreis Osterode am Harz.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GN3R3VXRS5GQQARFK77MJTDTNBC4SBBR">
+													Landkreis Rottweil. Bereich Archiv, Kultur, Tourismus
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LTMJG3BEZLGOAMNFZLXO72NVLHYMELJQ">
+													Landkreis Zwickau. Sachgebiet Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="KCS5VIL4TNUAYPJEA7DCOT6A2A3L5U2A">
+													Lichtbildarchiv älterer Originalurkunden Marburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3ZWITVSNON2A2ZCBVAOLF74U6EGQX5C2">
+													Literaturarchiv Sulzbach-Rosenberg | Literaturhaus Oberpfalz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZIAQYDNPHLNMWQEBU3FJEQH243QFYK42">
+													LVR-Archivberatungs- und Fortbildungszentrum
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GRVSG72QQ5IWFPORJHDYNH4WOX4XMORN">
+													LWL-Archivamt für Westfalen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="K3AGDW75CRUEUVD6TNTRCGR427S6MFVZ">
+													Marktarchiv Garmisch-Partenkirchen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="EWCJPETLLX672KACFWPZB45LCNBVN76I">
+													Medienarchiv Bielefeld | Frank Becker Stiftung
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="MAJAWN6IMYHNDFF62VOKTNIPCU4SHFFX">
+													Medienarchiv Günter Grass Stiftung Bremen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="WDYJMEC43ZHEAD2A5P2CGUGEDPJ2JAJA">
+													Mikrofilmarchiv der deutschsprachigen Presse e.V. Dortmund
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="O55RPQOJSXFYB63ZAYVDDIAI5FACDN3I">
+													Ministerium für Wissenschaft, Forschung und Kultur. Referat 35, Erinnerungskultur, Archive und Bibliotheken
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="6YMA4IEFOPBDZMRP7JMOJKYUX33H7QT4">
+													Montanhistorisches Dokumentationszentrum/Bergbau-Archiv Bochum
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="QPVTSTSLQRKVZQKANJZHIS3LYJ2FNPJA">
+													Monumenta Germaniae Historica. Deutsches Institut für Erforschung des Mittelalters
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="24LB45J5QS3PC2BOW4NGJOVZNHMWRZKY">
+													Munzinger-Archiv GmbH
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="S3T3DTII6BDPPNB7EZR7AZYHAD3NJMGO">
+													Museum der Stadt Bad Staffelstein
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="QXPEVAHZZRT3YD23QIQZWZGHT36QWVKT">
+													Museum für Kommunikation
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LQHBMYHQ36OIVB7VTX5WFBOF6SKWQRL5">
+													Niedersächsisches Landesarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NR7LP7FY3LYEJ3XIMXCME5BJNDTZXMVW">
+													Nordelbische Evangelisch-Lutherische Kirche. Nordelbisches Kirchenamt, Nordelbisches kirchenarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3FR3CI2SJK7RRSRJ25YEAKEPCR4K2UUT">
+													Ostdeutscher Sparkassenverband. Historisches Archiv und Bibliothek
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="WZG326BCORM6SH7RGTUTNUVC63SJZESJ">
+													Otto GmbH &amp; Co KG. Direktion Wirtschaftspolitik und Kommunikation
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FAOMCS4IXSEW76BQGCWGYN6ROANDL5A2">
+													Privatarchiv Ilse Benedikt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PP5RCMJ2LACHQ6V3F5IZ4QEXYDELLDU6">
+													Rems-Murr-Kreis. Kreisarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="A7ZUNKHNLWJ6MLW5M4RPJNUVOBDO4DW4">
+													RheinEnergie AG. Vorstandsbüro, Historisches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="7GAIUS5GGMSBZWXPPPNTXAQPG5UPXKUA">
+													Rheinische Friedrich-Wilhelms-Universität Bonn, Institut für Geschichtswissenschaft, Abteilung für Rheinische Landesgeschichte
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DOINHY3Z3Z4NFLKHT54QK73VA4BHJEVQ">
+													Rheinisch-Westfälische Technische Hochschule. Hochschularchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2WT7T4DWKBEDB4JX7VAT4JIT6GSWUA5B">
+													Rheinmetall AG. Zentralarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ISYLGPDPFB6H2M5VSR6LXXMCIH257EA6">
+													Robert-Havemann-Gesellschaft e.V. Archiv der DDR-Opposition
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DCS6RMLM5X7ZJXEI7BHXMXLEVPGT7XDD">
+													Rosa-Luxemburg-Stiftung. Gesellschaftsanalyse und Politische Bildung e.V., Archiv Demokratischer Sozialismus
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UG6LMRBTZUJVW6YRDFGWG6CS2TMNUOK7">
+													Sächsisches Staatsarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JMDB4QDJC2WK45ZXJ3BFIPBNOOXVONK4">
+													Sächsisches Wirtschaftsarchiv e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="S3FX2I2M3EV4QGZUOJ67JWGHPLIT5FLJ">
+													Salzlandkreis. Kreisarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="EFJWJFNOW5FWRWUBCHEOJTAGCMKCRPG2">
+													Siebenbürgen-Institut an der Universität Heidelberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GQTLDFMHFLLCE6WNPXTKNZEOESIUZHVY">
+													SOLON SE Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="B3GFAYBHZHMVYXCV2HAJTWAFTBLJ3BEL">
+													Spinnboden Lesbenarchiv und Bibliothek e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2UZDCMCHSN74YE2U37JENOPUETKCXCTK">
+													Staatliche Museen zu Berlin Preußischer Kulturbesitz. Zentralarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZFWNQ7R6WALAYGVKQ47LGPBIEVCI2R7E">
+													Staatsarchiv Amberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="XX6TGYHEEADBPP6FWHWOBWBXFIK26G7X">
+													Staatsarchiv Augsburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UQZA7YG6RCTIMUUI5P4P2BKEFAJQVF4L">
+													Staatsarchiv Bamberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SNJ77SZZNN5B254Z2K4DYNDZZNPRLKXD">
+													Staatsarchiv Bremen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="7RWQWAU6CS73FC7WHQXEIVVHYEQBKWNJ">
+													Staatsarchiv Coburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VVNN2VPDVPT3OFESKD4XYPYE47JPB7E5">
+													Staatsarchiv Landshut
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NDNVX424LRMBVY64C6KSEXBSUTNB7VWC">
+													Staatsarchiv München
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DIMDYBEMBJSTIIOFG5JDOQMVGAMDKYD3">
+													Staatsarchiv Nürnberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="EXKTMOTPDZBL6AR7ZZC5QV754ODZFUBT">
+													Staatsarchiv Würzburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UN4AYUETT2UV5N34SXNR6CMBNJOXWNJ5">
+													Stadt Ahaus, Stadtarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="76I2BHYLRBBZG75NOCBXAGYGWH3FLMX7">
+													Stadtarchiv Aichach
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NPU6DXXPNK3ETXDRQW4BLOHK6ZKVBJXH">
+													Stadtarchiv Alfeld (Leine)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="5ZYXLQSVIT7VDHIKD3EANM2A4PJQZDRT">
+													Stadtarchiv Altötting
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YCKAL5EE3GKEMNNNLDSEKUSUMDSRRM5X">
+													Stadtarchiv Alzenau
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4FDJQ2OH4LX4Q2ZMZ4OWULXFCLCTZDV4">
+													Stadtarchiv Amberg (Oberpfalz)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4UBKHXI5K33LE4OA7XHQE5OAJ5KNYVDK">
+													Stadtarchiv Arnstein
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="U6ED65MDHM3ACJZPCOYN6LGARE4ADDHE">
+													Stadtarchiv Aschersleben
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4N2K3DMAXEODKRIEJQCKWROV3LAVWEKI">
+													Stadtarchiv Attendorn
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="65UJZLKJCFTI6BQV4UQ5CIK7ABGUOYL7">
+													Stadtarchiv Bad Camberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="CTAZOIQWVK6REN6PTT7GBYDAQAIJ43IS">
+													Stadtarchiv Bad Homburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FWZX4XMMLHF4AWVX3CHEPRYFSCMRTSNL">
+													Stadtarchiv Bad Neuenahr-Ahrweiler
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZHAZK5YCH3O54WBAEVBY4DLM2BSZ6KKO">
+													Stadtarchiv Bad Neustadt an der Saale
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2GTZFS7LCTRCZXO4I67AVUN6RMBJTAYK">
+													Stadtarchiv Bad Waldsee
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JIV2S4RXZZXVKB4HVW5RRY5WTMD2VA7E">
+													Stadtarchiv Bad Wildungen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="CUH2HQS6H2F6ZJWX5SBEGZ7TX7UDHANY">
+													Stadtarchiv Bad Wimpfen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2DCZ6VBGTC4ET4M72UBCDSQFBJ7IIPE5">
+													Stadtarchiv Bamberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="K5J6HAMNQA4FGX7YZKIYM2VERDHJCYPM">
+													Stadtarchiv Bergisch Gladbach
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SKCXDAL5NSANS6HYGOKQAOW4X3T6DHYC">
+													Stadtarchiv Bitterfeld-Wolfen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UCUENJF2RRGGNCHIGUUK3M7KOHBNJJML">
+													Stadtarchiv Brandenburg an der Havel
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SW6RZGJ7RIRQSVJMOFGQJABL46I5FY3V">
+													Stadtarchiv Bruchsal
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="OJIVZ5WMDDX3KR3ZP6MUTFKAGYIGTKZN">
+													Stadtarchiv Celle
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3BAXCOYHSADKEW46AJ6Y4FDAZALJVD3V">
+													Stadtarchiv Cochem
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="OOGVQHSHSLMFBZUKWEYCFJWM3UZEMUJR">
+													Stadtarchiv Coesfeld
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="R2AOWGQSV3IYZV3VPJHGRITXBBCMAHFT">
+													Stadtarchiv Dessau-Roßlau
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FT3K552JULYTG5OGUDPUBDFXF4EKDX76">
+													Stadtarchiv Ditzingen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JL4YI2THYFL6IMDZADL4BXGZFZOAFP7C">
+													Stadtarchiv Duisburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PMFSVXPDOBVHW73SNPMPWFF7XRQU6DGP">
+													Stadtarchiv Eisfeld
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VE6MLWGX43EEQB4YVFHKMV42RGRWFODQ">
+													Stadtarchiv Emmerich am Rhein
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="TEH75V4DWVZUED7QO46O25TKHMB5QCTY">
+													Stadtarchiv Erfurt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="C24OPMSGAGKISFXXRMLPHLVXY5YA4BWP">
+													Stadtarchiv Erkrath
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ICXSHGXXIC72HFY377MDEUAVECTMCG2M">
+													Stadtarchiv Esslingen am Neckar
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DB3QRLTKV6VJBA4PR4FSHGG6H4L3XGLZ">
+													Stadtarchiv Freiburg im Breisgau
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LKM4G3A5UVXRTCPOMGMSEUFVSNKDPL6M">
+													Stadtarchiv Freilassing. Stadtverwaltung - Hauptamt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YYXI5DE4EJIPO3E54HHQHZWAFQETI3Z2">
+													Stadtarchiv Freudenberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YJZXXW6JTOQAUZN7UK7Z4V6L7IWIN3AC">
+													Stadtarchiv Friedrichstadt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="OGXLXAXNDTZHH2JSJOFMT3GBONM4BFNV">
+													Stadtarchiv Füssen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3H7PK3DY5DD7RJ6C5JC2GVSYXMSMUWJT">
+													Stadtarchiv Garbsen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="76ZPANS45BSJN4S5YOIW3YMVAEL6AEBX">
+													Stadtarchiv Geseke
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UQCLYVCZ7F5TB3MUAUBROYOVT3AQGHXM">
+													Stadtarchiv Grabow
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="L6ZK4H7LPK4LF7CSBWIYLOX7JMOVT33E">
+													Stadtarchiv Greven
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="J6JLPZVEFLZSZ25RJ23VOHWOVO27BDKN">
+													Stadtarchiv Halle (Saale)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GNVFHPABJ4P3R3CW6UB2E4QFN6V2G4SC">
+													Stadtarchiv Hannover
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="OGYBLBR5EZKYHT7CHPW3Y5TWNVNZIL7Z">
+													Stadtarchiv Harsewinkel
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SHOSXBE2OJIVB3OCWWRP7SGCSLCRCG4U">
+													Stadtarchiv Heiligenhaus
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PAF7JJTXWQCZYHIRUIF5H4EI3DGA6FGW">
+													Stadtarchiv Hennef
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="QDCCGBDLSM7I2BH6BWLF3ZPOVJ3INSOW">
+													Stadtarchiv Hof
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="QGCRF5ETJ7S746OUN3EWT76HLCI2EJNF">
+													Stadtarchiv Holzminden
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NWNEPSPSGSSYWU3IP75BYGGBRNQORN6A">
+													Stadtarchiv - Institut für Stadtgeschichte Mannheim
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="J7TGBHTQ6KB6XX4Q4VM6NNXO7ZZ7RFTG">
+													Stadtarchiv - Institut für Stadtgeschichte Pforzheim
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4YIDOJNR7V7YY7XPURQXWDVSNFRXXE67">
+													Stadtarchiv Isny (Allgäu)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ACYJNB2LPR57RWEOGRNJMLIXQHABRVAR">
+													Stadtarchiv Kamenz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="2N223ZHNALXTYOIDGHLH6JQEOLK7XPXV">
+													Stadtarchiv Karlsruhe
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="73GDDWZQ5LRTOJKTRU3W5VIJEP5UNU6Q">
+													Stadtarchiv Kempten (Allgäu)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NMQNKYUGE7UKTMIYPCUT6XSNR3X3TAWV">
+													Stadtarchiv Kiel
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FEQGTAXTJJ6SM6ZLDSZRET632APPFIAS">
+													Stadtarchiv Kirchheim unter Teck
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="M4L2TQM6356BFQKXA25JDBD2DIO7JZRK">
+													Stadtarchiv Kleve
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ONAOXWQ2AUC2BE7V324TM3NWC3KWXT2Z">
+													Stadtarchiv Koblenz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="RLXMONC2TLX2QCSLORA2J3PZJFDDWM5W">
+													Stadtarchiv Königsbrunn
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SZNILZQCCL56A3IVIIYY4HAXFNA7FAVC">
+													Stadtarchiv Korschenbroich
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LLATKENGY5EFKNLRD7X43K4WCA535RNG">
+													Stadtarchiv Köthen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="KKQ5RDNA5KKETUB3VBVTSH22NIADCWXR">
+													Stadtarchiv Külsheim
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YV4GBECM2NB7NPEWAKROZ3M6UZFJYTAY">
+													Stadtarchiv, Kulturforum Witten
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="AZ53VC2MZUG3BC23OF3DTJRJO2UCV7LE">
+													Stadtarchiv Lampertheim
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="AOXIKUSENX3UVQEWRQVSEFG43K5CUEZK">
+													Stadtarchiv Langenhagen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="J3GHTOD4QWF6VW4BSHI2PHS2Z5DYZZ7D">
+													Stadtarchiv Lauda-Königshofen, Stadt Lauda-königshofen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LS3WUQ2EJJ264IH4APZNATRPENE7NXF3">
+													Stadtarchiv Leipzig
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="HZ4P66E6ETMYVIGKKT6DMZL6KBQZEW2L">
+													Stadtarchiv Lemgo
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="CN4N5RX7SKPX6JDZ4MOAQMR2UJWY7ZKB">
+													Stadtarchiv Lennestadt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ATKUR2V3QZTJDPEUTQIL4PD2AMGWWRLM">
+													Stadtarchiv Leutkirch
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="5YQ3GLLY6KLTX5I6ORKAINXP4MDKLQPV">
+													Stadtarchiv Limbach-Oberfrohna
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VAUFQMHER35CVCAV3ZQGHU3LC6XV7SJ5">
+													Stadtarchiv Lingen (Ems)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GAEHSZLOXSP4TM7SHWQP4IJDXXCYU3CF">
+													Stadtarchiv Linz am Rhein
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PF5DYK663VPQRBODDG7K4JQQI5L4BRUT">
+													Stadtarchiv Löbau
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="Z2L2DGBEYUZQOY3J7EUNLD6EKF3CRMKQ">
+													Stadtarchiv Lörrach
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NXDR5TWLOREN6VG3XGUGLT4FPNVL7I3U">
+													Stadtarchiv Magdeburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BA5TRULQVDASOVHPOJVGBQKZ2YTJMLVQ">
+													Stadtarchiv Mainz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4AUEQ6YM3H5CEZQ3H5Y6NPXS7PGTAEG2">
+													Stadtarchiv Marienberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YXT7OVTIOTCRALWCSF2C4ZBTICMJHW45">
+													Stadtarchiv Mayen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PRJ4SZWLXMIQQCKFJBR6UMDLH74HCYGH">
+													Stadtarchiv Meiningen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="O4BNT3RC5TNBPHGDEEO3XXUIGUWEQ5ZH">
+													Stadtarchiv Memmingen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3BM62RQOOOPFL4B5IABNFZCQWSKKZ3AG">
+													Stadtarchiv Menden (Sauerland)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NRZWMNEVNIJDFWOULDRUOSD6I2U2FH7Z">
+													Stadtarchiv Mölln
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ESL443DGW76JX4OIPBOHL6JQHU5XZVQ5">
+													Stadtarchiv Montabaur
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NDY2OZYQQVNJIPCYUUDSMMKENIZXXM6O">
+													Stadtarchiv Mosbach
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="AY6SQSDGA6JFANRYBMOD6LJL7DLI4GKB">
+													Stadtarchiv Mühlacker
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="5SEJZFPYKPCEE55DQ66DT5AFSEZOFOY3">
+													Stadtarchiv München
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="G7ZWJRH43S3557XRB5IFUGKOUKKLMPWQ">
+													Stadtarchiv Neckarsulm
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="KBWNC4MUTKQDNFQNS2WLHWVKZBCNJ5DL">
+													Stadtarchiv Oldenburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="AHPTNAWZL6QJGBV6O22CMEFJ4COSBJVK">
+													Stadtarchiv Osterode am Harz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="CKKQ2GVY3FFEELAAUVOIRQUYNT6H54E5">
+													Stadtarchiv Ostfildern
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="S7BRCVCJ534V5EYPGA2N6IFHIQA4DF5T">
+													Stadtarchiv Paderborn
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZQ7VR53JUAM5XKIXRWXK3OAAO6GTRFSG">
+													Stadtarchiv Pfullingen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PZJ32RREMUVEMIL4KK2KASIXIO3MT44R">
+													Stadtarchiv Radebeul
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3CKLL6WL5K43X6GGQNFYC2BLGEWYGEZ3">
+													Stadtarchiv Ratingen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="MJMRQABPHIZ4NEGN5OATT7TUFWX22ECE">
+													Stadtarchiv Ratzeburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YEYYH335GGRVH7XCGXKUO62LTF6CGPLF">
+													Stadtarchiv Reutlingen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FY45PXZ2EQV472RFVE5KVCH6MX7TIL5O">
+													Stadtarchiv Rosenheim und Geschäftsstelle des Historischen Vereins Rosenheim e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3NZS2BQH5I4TZJXZ5PKNWAM5K2K4ANN7">
+													Stadtarchiv Rothenburg ob der Tauber
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DVYN7Q6PWIXJJEDCUI3UGJFGLUOSYVLN">
+													Stadtarchiv Salzwedel
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="OUXXFOWWDVLAS67XOAI77GNUILUBKKBS">
+													Stadtarchiv Sankt Augustin
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="RQXDJGL746KJR3YS4BTEO6JIGGHTC7DG">
+													Stadtarchiv Selm
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="CXI6SJTP5TW23PURELKV2CQKPB7UWAOK">
+													Stadtarchiv Soest
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4OL2M7ZJAAJWVT7XJLVWGJ3J6J6QTLUB">
+													Stadtarchiv Solingen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="7UKI37EUFMMM5IRO4PCXPNUU4ITK4ATO">
+													Stadtarchiv Speyer
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="RLUTW7QECVPHNYQE5AA5B67CXOEE5BJE">
+													Stadtarchiv/Städtische Museen Tangermünde
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JS5E7LADBIZEF7UOS3OJQ4C5GCURX5GT">
+													Stadtarchiv Stuttgart
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4PU6SDFMWAELN7ZZISPLM3UIPKO2M6Q4">
+													Stadtarchiv und Landesgeschichtliche Bibliothek Bielefeld
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="CHKLLPOYKO6GN7SFIUOO7X34G42O7M6C">
+													Stadtarchiv Verl
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="XFONJN5ULUPXWS4EAXKXB36HT6A4RC2L">
+													Stadtarchiv Villingen-Schwenningen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BOBJG3JNGKK4PXZ3MZDMHCFFUJNB5ZUG">
+													Stadtarchiv Waldkirch
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="V46QC76FEFUJS6QMNR7EVQ64JDTNC5QS">
+													Stadtarchiv Wasserburg am Inn
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="UHFAIBUREO5N3PKMVEKXO5J65QVQKBUM">
+													Stadtarchiv Wedel
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="XDKZQXFY3CAPTORNIXTXHJW3ZKNSANKV">
+													Stadtarchiv Weimar
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="DHBTDPSUDJDSUPRTUL4LRI445PBL6TEQ">
+													Stadtarchiv Weinheim (Bergstraße)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="76S6GKCPH5MKSKTEGN7SPL3ADSVDYCK3">
+													Stadtarchiv Werne
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PXXJDSQLG6F4NNL2DGJHJPLTPSI7M632">
+													Stadtarchiv Wertheim
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GBJ4K6C6OMFETP2GD2K6NASQ76TRPBRF">
+													Stadtarchiv Wetter (Ruhr)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VSDURKWCX5XZOTMQ34QXX53GDOT7J7FX">
+													Stadtarchiv Wilhelmshaven
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NZKXHWCX5BCKIEHL3NZ3Q56ANJ2WMLHD">
+													Stadtarchiv Wilster
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="K2PFQHZ5T6XFRY2DZOB73Z7A5TWJF3UH">
+													Stadtarchiv Worms
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BSZ4P5KF2PFVJCJRWCX2KRS4HRHUZOB2">
+													Stadtarchiv Wülfrath
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="QRF3BFP2EGSDS7MVJ62N7QPWS7RSOYHI">
+													Stadtarchiv Zittau
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="M44TNNC3UJ556IU2VQHAM6XEDJT7FEIN">
+													Stadtbibliothek Engen (Hegau)
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BLXLL3TRPDYES3K3A7HMCHA2W5UH4Z5N">
+													Stadtbibliothek Hannover - Zentralbibliothek
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="TNY26JCXIEB3WI4A3XTZCHGBKNMWOXBF">
+													Stadtgeschichtliches Museum Leipzig
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="55WRWOVV5ILEGEWWJMRLU57WXISNA7BW">
+													Städtische Archive Biberach
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GPLZNGMO4Q62BPXY2DVZUHSKO2BARQKE">
+													Stadt Leer (Ostfriesland). Stadtarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="A3FVEQ27PK2CGRNI5W2QFMYMDXX7BR34">
+													stadtteilgeschichten.net - Das Bürgerarchiv zur Alltagsgeschichte
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JFA5UFHOHV556JQPZCTJGMWCKM5H2K5V">
+													Stadt-und Kreisarchiv Schmalkalden, Einrichtung im Zweckverband Kultur des Landkreises Schmalkalden-Meiningen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="E2XNKYFQD3XSMAPVKWKK5DJHHNFU43NU">
+													Stadtverwaltung Merseburg, Historisches Stadtarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FAQG7O7Y24Z6CJM333TYLWEZAYNR5446">
+													Stiftung Archiv der deutschen Frauenbewegung
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NBP7O2GX5KHV6PM76PJGLOP5SOU7D5MU">
+													Stiftung Bundespräsident-Theodor-Heuss-Haus. Gedenkstätte, Forschungs- und Dokumentationsstelle
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JDECEHJQZXHIR336HBVDMLNMREOH7YFU">
+													Stiftung Deutsches Technikmuseum Berlin. Historisches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZWQYMZ532CFQTNOUZKHLYNU5BKYSYVBS">
+													Stiftung Kunstfonds
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FB2OLEOR7CKRPB23WLCIUIIJMJOGN3UH">
+													Stiftung Preußischer Kulturbesitz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NUG5GCDLWNVOFO3CPGR5PZOGTCWPSHAJ">
+													Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="GYOFNDWZZGF3HOE7OUDXSJZOJ5SR4EHA">
+													Stiftung Stadtmuseum Berlin
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PE4DYSA22ZAYNEMJ5OEX3O53CYNJXN3I">
+													Stiftung Wirtschaftsarchiv Baden-Württemberg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="XFN7C6TITBILPZYWYAXW4NOFWYMMDUI5">
+													Streitkräfteamt. ZA 5, Abteilung I Info-und Medienzentrale der Bundeswehr
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="PV2XVPTB655JI47OJC4UOCJQUP3KEL2W">
+													Sudetendeutsches Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="R6LDIKGIHX3YBGES2SRG4KLAW6HZPT4N">
+													Technische Universität Chemnitz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SBJ5ZMK722AEIADWU5O3EMHKIV7T5MDE">
+													Theatermuseum der Landeshauptstadt Düsseldorf
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FKHZKOKXIB5HJD77BYEMBPCMNQLOPQG7">
+													Theatermuseum der Landeshauptstadt Düsseldorf. Archive und Sammlungen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="HLKPDJVMHUEJ3B3PVLOA6IMJOQ3KSZLQ">
+													Thüringisches Hauptstaatsarchiv Weimar. Direktion, Abteilung für neuere Bestände, Abteilung für Bestände des Freistaats Thüringen, Dienstbibliothek, Technische Zentralwerkstätten, Bundessicherungsverfilmungsstelle Thüringen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="LFE564CN4ZA3LXXSFCTWTGQ23NPUFARP">
+													Thüringisches Staatsarchiv Altenburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="5W7XVDKBD4CJ3ZHIL63LTN752LUMK44O">
+													Thüringisches Staatsarchiv Gotha
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="IVVNAAQ7AKHT6V53MA4PGLICHTMF3PXM">
+													Thüringisches Staatsarchiv Meiningen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="F6FEEFFOU5D6JRBOKOZI6IVT4O25J2AA">
+													Thüringisches Staatsarchiv Rudolstadt
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="YW4UHEB7YUCVJBAWNHXCRNAK5SMTFIOX">
+													Universität Duisburg-Essen
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FEPUU3I6VW6RFK3PH32IYKJSV6DCLXHB">
+													Universität Konstanz
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="NCBT4L4SH2HRFY7PD6CGNGIG4LWRF6JS">
+													Universität Mannheim
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="SCNU62WI6FXWVLW5EEYXX67XQS6RGRSE">
+													Universität Rostock
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="JWBEKCSKBDEMBMC2D4VBF7BM4PKIQLXR">
+													Universitätsarchiv der Albert-Ludwigs-Universität.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="K7NF5PMZXVJPWQ7IJGLL33PPEPCXJIJ7">
+													Universität Stuttgart
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="3KTUTIEU7FJICWZNA4MOWZWDXJVJBQAE">
+													Universität zu Köln
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="M66RCIGIUYXZ3M7VC2YO6AY4EQ5VOUIX">
+													Verband der Bahnindustrie in Deutschland e.V.
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BO4OPYQHEXMUBF5XHIPPWQLCK2AT4ZRB">
+													Vereinigte Westfälische Adelsarchive e.V. Münster
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="ZY3DL6JKDMNPC4UZEWZQ2HX2FEPQC5TJ">
+													Vogtlandkreis. Historisches Archiv des Vogtlandkreises
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="TOFSS2BLKU72KCLOAP7XJJLTZTQEO3ZV">
+													Walter Ballhause-Archiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="J7PU7VXCKLYH3XGYD3AJBZ3L2KK4YXND">
+													Werkbundarchiv - Museum der Dinge
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="4RFM2ASRFTWWO2GOJYWL4HZ4XWB3GFFK">
+													Westfälisches Wirtschaftsarchiv
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="AWIYIS5W5FADURKWNNLEQJHVF75KBIKJ">
+													Westfälische Wilhelms-Universität Münster
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="EDAGP4ETEK5A32DDKLV2D3XGFTGKGH7H">
+													Westfälisch-Lippisches Institut für Turn- und Sportgeschichte e.V.,Zum Schloß Oberwerries, 59073 Hamm
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="FRXRERWHTC4SMEAUH6CBOHFML2BFCTSR">
+													Wuppertaler Autoren-Archiv. Stadtbibliothek
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="BAI6FO2IB7QIWZNCPD7XNMGIM5HSUQBJ">
+													Zentrale Bibliothek Frauenforschung &amp; Gender Studies Hamburg
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="HGS6KREIURSIO6JIPCMHBXYMW2RA4OSQ">
+													Zentralinstitut für Kunstgeschichte München
+												</div> </a></span>
+										</li>
+										<li>
+											<span><a href="#">
+												<div id="VSE6L5Y2IBZLMW6FYPU6KLFBB4OHTLNR">
+													Zollernalbkreis. Kreisarchiv
+												</div> </a></span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="list-panel" class="span8">
+					<div class="well">
+						<div class="btn-group">
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> Action <span class="caret"></span> </a>
+							<ul class="dropdown-menu">
+								<!-- dropdown menu links -->
+							</ul>
+						</div>
+						<div class="btn-group">
+							<span class="facette-label"> Medientyp </span><span class="facette-value"> Foto
+								<button type="button" class="close" data-dismiss="alert">
+									×
+								</button> </span>
+						</div>
+					</div>
+
+					<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+					<p>
+						Cras placerat velit at pharetra malesuada. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer quis mi eu risus suscipit lobortis. Donec eget odio varius, feugiat lorem vel, malesuada nibh. Pellentesque pulvinar metus quis sagittis accumsan. Quisque mattis dolor ut dui volutpat, at tincidunt nulla fringilla.
+					</p>
+					<p>
+						Vivamus laoreet, orci et laoreet suscipit, augue nibh fermentum justo, quis sagittis odio turpis non est. Aliquam dignissim sagittis velit, id viverra lectus suscipit sed. Aenean porta arcu ornare magna egestas, a congue leo laoreet. Fusce gravida, eros rhoncus congue porttitor, eros tellus eleifend ligula, at facilisis enim elit eget lectus. Donec dapibus id ante porttitor interdum. Aliquam faucibus nec nibh eu laoreet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis sollicitudin, nibh non congue convallis, turpis elit gravida lectus, at vehicula eros mauris ac libero. Aenean sed dolor risus.
+					</p>
+				</div>
+			</div>
+		</div>
+		<footer class="container">
+			<div class="row">
+				<h1 class="invisible-but-readable">Website-Fußzeile</h1>
+				<div class="span9">
+					<ul class="inline">
+						<li>
+							Copyright &copy; 2014 Archivportal D
+						</li>
+						<li>
+							<a href="/apd/info/nutzungsbedingungen">Nutzungsbedingungen</a>
+						</li>
+						<li>
+							<a href="/apd/info/nutzungsbedingungen">Datenschutzerklärung</a>
+						</li>
+						<li>
+							<a href="/apd/info/impressum">Impressum</a>
+						</li>
+						<li>
+							<a href="/apd/info/sitemap">Sitemap</a>
+						</li>
+						<li>
+							<a href="/apd/info/kontakt">Kontakt</a>
+						</li>
+					</ul>
+				</div>
+				<div class="span3">
+					<a href="http://www.dfg.de" target="_blank"><img src="../images/logo-dfg.gif" alt="Logo DFG Deutsche Forschungsgemeinschaft"></a>
+				</div>
+			</div>
+		</footer>
+		<script type="text/javascript" src="../js/vendor/jquery.js"></script>
+		<script type="text/javascript" src="../js/vendor/bootstrap.js"></script>
+		<script type="text/javascript" src="../js/vendor/jquery.ui.js"></script>
+		<script type="text/javascript" src="../js/vendor/jquery.dynatree.min.js"></script>
+		<script type="text/javascript" src="../js/vendor/jquery.tinyscrollbar.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#institution-tree").dynatree({
+					//title : "Sample Theming",
+					// Image folder used for data.icon attribute.
+					//imagePath : "../css/vendor/dynatree/skin-apd"
+				});
+				var initScrollPane = function() {
+					var panelTop = $('#tree-scrollpane').offset();
+					$('#tree-scrollpane').css('height', document.documentElement.clientHeight - 20 - panelTop.top + 'px').tinyscrollbar();
+				}
+				initScrollPane();
+			});
+		</script>
+	</body>
+</html>

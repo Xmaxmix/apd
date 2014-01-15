@@ -1,13 +1,13 @@
 <!--[if lt IE 9]>
   <div id="header">
 <![endif]-->
-<header>
+<header class="container">
   <h1 class="invisible-but-readable"><g:message code="apd.Heading_Header"/></h1>
   <div class="container">
     <div class="row">
       <div class="span4">
         <g:apdLink controller="index" params="${params}" remove="${["*"]}">
-          <g:img dir="images" file="archivportal.png" width="423" height="123" />
+          <g:img dir="images" file="logo-archivportal.png" width="423" height="123" />
         </g:apdLink>
       </div>
       <div class="span8">

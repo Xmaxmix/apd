@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
+/*
 ul.dynatree-container li {
   white-space: normal !important;  
 }
@@ -27,4 +28,73 @@ span.dynatree-node a {
   display: block;
   margin-left: 40px;
   margin-top: -23px;
+}
+*/
+
+
+/*********************************************************************
+ * 	xmachina amendments
+ */
+ 
+a div {
+	display: inline;
+	background: transparent;
+}
+#institution-tree ul {
+}
+ul.dynatree-container {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border: none;
+	overflow-y: auto;
+	white-space: normal;
+	font-family: inherit;
+	font-size: inherit;
+	alignment-adjust: auto;
+	background: transparent;
+}
+ul.dynatree-container li {
+	background: transparent;
+	padding: 0;
+}
+span.dynatree-icon {
+	display: none;
+}
+span.dynatree-node {
+	display: block;
+	position: relative;
+	padding: 3px 16px 3px 16px
+}
+span.dynatree-expander {
+	position: absolute;
+	left: 3px;
+	top: 5px;
+}
+span.dynatree-node a {
+	font-size: inherit;
+	padding: 0;
+	display: inherit;
+	margin: 0;
+	line-height: 120%;
+}
+.dynatree-title {
+}
+span.dynatree-connector {
+	background: transparent;
+	display: none;
+}
+ul.dynatree-container a:focus,
+span.dynatree-focused a:link  /* @IE */ {
+ background-color: none  outline: none;
+}
+.dynatree-active {
+	background: #B2CCD9;
+}
+span.dynatree-active a {
+	color: #000;
+	background: transparent !important;
+}
+a:focus {
+	background: transparent;
 }

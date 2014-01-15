@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/*
 #home-search-container{
   text-align:center;
 }
@@ -22,4 +24,91 @@
 #home-search-form {
   border-bottom: #ddd 1px solid;
   padding-bottom: 20px;
+}
+*/
+
+/**
+ * 	xmachina ammendments
+ */
+
+#brand, .index #brand {
+	background: url('../images/logo-archivportal-d.gif') no-repeat;
+	display: block;
+	width: 457px;
+	height: 105px;
+	margin: 1em 20px;
+	text-indent: -999em;
+}
+header #merkliste {
+	margin-left: 490px;	
+}
+
+#main-container {
+	background: url('../images/bg-main.png') center top no-repeat;
+	padding: 32px 0;
+}
+@media (max-width: 1280px) {
+	#main-container {
+		background-position: center -3px;
+	}
+}
+
+#home-search-container,
+#home-news-container {
+	margin-left: auto;
+	margin-right: auto;
+	float: none;
+}
+#home-search-container label {
+	display: block;
+	margin: 0;
+}
+#home-search-container label.checked {
+	color
+}
+#home-search-container #filter-tray {
+	display: none;
+}
+
+#search-widget {
+	margin: 1.5em auto;
+	width: 67%;
+	position: relative;
+}
+#home-search-container #search-expanded {
+	position: absolute;
+	right: -95px;
+	top: 0;
+	line-height: 40px;
+}
+#state-map {
+	text-align: center;
+}
+.sector-listing li {
+	margin: 0;
+	padding: 0.375em 0;
+	border-bottom: 1px solid #d9d9d9;	
+}
+.sector-listing label {
+	margin: 0;
+	background-image: url('../images/apd-sprite.png');
+	background-repeat: no-repeat;
+	background-position: -220px 3px;
+	padding-left: 20px;
+}
+.sector-listing label.checked {
+	background-position: -220px -85px;
+}
+
+.alphabet-listing li {
+	margin: 0 0.125em 0.5em 0;
+	padding: 0 !important;
+}
+.alphabet-listing label {
+	min-width: 15px;
+	margin: 0;
+}
+.alphabet-listing .checked {
+	color: #fff;
+	background: #748C9B
 }
